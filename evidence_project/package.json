@@ -1,0 +1,18 @@
+{
+  "name": "evidence_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@evidence-dev/csv": "^1.0.15",
+    "@evidence-dev/evidence": "^40.1.6",
+    "@evidence-dev/tailwind": "^3.1.2"
+  }
+}
