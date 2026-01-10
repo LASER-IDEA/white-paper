@@ -1,9 +1,9 @@
 export enum Dimension {
-  ScaleGrowth = "Scale & Growth",
-  StructureEntity = "Structure & Entity",
-  TimeSpace = "Time & Space",
-  EfficiencyQuality = "Efficiency & Quality",
-  InnovationIntegration = "Innovation & Integration",
+  ScaleGrowth = "规模与增长",
+  StructureEntity = "结构与主体",
+  TimeSpace = "时空特征",
+  EfficiencyQuality = "效率与质量",
+  InnovationIntegration = "创新与融合",
 }
 
 export interface MetricData {

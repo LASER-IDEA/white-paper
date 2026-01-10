@@ -49,6 +49,7 @@
         body {
           background-color: white;
           -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
         }
         .no-print {
           display: none !important;
@@ -56,8 +57,10 @@
         .page-break {
           break-after: page;
           page-break-after: always;
-          height: 100vh;
-          width: 100vw;
+        }
+        /* Ensure charts print correctly */
+        svg {
+          break-inside: avoid;
         }
       }
     </style>
@@ -71,8 +74,10 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

@@ -34,11 +34,11 @@ export const DualLineChart = ({ data }: { data: any[] }) => (
     <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
       <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: 'Duration (h)', angle: -90, position: 'insideLeft', style: {fontSize: 10, fill: '#64748b'} }} />
-      <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: 'Distance (km)', angle: 90, position: 'insideRight', style: {fontSize: 10, fill: '#64748b'} }} />
+      <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '时长 (小时)', angle: -90, position: 'insideLeft', style: {fontSize: 10, fill: '#64748b'} }} />
+      <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '里程 (公里)', angle: 90, position: 'insideRight', style: {fontSize: 10, fill: '#64748b'} }} />
       <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-      <Line yAxisId="left" type="monotone" dataKey="duration" stroke="#0ea5e9" strokeWidth={3} dot={{r: 4}} />
-      <Line yAxisId="right" type="monotone" dataKey="distance" stroke="#10b981" strokeWidth={3} dot={{r: 4}} />
+      <Line yAxisId="left" type="monotone" dataKey="duration" name="时长" stroke="#0ea5e9" strokeWidth={3} dot={{r: 4}} />
+      <Line yAxisId="right" type="monotone" dataKey="distance" name="里程" stroke="#10b981" strokeWidth={3} dot={{r: 4}} />
       <Legend />
     </ComposedChart>
   </ResponsiveContainer>
@@ -53,9 +53,9 @@ export const StackedBarChart = ({ data }: { data: any[] }) => (
       <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
       <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
       <Legend />
-      <Bar dataKey="MultiRotor" stackId="a" fill="#0ea5e9" radius={[0,0,0,0]} />
-      <Bar dataKey="FixedWing" stackId="a" fill="#10b981" radius={[0,0,0,0]} />
-      <Bar dataKey="Helicopter" stackId="a" fill="#f59e0b" radius={[4,4,0,0]} />
+      <Bar dataKey="MultiRotor" name="多旋翼" stackId="a" fill="#0ea5e9" radius={[0,0,0,0]} />
+      <Bar dataKey="FixedWing" name="固定翼" stackId="a" fill="#10b981" radius={[0,0,0,0]} />
+      <Bar dataKey="Helicopter" name="直升机" stackId="a" fill="#f59e0b" radius={[4,4,0,0]} />
     </BarChart>
   </ResponsiveContainer>
 );
@@ -77,8 +77,8 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
         <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
         <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} unit="%" />
         <Tooltip />
-        <Bar yAxisId="left" dataKey="volume" fill="#0ea5e9" barSize={20} radius={[4,4,0,0]} />
-        <Line yAxisId="right" type="monotone" dataKey="cumulative" stroke="#f59e0b" strokeWidth={2} dot={{r: 3}} />
+        <Bar yAxisId="left" dataKey="volume" name="飞行量" fill="#0ea5e9" barSize={20} radius={[4,4,0,0]} />
+        <Line yAxisId="right" type="monotone" dataKey="cumulative" name="累计占比" stroke="#f59e0b" strokeWidth={2} dot={{r: 3}} />
       </ComposedChart>
     </ResponsiveContainer>
   );
@@ -185,11 +185,11 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
   const [hovered, setHovered] = useState<any>(null);
 
   const paths: Record<string, string> = {
-    'District A': "M50,50 L200,20 L350,50 L320,130 L80,130 Z",
-    'District B': "M20,60 L80,130 L150,200 L120,280 L20,250 Z",
-    'District C': "M80,130 L320,130 L280,200 L150,200 Z",
-    'District D': "M350,50 L380,80 L380,250 L280,200 L320,130 Z",
-    'District E': "M120,280 L150,200 L280,200 L380,250 L200,290 Z"
+    'A区': "M50,50 L200,20 L350,50 L320,130 L80,130 Z",
+    'B区': "M20,60 L80,130 L150,200 L120,280 L20,250 Z",
+    'C区': "M80,130 L320,130 L280,200 L150,200 Z",
+    'D区': "M350,50 L380,80 L380,250 L280,200 L320,130 Z",
+    'E区': "M120,280 L150,200 L280,200 L380,250 L200,290 Z"
   };
 
   const getHeatColor = (value: number) => {
@@ -198,11 +198,11 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
   };
 
   const centroids: Record<string, {x: number, y: number}> = {
-    'District A': {x: 200, y: 70},
-    'District B': {x: 80, y: 170},
-    'District C': {x: 200, y: 165},
-    'District D': {x: 340, y: 160},
-    'District E': {x: 250, y: 245},
+    'A区': {x: 200, y: 70},
+    'B区': {x: 80, y: 170},
+    'C区': {x: 200, y: 165},
+    'D区': {x: 340, y: 160},
+    'E区': {x: 250, y: 245},
   };
 
   return (
@@ -236,7 +236,7 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
                  fontWeight="bold"
                  pointerEvents="none"
                >
-                 {region.name.split(' ')[1]}
+                 {region.name}
                </text>
              )}
           </g>
@@ -246,26 +246,26 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
       {/* Floating Tooltip */}
       {hovered && (
          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur border border-slate-200 p-3 rounded-lg shadow-xl z-20 animate-fade-in pointer-events-none">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Region</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">区域</p>
             <p className="text-sm font-bold text-slate-800">{hovered.name}</p>
             <div className="mt-2 flex items-center gap-2">
                 <span className="text-2xl font-extrabold text-tech-blue-600">{hovered.value}</span>
-                <span className="text-xs text-slate-500">Density Index</span>
+                <span className="text-xs text-slate-500">密度指数</span>
             </div>
          </div>
       )}
 
       {/* Legend */}
        <div className="absolute bottom-4 right-4 flex flex-col gap-2 bg-white/80 backdrop-blur p-3 rounded-lg border border-slate-100 text-xs text-slate-600 shadow-sm">
-          <div className="font-bold text-slate-400 uppercase text-[10px]">Density Map</div>
+          <div className="font-bold text-slate-400 uppercase text-[10px]">密度地图</div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]"></span> High (&gt;80)
+            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]"></span> 高 (&gt;80)
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.5}}></span> Medium (40-80)
+            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.5}}></span> 中 (40-80)
           </div>
           <div className="flex items-center gap-2">
-             <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.2}}></span> Low (&lt;40)
+             <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.2}}></span> 低 (&lt;40)
           </div>
        </div>
     </div>
@@ -279,7 +279,7 @@ export const PolarClockChart = ({ data }: { data: any[] }) => (
       <PolarGrid stroke="#e5e7eb" />
       <PolarAngleAxis dataKey="hour" tick={{ fontSize: 10 }} />
       <PolarRadiusAxis angle={30} domain={[0, 'auto']} tick={false} axisLine={false} />
-      <Radar name="Activity" dataKey="value" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
+      <Radar name="活跃度" dataKey="value" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
       <Tooltip />
     </RadarChart>
   </ResponsiveContainer>
@@ -304,8 +304,8 @@ export const SeasonalBoxChart = ({ data }: { data: any[] }) => (
 export const GaugeChart = ({ data }: { data: any[] }) => {
   const val = data[0].value;
   const pieData = [
-    { name: 'Value', value: val },
-    { name: 'Rest', value: 100 - val }
+    { name: '效率', value: val },
+    { name: '剩余', value: 100 - val }
   ];
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -328,7 +328,7 @@ export const GaugeChart = ({ data }: { data: any[] }) => {
           {val}
         </text>
          <text x="50%" y="50%" textAnchor="middle" className="text-sm fill-slate-500">
-          Efficiency
+          效率
         </text>
       </PieChart>
     </ResponsiveContainer>
@@ -401,7 +401,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
                   strokeLinecap="round"
                 />
                 <text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fontSize="11" fontWeight="bold" fill="#64748b">
-                  {`Zone ${node}`}
+                  {`区域 ${node.replace('区', '')}`}
                 </text>
               </g>
             );
@@ -463,8 +463,8 @@ export const AirspaceBarChart = ({ data }: { data: any[] }) => (
 // 15. Calendar Heatmap
 export const CalendarHeatmap = ({ data }: { data: any[] }) => {
   const [hoveredDay, setHoveredDay] = useState<any>(null);
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
 
   // Group data by month
   const monthsData = Array.from({length: 12}, (_, i) => {
@@ -536,23 +536,23 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
          >
             <div className="font-bold">{hoveredDay.date}</div>
             <div className="flex justify-between gap-4 mt-1">
-               <span className="text-slate-400">Sorties:</span>
+               <span className="text-slate-400">架次:</span>
                <span className="font-mono">{hoveredDay.value}</span>
             </div>
             <div className="text-[10px] text-slate-500 mt-1">
-               {(new Date(hoveredDay.date).getDay() % 6 === 0) ? 'Weekend' : 'Weekday'}
+               {(new Date(hoveredDay.date).getDay() % 6 === 0) ? '周末' : '工作日'}
             </div>
          </div>
        )}
        
        {/* Legend */}
        <div className="absolute bottom-0 right-0 flex items-center gap-1 text-[8px] text-slate-400 bg-white/80 p-1 rounded">
-          <span>Less</span>
+          <span>少</span>
           <div className="w-2 h-2 bg-[#e0f2fe]"></div>
           <div className="w-2 h-2 bg-[#fed7aa]"></div>
           <div className="w-2 h-2 bg-[#ea580c]"></div>
           <div className="w-2 h-2 bg-[#b91c1c]"></div>
-          <span>More</span>
+          <span>多</span>
        </div>
     </div>
   );
@@ -584,8 +584,8 @@ export const EntityRadarChart = ({ data }: { data: any[] }) => (
       <PolarGrid />
       <PolarAngleAxis dataKey="subject" tick={{fontSize: 10}} />
       <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
-      <Radar name="Entity A" dataKey="A" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
-      <Radar name="Entity B" dataKey="B" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
+      <Radar name="企业 A" dataKey="A" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
+      <Radar name="企业 B" dataKey="B" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
       <Legend />
       <Tooltip />
     </RadarChart>
@@ -598,7 +598,10 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
     return (
      <ResponsiveContainer width="100%" height="100%">
         <RadialBarChart cx="50%" cy="50%" innerRadius="70%" outerRadius="100%" barSize={20} data={[{ name: 'Score', value: val, fill: '#0ea5e9' }]} startAngle={180} endAngle={0}>
-          <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
+          <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} >
+            {/* Added to fix TS error about missing children */}
+            {null}
+          </PolarAngleAxis>
           <RadialBar
             background
             dataKey="value"
@@ -609,7 +612,7 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
              {val}
           </text>
           <text x="50%" y="60%" textAnchor="middle" className="text-sm fill-slate-500">
-             Composite Index
+             综合指数
           </text>
         </RadialBarChart>
       </ResponsiveContainer>
@@ -625,7 +628,7 @@ export const ChartRenderer = ({ type, data, definition }: { type: string, data: 
          {definition && (
            <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <div className="bg-slate-800 text-white text-xs p-2 rounded max-w-xs shadow-lg">
-                <span className="font-bold block mb-1">Definition:</span>
+                <span className="font-bold block mb-1">定义:</span>
                 {definition}
               </div>
            </div>
@@ -653,7 +656,7 @@ export const ChartRenderer = ({ type, data, definition }: { type: string, data: 
         case 'Wave': ChartComponent = <NightWaveChart data={data} />; break;
         case 'Radar': ChartComponent = <EntityRadarChart data={data} />; break;
         case 'Dashboard': ChartComponent = <CompositeDashboardChart data={data} />; break;
-        default: ChartComponent = <div className="flex items-center justify-center h-full text-red-500">Unknown Chart Type</div>;
+        default: ChartComponent = <div className="flex items-center justify-center h-full text-red-500">未知图表类型</div>;
     }
     
     return <Container>{ChartComponent}</Container>;
