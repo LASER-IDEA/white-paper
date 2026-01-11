@@ -1,0 +1,10 @@
+pandas
+geopandas
+pyecharts
+matplotlib
+seaborn
+jupyter
+quartodoc
+folium
+mapclassify
+scipy
