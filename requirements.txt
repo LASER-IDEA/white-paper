@@ -1,9 +1,5 @@
+streamlit
+streamlit-echarts
 pandas
-pyecharts
-matplotlib
-seaborn
-jupyter
-quartodoc
-scipy
 numpy
-networkx
+scipy
