@@ -9,8 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-dom": "^19.2.3",
+    "echarts": "^6.0.0",
     "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "recharts": "^3.6.0"
   },
   "devDependencies": {

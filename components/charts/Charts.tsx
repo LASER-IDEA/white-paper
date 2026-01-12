@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, BarChart, Bar, ComposedChart,
@@ -6,6 +6,7 @@ import {
   ScatterChart, Scatter, ZAxis, Legend, RadialBarChart, RadialBar, FunnelChart, Funnel, LabelList,
   Sector
 } from 'recharts';
+import * as echarts from 'echarts';
 
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
 
@@ -180,93 +181,157 @@ export const FleetTreemap = ({ data }: { data: any[] }) => (
   </ResponsiveContainer>
 );
 
-// 7. Choropleth Map (Regional Balance)
+// 7. Choropleth Map (Regional Balance) - ECharts Implementation
 export const ChoroplethMap = ({ data }: { data: any[] }) => {
-  const [hovered, setHovered] = useState<any>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const paths: Record<string, string> = {
-    'A区': "M50,50 L200,20 L350,50 L320,130 L80,130 Z",
-    'B区': "M20,60 L80,130 L150,200 L120,280 L20,250 Z",
-    'C区': "M80,130 L320,130 L280,200 L150,200 Z",
-    'D区': "M350,50 L380,80 L380,250 L280,200 L320,130 Z",
-    'E区': "M120,280 L150,200 L280,200 L380,250 L200,290 Z"
-  };
+  useEffect(() => {
+    if (!chartRef.current) return;
 
-  const getHeatColor = (value: number) => {
-     const opacity = Math.max(0.1, Math.min(1, value / 100));
-     return `rgba(14, 165, 233, ${opacity})`;
-  };
+    // Initialize ECharts instance
+    chartInstance.current = echarts.init(chartRef.current);
 
-  const centroids: Record<string, {x: number, y: number}> = {
-    'A区': {x: 200, y: 70},
-    'B区': {x: 80, y: 170},
-    'C区': {x: 200, y: 165},
-    'D区': {x: 340, y: 160},
-    'E区': {x: 250, y: 245},
-  };
+    // Load Shenzhen GeoJSON data
+    fetch('/data/shenzhen.json')
+      .then(response => response.json())
+      .then(geoJson => {
+        setLoading(false);
+
+        // Register the map
+        echarts.registerMap('Shenzhen', geoJson);
+
+        const option = {
+          title: {
+            text: '深圳无人机飞行密度分布',
+            subtext: '基于区域飞行频率数据',
+            left: 'center',
+            textStyle: {
+              color: '#002FA7',
+              fontSize: 18,
+              fontWeight: 'bold'
+            },
+            subtextStyle: {
+              color: '#64748b',
+              fontSize: 12
+            }
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: (params: any) => {
+              return `${params.name}<br/>飞行密度指数: ${params.value}`;
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#e2e8f0',
+            textStyle: {
+              color: '#002FA7'
+            }
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: { readOnly: false },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          visualMap: {
+            min: Math.min(...data.map(d => d.value)),
+            max: Math.max(...data.map(d => d.value)),
+            text: ['高密度', '低密度'],
+            realtime: false,
+            calculable: true,
+            inRange: {
+              color: ['#dbeafe', '#93c5fd', '#3b82f6', '#1d4ed8', '#1e3a8a']
+            },
+            textStyle: {
+              color: '#64748b'
+            },
+            left: 'left',
+            bottom: 'bottom'
+          },
+          series: [
+            {
+              name: '深圳各区飞行密度',
+              type: 'map',
+              map: 'Shenzhen',
+              label: {
+                show: true,
+                color: '#002FA7',
+                fontSize: 10,
+                fontWeight: 'bold'
+              },
+              emphasis: {
+                label: {
+                  color: '#ffffff'
+                },
+                itemStyle: {
+                  areaColor: '#002FA7'
+                }
+              },
+              itemStyle: {
+                borderColor: '#ffffff',
+                borderWidth: 1
+              },
+              data: data.map(item => ({
+                name: item.name,
+                value: item.value
+              }))
+            }
+          ]
+        };
+
+        chartInstance.current.setOption(option);
+      })
+      .catch(error => {
+        console.error('Failed to load Shenzhen map data:', error);
+        setLoading(false);
+      });
+
+    // Cleanup
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.dispose();
+      }
+    };
+  }, [data]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartInstance.current) {
+        chartInstance.current.resize();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div className="w-full h-full relative flex items-center justify-center bg-slate-50 rounded-lg">
-      <svg viewBox="0 0 400 300" className="w-full h-full max-w-2xl drop-shadow-lg p-4">
-          <defs>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.1"/>
-            </filter>
-          </defs>
-        {data.map((region) => (
-          <g key={region.name}
-             onMouseEnter={() => setHovered(region)}
-                 onMouseLeave={() => setHovered(null)}
-             className="cursor-pointer transition-all duration-300 hover:opacity-90">
-
-                  <path
-              d={paths[region.name] || ""}
-              fill={getHeatColor(region.value)}
-              stroke="white"
-                    strokeWidth="2"
-              filter="url(#shadow)"
-            />
-             {centroids[region.name] && (
-                  <text
-                 x={centroids[region.name].x}
-                 y={centroids[region.name].y}
-                    textAnchor="middle"
-                 fill={region.value > 50 ? 'white' : '#1e293b'}
-                 fontSize="12"
-                    fontWeight="bold"
-                    pointerEvents="none"
-                  >
-                 {region.name}
-                  </text>
-                )}
-              </g>
-        ))}
-        </svg>
-
-      {/* Floating Tooltip */}
-      {hovered && (
-         <div className="absolute top-4 left-4 bg-white/95 backdrop-blur border border-slate-200 p-3 rounded-lg shadow-xl z-20 animate-fade-in pointer-events-none">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">区域</p>
-            <p className="text-sm font-bold text-slate-800">{hovered.name}</p>
-            <div className="mt-2 flex items-center gap-2">
-                <span className="text-2xl font-extrabold text-tech-blue-600">{hovered.value}</span>
-                <span className="text-xs text-slate-500">密度指数</span>
+    <div className="w-full h-full relative bg-white rounded-lg border border-slate-200">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur z-10">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#002FA7] mx-auto mb-2"></div>
+            <p className="text-sm text-slate-600">正在加载地图数据...</p>
           </div>
         </div>
       )}
 
-      {/* Legend */}
-       <div className="absolute bottom-4 right-4 flex flex-col gap-2 bg-white/80 backdrop-blur p-3 rounded-lg border border-slate-100 text-xs text-slate-600 shadow-sm">
-          <div className="font-bold text-slate-400 uppercase text-[10px]">密度地图</div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]"></span> 高 (&gt;80)
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.5}}></span> 中 (40-80)
-      </div>
-          <div className="flex items-center gap-2">
-             <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.2}}></span> 低 (&lt;40)
-        </div>
+      <div
+        ref={chartRef}
+        className="w-full h-full"
+        style={{ minHeight: '400px' }}
+      />
+
+      {/* Additional Info */}
+      <div className="absolute bottom-2 left-2 text-xs text-slate-500 bg-white/80 px-2 py-1 rounded">
+        数据来源: 深圳民航数据
       </div>
     </div>
   );
