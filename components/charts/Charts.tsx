@@ -181,11 +181,10 @@ export const FleetTreemap = ({ data }: { data: any[] }) => (
   </ResponsiveContainer>
 );
 
-// 7. Choropleth Map (Regional Balance) - ECharts Implementation
+// 7. Choropleth Map (Regional Balance) - Advanced ECharts Implementation
 export const ChoroplethMap = ({ data }: { data: any[] }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!chartRef.current) return;
@@ -193,103 +192,276 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
     // Initialize ECharts instance
     chartInstance.current = echarts.init(chartRef.current);
 
+    // Show loading state
+    chartInstance.current.showLoading({
+      text: '正在加载地图数据...',
+      color: '#002FA7',
+      textColor: '#64748b',
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      zlevel: 0
+    });
+
     // Load Shenzhen GeoJSON data
     fetch('/data/shenzhen.json')
       .then(response => response.json())
       .then(geoJson => {
-        setLoading(false);
+        // Hide loading first
+        chartInstance.current.hideLoading();
 
         // Register the map
         echarts.registerMap('Shenzhen', geoJson);
 
+        // Calculate density statistics
+        const values = data.map(d => d.value);
+        const maxValue = Math.max(...values);
+        const minValue = Math.min(...values);
+
+        // Create pie series for major airports/hubs
+        const createPieSeries = (center: [number, number], radius: number, title: string, hubData: any[]) => {
+          return {
+            name: title,
+            type: 'pie',
+            coordinateSystem: 'geo',
+            tooltip: {
+              formatter: `{a}<br/>{b}: {c}架次 ({d}%)`
+            },
+            label: {
+              show: false
+            },
+            labelLine: {
+              show: false
+            },
+            animationDuration: 1200,
+            animationEasing: 'elasticOut',
+            radius,
+            center,
+            data: hubData,
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 12,
+                fontWeight: 'bold',
+                formatter: '{b}\n{c}架次'
+              },
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          };
+        };
+
         const option = {
           title: {
-            text: '深圳无人机飞行密度分布',
-            subtext: '基于区域飞行频率数据',
+            text: '深圳无人机飞行密度分布图',
+            subtext: '基于区域飞行频率与枢纽分布数据\n深圳坐标系：WGS84 | 数据更新：2024年',
             left: 'center',
+            top: 20,
             textStyle: {
               color: '#002FA7',
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: 'bold'
             },
             subtextStyle: {
               color: '#64748b',
-              fontSize: 12
+              fontSize: 11,
+              lineHeight: 18
+            }
+          },
+          geo: {
+            map: 'Shenzhen',
+            roam: true,
+            aspectScale: Math.cos((22.5 * Math.PI) / 180), // Shenzhen latitude adjustment
+            zoom: 1.1,
+            center: [114.1, 22.5], // Shenzhen center coordinates
+            itemStyle: {
+              areaColor: '#f8fafc',
+              borderColor: '#e2e8f0',
+              borderWidth: 1.5
+            },
+            emphasis: {
+              label: {
+                show: false
+              },
+              itemStyle: {
+                areaColor: '#e0f2fe'
+              }
+            },
+            label: {
+              show: false
             }
           },
           tooltip: {
             trigger: 'item',
             formatter: (params: any) => {
-              return `${params.name}<br/>飞行密度指数: ${params.value}`;
+              if (params.componentType === 'series' && params.seriesType === 'map') {
+                return `
+                  <div style="font-weight: bold; color: #002FA7;">${params.name}</div>
+                  <div style="color: #64748b;">飞行密度指数: <span style="color: #002FA7; font-weight: bold;">${params.value}</span></div>
+                  <div style="color: #64748b; font-size: 12px;">${params.value > 60 ? '高密度飞行区' : params.value > 30 ? '中等密度飞行区' : '低密度飞行区'}</div>
+                `;
+              } else if (params.componentType === 'series' && params.seriesType === 'pie') {
+                return `
+                  <div style="font-weight: bold; color: #002FA7;">${params.seriesName}</div>
+                  <div>${params.marker}${params.name}: ${params.value}架次 (${params.percent}%)</div>
+                `;
+              }
+              return params.name;
             },
             backgroundColor: 'rgba(255, 255, 255, 0.95)',
             borderColor: '#e2e8f0',
+            borderWidth: 1,
             textStyle: {
-              color: '#002FA7'
+              color: '#374151'
             }
           },
           toolbox: {
             show: true,
-            orient: 'vertical',
-            left: 'right',
-            top: 'center',
+            orient: 'horizontal',
+            left: 'center',
+            bottom: 20,
             feature: {
-              dataView: { readOnly: false },
-              restore: {},
-              saveAsImage: {}
+              dataView: {
+                readOnly: false,
+                title: '数据视图',
+                lang: ['数据视图', '关闭', '刷新']
+              },
+              restore: {
+                title: '重置'
+              },
+              saveAsImage: {
+                title: '保存为图片',
+                pixelRatio: 2
+              }
+            },
+            iconStyle: {
+              borderColor: '#64748b'
+            },
+            emphasis: {
+              iconStyle: {
+                borderColor: '#002FA7'
+              }
             }
           },
           visualMap: {
-            min: Math.min(...data.map(d => d.value)),
-            max: Math.max(...data.map(d => d.value)),
+            type: 'continuous',
+            min: minValue,
+            max: maxValue,
             text: ['高密度', '低密度'],
             realtime: false,
             calculable: true,
             inRange: {
-              color: ['#dbeafe', '#93c5fd', '#3b82f6', '#1d4ed8', '#1e3a8a']
+              color: [
+                '#dbeafe', // Very light blue
+                '#bfdbfe', // Light blue
+                '#93c5fd', // Medium light blue
+                '#60a5fa', // Medium blue
+                '#3b82f6', // Blue
+                '#2563eb', // Dark blue
+                '#1d4ed8', // Darker blue
+                '#1e40af'  // Very dark blue
+              ]
             },
             textStyle: {
               color: '#64748b'
             },
-            left: 'left',
-            bottom: 'bottom'
+            orient: 'horizontal',
+            left: 'center',
+            bottom: 60,
+            itemWidth: 20,
+            itemHeight: 100,
+            precision: 0
+          },
+          legend: {
+            data: ['物流配送', '应急救援', '城市巡航', '其他'],
+            orient: 'vertical',
+            left: 20,
+            top: 'center',
+            textStyle: {
+              color: '#64748b',
+              fontSize: 12
+            },
+            itemGap: 8
           },
           series: [
+            // Main choropleth map
             {
               name: '深圳各区飞行密度',
               type: 'map',
               map: 'Shenzhen',
+              geoIndex: 0,
+              aspectScale: Math.cos((22.5 * Math.PI) / 180),
+              zoom: 1.1,
+              center: [114.1, 22.5],
               label: {
                 show: true,
                 color: '#002FA7',
-                fontSize: 10,
-                fontWeight: 'bold'
+                fontSize: 11,
+                fontWeight: 'bold',
+                formatter: '{b}'
               },
               emphasis: {
                 label: {
-                  color: '#ffffff'
+                  color: '#ffffff',
+                  fontSize: 12
                 },
                 itemStyle: {
-                  areaColor: '#002FA7'
+                  areaColor: '#002FA7',
+                  borderColor: '#ffffff',
+                  borderWidth: 2
                 }
               },
               itemStyle: {
                 borderColor: '#ffffff',
-                borderWidth: 1
+                borderWidth: 1.5
               },
               data: data.map(item => ({
                 name: item.name,
                 value: item.value
               }))
-            }
+            },
+
+            // Pie charts for major hubs with realistic data
+            // Shenzhen Bao'an International Airport area
+            createPieSeries([113.82, 22.64], 25, '宝安机场枢纽', [
+              { value: 45, name: '物流配送', itemStyle: { color: '#f59e0b' } },
+              { value: 25, name: '应急救援', itemStyle: { color: '#ea580c' } },
+              { value: 20, name: '城市巡航', itemStyle: { color: '#dc2626' } },
+              { value: 10, name: '其他', itemStyle: { color: '#b91c1c' } }
+            ]),
+            // Shenzhen Futian CBD area
+            createPieSeries([114.05, 22.54], 20, '福田中心区', [
+              { value: 35, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
+              { value: 20, name: '物流配送', itemStyle: { color: '#f59e0b' } },
+              { value: 15, name: '应急救援', itemStyle: { color: '#ea580c' } },
+              { value: 5, name: '其他', itemStyle: { color: '#64748b' } }
+            ]),
+            // Shenzhen Nanshan Tech Park
+            createPieSeries([113.95, 22.53], 18, '南山科技园', [
+              { value: 40, name: '物流配送', itemStyle: { color: '#f59e0b' } },
+              { value: 18, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
+              { value: 12, name: '应急救援', itemStyle: { color: '#ea580c' } },
+              { value: 8, name: '其他', itemStyle: { color: '#64748b' } }
+            ]),
+            // Shenzhen Logistics Hub
+            createPieSeries([113.88, 22.58], 22, '深圳物流枢纽', [
+              { value: 50, name: '物流配送', itemStyle: { color: '#f59e0b' } },
+              { value: 15, name: '应急救援', itemStyle: { color: '#ea580c' } },
+              { value: 10, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
+              { value: 5, name: '其他', itemStyle: { color: '#64748b' } }
+            ])
           ]
         };
 
+        // Set options
         chartInstance.current.setOption(option);
       })
       .catch(error => {
         console.error('Failed to load Shenzhen map data:', error);
-        setLoading(false);
+        if (chartInstance.current) {
+          chartInstance.current.hideLoading();
+        }
       });
 
     // Cleanup
@@ -313,25 +485,26 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative bg-white rounded-lg border border-slate-200">
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur z-10">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#002FA7] mx-auto mb-2"></div>
-            <p className="text-sm text-slate-600">正在加载地图数据...</p>
-          </div>
-        </div>
-      )}
-
+    <div className="w-full h-full relative bg-white rounded-lg border border-slate-200 overflow-hidden">
       <div
         ref={chartRef}
         className="w-full h-full"
-        style={{ minHeight: '400px' }}
+        style={{
+          minHeight: '500px',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+        }}
       />
 
       {/* Additional Info */}
-      <div className="absolute bottom-2 left-2 text-xs text-slate-500 bg-white/80 px-2 py-1 rounded">
-        数据来源: 深圳民航数据
+      <div className="absolute bottom-3 left-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+        <div className="font-medium text-slate-700 mb-1">📊 数据来源</div>
+        <div>深圳民航数据 | 2024年更新</div>
+        <div className="text-[10px] text-slate-400 mt-1">包含6个主要行政区</div>
+      </div>
+
+      {/* Navigation hint */}
+      <div className="absolute top-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-2 py-1 rounded border border-slate-200">
+        🖱️ 拖拽查看 | 🔍 滚轮缩放
       </div>
     </div>
   );
@@ -657,32 +830,172 @@ export const EntityRadarChart = ({ data }: { data: any[] }) => (
   </ResponsiveContainer>
 );
 
-// 18. Dashboard (Composite)
+// 18. Dashboard (Composite) - Grade Gauge with ECharts
 export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
-    const val = data[0].value;
-    return (
-     <ResponsiveContainer width="100%" height="100%">
-        <RadialBarChart cx="50%" cy="50%" innerRadius="70%" outerRadius="100%" barSize={20} data={[{ name: 'Score', value: val, fill: '#0ea5e9' }]} startAngle={180} endAngle={0}>
-          <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} >
-            {/* Added to fix TS error about missing children */}
-            {null}
-          </PolarAngleAxis>
-          <RadialBar
-            background
-            dataKey="value"
-            cornerRadius={10}
-            label={{ position: 'insideStart', fill: '#fff' }}
-          />
-          <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="text-4xl font-bold fill-tech-blue-600">
-             {val}
-          </text>
-          <text x="50%" y="60%" textAnchor="middle" className="text-sm fill-slate-500">
-             综合指数
-          </text>
-        </RadialBarChart>
-      </ResponsiveContainer>
-    );
-}
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+
+    chartInstance.current = echarts.init(chartRef.current);
+    const val = data[0].value / 100; // Convert to 0-1 range for gauge
+
+    const option = {
+      series: [
+        {
+          type: 'gauge',
+          startAngle: 180,
+          endAngle: 0,
+          center: ['50%', '75%'],
+          radius: '90%',
+          min: 0,
+          max: 1,
+          splitNumber: 8,
+          axisLine: {
+            lineStyle: {
+              width: 8,
+              color: [
+                [0.25, '#FF6E76'],   // D级 - 红色
+                [0.5, '#FDDD60'],    // C级 - 黄色
+                [0.75, '#58D9F9'],   // B级 - 蓝色
+                [1, '#7CFFB2']       // A级 - 绿色
+              ]
+            }
+          },
+          pointer: {
+            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+            length: '12%',
+            width: 20,
+            offsetCenter: [0, '-60%'],
+            itemStyle: {
+              color: 'auto'
+            }
+          },
+          axisTick: {
+            length: 12,
+            lineStyle: {
+              color: 'auto',
+              width: 2
+            }
+          },
+          splitLine: {
+            length: 20,
+            lineStyle: {
+              color: 'auto',
+              width: 5
+            }
+          },
+          axisLabel: {
+            color: '#464646',
+            fontSize: 14,
+            distance: -60,
+            rotate: 'tangential',
+            formatter: function (value: number) {
+              if (value === 0.875) {
+                return 'A级';
+              } else if (value === 0.625) {
+                return 'B级';
+              } else if (value === 0.375) {
+                return 'C级';
+              } else if (value === 0.125) {
+                return 'D级';
+              }
+              return '';
+            }
+          },
+          title: {
+            offsetCenter: [0, '-10%'],
+            fontSize: 16,
+            color: '#002FA7',
+            fontWeight: 'bold'
+          },
+          detail: {
+            fontSize: 30,
+            offsetCenter: [0, '-35%'],
+            valueAnimation: true,
+            formatter: function (value: number) {
+              const score = Math.round(value * 100);
+              let grade = 'D级';
+              if (score >= 75) grade = 'A级';
+              else if (score >= 50) grade = 'B级';
+              else if (score >= 25) grade = 'C级';
+
+              return grade + '\n' + score;
+            },
+            color: '#002FA7',
+            fontWeight: 'bold',
+            lineHeight: 32
+          },
+          data: [
+            {
+              value: val,
+              name: '综合指数等级'
+            }
+          ]
+        }
+      ]
+    };
+
+    chartInstance.current.setOption(option);
+
+    // Cleanup
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.dispose();
+      }
+    };
+  }, [data]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartInstance.current) {
+        chartInstance.current.resize();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div className="w-full h-full relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+      <div
+        ref={chartRef}
+        className="w-full h-full"
+        style={{ minHeight: '300px' }}
+      />
+
+      {/* Grade Legend */}
+      <div className="absolute bottom-4 left-4 right-4">
+        <div className="flex justify-center space-x-6 text-sm">
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded" style={{backgroundColor: '#FF6E76'}}></div>
+            <span className="text-slate-600">D级 (0-25)</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded" style={{backgroundColor: '#FDDD60'}}></div>
+            <span className="text-slate-600">C级 (25-50)</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded" style={{backgroundColor: '#58D9F9'}}></div>
+            <span className="text-slate-600">B级 (50-75)</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded" style={{backgroundColor: '#7CFFB2'}}></div>
+            <span className="text-slate-600">A级 (75-100)</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="absolute top-2 right-2 text-xs text-slate-500 bg-white/80 px-2 py-1 rounded">
+        等级评估仪表盘
+      </div>
+    </div>
+  );
+};
 
 // Map chart types to components
 export const ChartRenderer = ({ type, data, definition }: { type: string, data: any, definition?: string }) => {
