@@ -87,7 +87,7 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
 // 5. Nightingale Rose Chart (Commercial Maturity)
 export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
   const maxVal = Math.max(...data.map((d: any) => d.value));
-  
+
   const roseData = data.map((d: any) => ({
     ...d,
     realValue: d.value,
@@ -98,7 +98,7 @@ export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
      const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
      const val = payload.realValue;
      const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
-     
+
      return (
         <Sector
           cx={cx}
@@ -131,11 +131,11 @@ export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip 
+        <Tooltip
             formatter={(value: any, name: any, props: any) => [props.payload.realValue, name]}
             contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
         />
-        <Legend verticalAlign="bottom" height={36}/>
+        <Legend verticalAlign="bottom" height={36} wrapperStyle={{color: '#64748b'}}/>
       </PieChart>
     </ResponsiveContainer>
   );
@@ -208,40 +208,40 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
   return (
     <div className="w-full h-full relative flex items-center justify-center bg-slate-50 rounded-lg">
       <svg viewBox="0 0 400 300" className="w-full h-full max-w-2xl drop-shadow-lg p-4">
-        <defs>
+          <defs>
           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.1"/>
-          </filter>
-        </defs>
+            </filter>
+          </defs>
         {data.map((region) => (
-          <g key={region.name} 
-             onMouseEnter={() => setHovered(region)} 
-             onMouseLeave={() => setHovered(null)}
+          <g key={region.name}
+             onMouseEnter={() => setHovered(region)}
+                 onMouseLeave={() => setHovered(null)}
              className="cursor-pointer transition-all duration-300 hover:opacity-90">
-             
-            <path
+
+                  <path
               d={paths[region.name] || ""}
               fill={getHeatColor(region.value)}
               stroke="white"
-              strokeWidth="2"
+                    strokeWidth="2"
               filter="url(#shadow)"
             />
              {centroids[region.name] && (
-               <text 
-                 x={centroids[region.name].x} 
-                 y={centroids[region.name].y} 
-                 textAnchor="middle" 
+                  <text
+                 x={centroids[region.name].x}
+                 y={centroids[region.name].y}
+                    textAnchor="middle"
                  fill={region.value > 50 ? 'white' : '#1e293b'}
                  fontSize="12"
-                 fontWeight="bold"
-                 pointerEvents="none"
-               >
+                    fontWeight="bold"
+                    pointerEvents="none"
+                  >
                  {region.name}
-               </text>
-             )}
-          </g>
+                  </text>
+                )}
+              </g>
         ))}
-      </svg>
+        </svg>
 
       {/* Floating Tooltip */}
       {hovered && (
@@ -251,8 +251,8 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
             <div className="mt-2 flex items-center gap-2">
                 <span className="text-2xl font-extrabold text-tech-blue-600">{hovered.value}</span>
                 <span className="text-xs text-slate-500">密度指数</span>
-            </div>
-         </div>
+          </div>
+        </div>
       )}
 
       {/* Legend */}
@@ -263,11 +263,11 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
           </div>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.5}}></span> 中 (40-80)
-          </div>
+      </div>
           <div className="flex items-center gap-2">
              <span className="w-3 h-3 rounded-sm bg-[#0ea5e9]" style={{opacity: 0.2}}></span> 低 (&lt;40)
-          </div>
-       </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -279,7 +279,7 @@ export const PolarClockChart = ({ data }: { data: any[] }) => (
       <PolarGrid stroke="#e5e7eb" />
       <PolarAngleAxis dataKey="hour" tick={{ fontSize: 10 }} />
       <PolarRadiusAxis angle={30} domain={[0, 'auto']} tick={false} axisLine={false} />
-      <Radar name="活跃度" dataKey="value" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
+      <Radar name="活跃度" dataKey="value" stroke="#002FA7" fill="#002FA7" fillOpacity={0.6} />
       <Tooltip />
     </RadarChart>
   </ResponsiveContainer>
@@ -293,7 +293,7 @@ export const SeasonalBoxChart = ({ data }: { data: any[] }) => (
       <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
       <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
       <Tooltip />
-      <Bar dataKey="max" fill="#cbd5e1" barSize={10} stackId="a" /> 
+      <Bar dataKey="max" fill="#cbd5e1" barSize={10} stackId="a" />
        <Line type="monotone" dataKey="avg" stroke="#0ea5e9" strokeWidth={3} dot={{r:4}} />
        <Line type="monotone" dataKey="min" stroke="#10b981" strokeDasharray="3 3" dot={false} />
     </ComposedChart>
@@ -321,10 +321,10 @@ export const GaugeChart = ({ data }: { data: any[] }) => {
           paddingAngle={0}
           dataKey="value"
         >
-          <Cell key="val" fill="#0ea5e9" />
-          <Cell key="rest" fill="#e5e7eb" />
+          <Cell key="val" fill="#f59e0b" />
+          <Cell key="rest" fill="#fef3c7" />
         </Pie>
-        <text x="50%" y="65%" textAnchor="middle" dominantBaseline="middle" className="text-3xl font-bold fill-slate-700">
+        <text x="50%" y="65%" textAnchor="middle" dominantBaseline="middle" className="text-3xl font-bold fill-[#7f1d1d]">
           {val}
         </text>
          <text x="50%" y="50%" textAnchor="middle" className="text-sm fill-slate-500">
@@ -355,11 +355,11 @@ export const MissionFunnelChart = ({ data }: { data: any[] }) => (
 export const CoverageHistogram = ({ data }: { data: any[] }) => (
   <ResponsiveContainer width="100%" height="100%">
     <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <Tooltip cursor={{fill: '#f3f4f6'}} />
-        <Bar dataKey="value" fill="#0ea5e9" barSize={40} radius={[4,4,0,0]} />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+        <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <Tooltip cursor={{fill: '#f8fafc'}} />
+        <Bar dataKey="value" fill="#f59e0b" barSize={40} radius={[4,4,0,0]} />
     </BarChart>
   </ResponsiveContainer>
 );
@@ -368,12 +368,12 @@ export const CoverageHistogram = ({ data }: { data: any[] }) => (
 export const ChordDiagram = ({ data }: { data: any[] }) => {
   const nodes = Array.from(new Set(data.flatMap((d: any) => [d.x, d.y]))).sort();
   const width = 400;
-  const height = 300; 
+  const height = 300;
   const cx = width / 2;
   const cy = height / 2;
   const outerRadius = 110;
   const innerRadius = 100;
-  const padAngle = 0.05; 
+  const padAngle = 0.05;
   const anglePerNode = (2 * Math.PI) / nodes.length;
 
   return (
@@ -393,7 +393,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
 
             return (
               <g key={node as string}>
-                <path 
+                <path
                   d={`M ${x1} ${y1} A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${x2} ${y2}`}
                   fill="none"
                   stroke={COLORS[i % COLORS.length]}
@@ -406,7 +406,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
               </g>
             );
          })}
-         
+
          {data.map((d: any, idx) => {
            if (d.value === 0) return null;
            const sourceIdx = nodes.indexOf(d.x);
@@ -414,7 +414,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
            if (sourceIdx === -1 || targetIdx === -1) return null;
            const sAngle = (sourceIdx + 0.5) * anglePerNode;
            const tAngle = (targetIdx + 0.5) * anglePerNode;
-           const spread = 0.3; 
+           const spread = 0.3;
            const sPos = sAngle - spread/2 + (spread * (targetIdx / (nodes.length - 1 || 1)));
            const tPos = tAngle - spread/2 + (spread * (sourceIdx / (nodes.length - 1 || 1)));
            const r = innerRadius - 10;
@@ -422,8 +422,8 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
            const sy = cy + r * Math.sin(sPos - Math.PI/2);
            const tx = cx + r * Math.cos(tPos - Math.PI/2);
            const ty = cy + r * Math.sin(tPos - Math.PI/2);
-           const strokeWidth = Math.max(2, d.value / 6); 
-           
+           const strokeWidth = Math.max(2, d.value / 6);
+
            return (
              <path
                key={`${d.x}-${d.y}`}
@@ -447,13 +447,13 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
 export const AirspaceBarChart = ({ data }: { data: any[] }) => (
   <ResponsiveContainer width="100%" height="100%">
     <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+      <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
       <Tooltip />
       <Bar dataKey="value">
         {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={index === 0 ? '#0ea5e9' : index === 1 ? '#6366f1' : '#f59e0b'} />
+          <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#ea580c' : '#dc2626'} />
         ))}
       </Bar>
     </BarChart>
@@ -482,7 +482,7 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
     // 0 - 0.2: Sky Blues (Background-ish)
     if (pct < 0.2) return '#e0f2fe'; // sky-100
     if (pct < 0.35) return '#bae6fd'; // sky-200
-    
+
     // 0.35 - 1.0: Warm Colors (Foreground)
     if (pct < 0.5) return '#fed7aa'; // orange-200
     if (pct < 0.7) return '#fb923c'; // orange-400
@@ -498,7 +498,7 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
            if (mDays.length === 0) return null;
            const firstDate = new Date(mDays[0].date);
            const startDay = firstDate.getDay(); // 0-6
-           
+
            return (
              <div key={mIdx} className="flex flex-col">
                <span className="text-[10px] font-bold text-slate-400 mb-1">{months[mIdx]}</span>
@@ -511,8 +511,8 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
                   {Array.from({length: startDay}).map((_, i) => <div key={`empty-${i}`} />)}
                   {/* Days */}
                   {mDays.map((d, i) => (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className="rounded-[1px] cursor-pointer hover:ring-1 hover:ring-slate-400 transition-all"
                       style={{ backgroundColor: getHeatColor(d.value) }}
                       onMouseEnter={(e) => {
@@ -530,7 +530,7 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
 
        {/* Custom Tooltip */}
        {hoveredDay && (
-         <div 
+         <div
            className="fixed bg-slate-800 text-white text-xs p-2 rounded shadow-xl z-50 pointer-events-none transform -translate-x-1/2 -translate-y-full mt-[-8px]"
            style={{ left: hoveredDay.x + 8, top: hoveredDay.y }}
          >
@@ -544,7 +544,7 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
             </div>
          </div>
        )}
-       
+
        {/* Legend */}
        <div className="absolute bottom-0 right-0 flex items-center gap-1 text-[8px] text-slate-400 bg-white/80 p-1 rounded">
           <span>少</span>
@@ -568,11 +568,11 @@ export const NightWaveChart = ({ data }: { data: any[] }) => (
           <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
         </linearGradient>
       </defs>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="hour" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+      <XAxis dataKey="hour" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
       <Tooltip />
-       <Area type="monotone" dataKey="value" stroke="#334155" fill="url(#colorNight)" />
+       <Area type="monotone" dataKey="value" stroke="#f59e0b" fill="url(#colorNight)" />
     </AreaChart>
   </ResponsiveContainer>
 );
@@ -582,10 +582,10 @@ export const EntityRadarChart = ({ data }: { data: any[] }) => (
   <ResponsiveContainer width="100%" height="100%">
     <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
       <PolarGrid />
-      <PolarAngleAxis dataKey="subject" tick={{fontSize: 10}} />
+      <PolarAngleAxis dataKey="subject" tick={{fontSize: 10, fill: '#64748b'}} />
       <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
-      <Radar name="企业 A" dataKey="A" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.6} />
-      <Radar name="企业 B" dataKey="B" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
+      <Radar name="企业 A" dataKey="A" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.6} />
+      <Radar name="企业 B" dataKey="B" stroke="#ea580c" fill="#ea580c" fillOpacity={0.6} />
       <Legend />
       <Tooltip />
     </RadarChart>
@@ -658,6 +658,6 @@ export const ChartRenderer = ({ type, data, definition }: { type: string, data: 
         case 'Dashboard': ChartComponent = <CompositeDashboardChart data={data} />; break;
         default: ChartComponent = <div className="flex items-center justify-center h-full text-red-500">未知图表类型</div>;
     }
-    
+
     return <Container>{ChartComponent}</Container>;
 };

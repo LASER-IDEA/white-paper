@@ -12,19 +12,19 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
       {/* 1. Header Area (Top 15%) */}
       <div className="h-[12%] flex justify-between items-start border-b-2 border-slate-100 mb-6">
         <div className="flex flex-col">
-           <span className="text-xs font-bold tracking-widest text-slate-400 uppercase">{data.dimension}</span>
-           <h1 className="text-3xl font-bold text-slate-900 mt-1">{data.id} {data.title}</h1>
-           <h2 className="text-lg text-slate-500 font-light">{data.subtitle}</h2>
+           <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">{data.dimension}</span>
+           <h1 className="text-3xl font-bold text-[#002FA7] mt-1">{data.id} {data.title}</h1>
+           <h2 className="text-lg text-slate-600 font-light">{data.subtitle}</h2>
         </div>
         <div className="flex flex-col items-end">
             <div className="flex items-baseline space-x-2">
-                <span className="text-5xl font-extrabold text-tech-blue-600 tracking-tight">{data.value}</span>
-                <span className="text-sm text-slate-500">{data.unit}</span>
+                <span className="text-5xl font-extrabold text-[#002FA7] tracking-tight">{data.value}</span>
+                <span className="text-sm text-slate-600">{data.unit}</span>
             </div>
              <div className={`flex items-center ${trendColor} font-medium mt-1`}>
                 <span className="mr-1 text-lg">{trendIcon}</span>
-                <span>{Math.abs(data.trend * 100).toFixed(1)}% 环比</span>
-             </div>
+                <span className="text-slate-600">{Math.abs(data.trend * 100).toFixed(1)}% 环比</span>
+            </div>
         </div>
       </div>
 
@@ -36,9 +36,9 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
       {/* 3. Key Metrics Cards (Middle-Bottom 15%) */}
       <div className="h-[15%] grid grid-cols-3 gap-6 mb-8">
         {data.keyMetrics.map((metric, idx) => (
-          <div key={idx} className="bg-white rounded-lg border border-slate-100 p-4 flex flex-col justify-center shadow-sm print:shadow-none print:border-slate-200">
-             <span className="text-sm text-slate-400 uppercase tracking-wide font-medium">{metric.label}</span>
-             <span className="text-2xl font-bold text-slate-800 mt-1">{metric.value}</span>
+          <div key={idx} className="bg-white rounded-lg border border-slate-200 p-4 flex flex-col justify-center shadow-sm print:shadow-none print:border-slate-300">
+             <span className="text-sm text-slate-500 uppercase tracking-wide font-medium">{metric.label}</span>
+             <span className="text-2xl font-bold text-[#002FA7] mt-1">{metric.value}</span>
           </div>
         ))}
       </div>
@@ -46,30 +46,30 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
       {/* 4. Insight Text (Bottom 25%) */}
       <div className="flex-1 flex flex-col space-y-4">
          <div className="flex items-start space-x-3">
-             <div className="w-1 h-full min-h-[20px] bg-slate-300 rounded-full mt-1 print:print-color-adjust-exact"></div>
+             <div className="w-1 h-full min-h-[20px] bg-slate-400 rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-slate-400 uppercase mb-1">指标定义</span>
+                 <span className="block text-xs font-bold text-slate-500 uppercase mb-1">指标定义</span>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.definition}</p>
              </div>
          </div>
          <div className="flex items-start space-x-3">
-             <div className="w-1 h-full min-h-[20px] bg-tech-blue-500 rounded-full mt-1 print:print-color-adjust-exact"></div>
+             <div className="w-1 h-full min-h-[20px] bg-[#002FA7] rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-tech-blue-500 uppercase mb-1">数据洞察</span>
+                 <span className="block text-xs font-bold text-[#002FA7] uppercase mb-1">数据洞察</span>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.insight}</p>
              </div>
          </div>
          <div className="flex items-start space-x-3">
-             <div className="w-1 h-full min-h-[20px] bg-low-altitude-green-500 rounded-full mt-1 print:print-color-adjust-exact"></div>
+             <div className="w-1 h-full min-h-[20px] bg-[#1e40af] rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-low-altitude-green-500 uppercase mb-1">策略建议</span>
+                 <span className="block text-xs font-bold text-[#1e40af] uppercase mb-1">策略建议</span>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.suggestion}</p>
              </div>
          </div>
       </div>
 
       {/* Footer / Page Number */}
-      <div className="absolute bottom-4 right-[15mm] text-slate-300 text-xs font-mono">
+      <div className="absolute bottom-4 right-[15mm] text-slate-400 text-xs font-mono">
          第 {pageNumber < 10 ? `0${pageNumber}` : pageNumber} 页
       </div>
     </div>
