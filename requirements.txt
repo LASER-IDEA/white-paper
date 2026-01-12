@@ -1,0 +1,5 @@
+streamlit
+streamlit-echarts
+pandas
+numpy
+scipy

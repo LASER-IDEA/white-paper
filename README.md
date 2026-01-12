@@ -1,12 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Low Altitude Economy Development Index (Streamlit Framework)
 
-# Run and deploy your AI Studio app
+This project provides a comprehensive dashboard for visualizing the Low Altitude Economy Development Index using **Streamlit** and **ECharts**.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1__B8OJbiT2l9ERwc885wcePWhlDmvZK4
+- **5 Dimensions Analysis**: Scale, Structure, Space, Efficiency, Innovation.
+- **18 Interactive Metrics**: Visualized using ECharts for high interactivity.
+- **Mock Data Generation**: Built-in data factory for testing and development.
+
+## Prerequisites
+
+- Python 3.8+
+- Pip
+
+## Installation
+
+1. Clone the repository and switch to the `streamlit-implementation` branch.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+
+Run the Streamlit application:
+```bash
+streamlit run streamlit_app.py
+```
+
+## Project Structure
+
+- `streamlit_app.py`: Main application entry point defining the layout.
+- `charts_lib.py`: Library of ECharts visualization components.
+- `data_factory.py`: Module for generating mock data.
+- `requirements.txt`: Python dependencies.
+
+
+# Nodejs version
 
 ## Run Locally
 
