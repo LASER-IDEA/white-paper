@@ -31,7 +31,7 @@ def operation_dual_line(data):
     bar = (
         Bar()
         .add_xaxis(x_data)
-        .add_yaxis("Duration (h)", durations, color=COLORS[0], yaxis_index=0)
+        .add_yaxis("Duration (h)", durations, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]), yaxis_index=0)
         .extend_axis(
             yaxis=opts.AxisOpts(
                 name="Distance (km)",
@@ -50,7 +50,7 @@ def operation_dual_line(data):
     line = (
         Line()
         .add_xaxis(x_data)
-        .add_yaxis("Distance (km)", distances, yaxis_index=1, color=COLORS[1], is_smooth=True)
+        .add_yaxis("Distance (km)", distances, yaxis_index=1, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[1]), is_smooth=True)
     )
 
     bar.overlap(line)
@@ -65,9 +65,9 @@ def fleet_stacked_bar(data):
     c = (
         Bar()
         .add_xaxis(x_data)
-        .add_yaxis("MultiRotor", mr, stack="stack1", color=COLORS[0])
-        .add_yaxis("FixedWing", fw, stack="stack1", color=COLORS[1])
-        .add_yaxis("Helicopter", hc, stack="stack1", color=COLORS[2])
+        .add_yaxis("MultiRotor", mr, stack="stack1", itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
+        .add_yaxis("FixedWing", fw, stack="stack1", itemstyle_opts=opts.ItemStyleOpts(color=COLORS[1]))
+        .add_yaxis("Helicopter", hc, stack="stack1", itemstyle_opts=opts.ItemStyleOpts(color=COLORS[2]))
         .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
         .set_global_opts(title_opts=opts.TitleOpts(title="Fleet Composition"))
     )
@@ -86,7 +86,7 @@ def pareto_chart(data):
     bar = (
         Bar()
         .add_xaxis(x_data)
-        .add_yaxis("Volume", volumes, color=COLORS[0])
+        .add_yaxis("Volume", volumes, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
         .extend_axis(
             yaxis=opts.AxisOpts(
                 name="Cumulative %",
@@ -106,7 +106,7 @@ def pareto_chart(data):
     line = (
         Line()
         .add_xaxis(x_data)
-        .add_yaxis("Cumulative %", cumulative, yaxis_index=1, color=COLORS[2], is_smooth=True,
+        .add_yaxis("Cumulative %", cumulative, yaxis_index=1, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[2]), is_smooth=True,
                    label_opts=opts.LabelOpts(is_show=False))
     )
 
@@ -154,10 +154,9 @@ def polar_clock_chart(data):
     c = (
         Polar()
         .add_schema(
-            angleaxis_opts=opts.AngleAxisOpts(data=[d['hour'] for d in data], type_="category"),
-            radiusaxis_opts=opts.RadiusAxisOpts(visible=False)
+            angleaxis_opts=opts.AngleAxisOpts(data=[d['hour'] for d in data], type_="category")
         )
-        .add("Activity", [d['value'] for d in data], type_="bar", color=COLORS[0])
+        .add("Activity", [d['value'] for d in data], type_="bar", itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
         .set_global_opts(title_opts=opts.TitleOpts(title="24H Activity"))
     )
     return c
@@ -203,7 +202,7 @@ def histogram_chart(data):
     c = (
         Bar()
         .add_xaxis([d['name'] for d in data])
-        .add_yaxis("Count", [d['value'] for d in data], category_gap=0, color=COLORS[0])
+        .add_yaxis("Count", [d['value'] for d in data], category_gap=0, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
         .set_global_opts(title_opts=opts.TitleOpts(title="Flight Distance Distribution"))
     )
     return c
@@ -224,7 +223,7 @@ def airspace_bar(data):
     c = (
         Bar()
         .add_xaxis([d['name'] for d in data])
-        .add_yaxis("Sorties", [d['value'] for d in data], color=COLORS[4])
+        .add_yaxis("Sorties", [d['value'] for d in data], itemstyle_opts=opts.ItemStyleOpts(color=COLORS[4]))
         .set_global_opts(title_opts=opts.TitleOpts(title="Vertical Airspace"))
     )
     return c
@@ -248,7 +247,7 @@ def night_wave_chart(data):
         .add_xaxis([d['hour'] for d in data])
         .add_yaxis("Activity", [d['value'] for d in data], is_smooth=True,
                    areastyle_opts=opts.AreaStyleOpts(opacity=0.6, color=COLORS[5]),
-                   line_opts=opts.LineStyleOpts(width=0))
+                   linestyle_opts=opts.LineStyleOpts(width=2))
         .set_global_opts(title_opts=opts.TitleOpts(title="Night Economy"))
     )
     return c
@@ -257,8 +256,8 @@ def radar_chart(data):
     c = (
         Radar()
         .add_schema(schema=[opts.RadarIndicatorItem(name=i['name'], max_=i['max']) for i in data['indicator']])
-        .add(data['data'][0]['name'], [data['data'][0]['value']], color=COLORS[0])
-        .add(data['data'][1]['name'], [data['data'][1]['value']], color=COLORS[1])
+        .add(data['data'][0]['name'], [data['data'][0]['value']], areastyle_opts=opts.AreaStyleOpts(color=COLORS[0], opacity=0.6))
+        .add(data['data'][1]['name'], [data['data'][1]['value']], areastyle_opts=opts.AreaStyleOpts(color=COLORS[1], opacity=0.6))
         .set_global_opts(title_opts=opts.TitleOpts(title="Leading Entities"))
     )
     return c
@@ -268,7 +267,7 @@ def dashboard_chart(data):
     c = (
         Gauge()
         .add(
-            "Index",
+            "",
             [("Score", val)],
             min_=0,
             max_=100,
@@ -278,10 +277,11 @@ def dashboard_chart(data):
                 linestyle_opts=opts.LineStyleOpts(
                     color=[(0.3, "#67e0e3"), (0.7, "#37a2da"), (1, "#fd666d")], width=30
                 )
-            ),
-            title_label_opts=opts.LabelOpts(font_size=20, color="grey", offset_center=[0, "-20%"]), # shows "Score"
-            detail_label_opts=opts.LabelOpts(formatter="{value}", font_size=40, offset_center=[0, "40%"]) # shows 88.5
+            )
         )
-        .set_global_opts(title_opts=opts.TitleOpts(title="Composite Index"))
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="Composite Index"),
+            legend_opts=opts.LegendOpts(is_show=False)
+        )
     )
     return c
