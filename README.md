@@ -1,20 +1,62 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Low Altitude Economy Development Index (Quarto Framework)
 
-# Run and deploy your AI Studio app
+This project is a refactored version of the Low Altitude Economy Development Index visualization framework, built using **Python** and **Quarto**. It addresses the need for high-quality GIS interactions (Web) and publication-quality PDF reports (Print).
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1__B8OJbiT2l9ERwc885wcePWhlDmvZK4
+- **Dual Output Support**:
+  - **HTML**: Interactive charts using `Pyecharts` (ECharts).
+  - **PDF**: High-resolution static vector graphics using `Matplotlib` and `Seaborn`.
+- **Conditional Rendering**: Automatically switches chart engines based on the output format.
+- **Modular Data Processing**: Data logic is separated in `data_processing.py`.
 
-## Run Locally
+## Prerequisites
 
-**Prerequisites:**  Node.js
+1. **Python 3.8+**: Ensure Python is installed.
+2. **Quarto**: Download and install from [quarto.org](https://quarto.org/docs/get-started/).
+3. **LaTeX (for PDF)**: Required for PDF generation.
+   - If you don't have LaTeX installed, you can install TinyTeX via Quarto:
+     ```bash
+     quarto install tinytex
+     ```
 
+## Installation
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1. Clone the repository and switch to the `quarto` branch.
+2. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+### 1. Preview (Live Reload)
+To preview the HTML report while editing:
+```bash
+quarto preview index.qmd
+```
+
+### 2. Render HTML (Interactive)
+To generate the interactive web version:
+```bash
+quarto render index.qmd --to html
+```
+The output will be in `index.html` (or `_output` folder depending on config).
+
+### 3. Render PDF (Print)
+To generate the static white paper for printing:
+```bash
+quarto render index.qmd --to pdf
+```
+*Note: This requires a working LaTeX environment.*
+
+## Project Structure
+
+- `index.qmd`: Main Quarto document containing the report structure and conditional rendering logic.
+- `data_processing.py`: Python module for mock data generation.
+- `requirements.txt`: Python package dependencies.
+
+## Customization
+
+- **Data**: Modify `data_processing.py` to connect to your real data sources (CSV, Database, etc.).
+- **Charts**: Edit the Python code chunks in `index.qmd`. You can customize `render_pyecharts` for HTML and the Matplotlib code for PDF.

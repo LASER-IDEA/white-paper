@@ -30,6 +30,7 @@ from pyecharts import options as opts
 from pyecharts.globals import ThemeType
 import matplotlib.pyplot as plt
 import seaborn as sns
+from IPython.display import HTML
 
 # Load data
 data_dict = data_processing.generate_mock_data()
@@ -41,7 +42,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 # Helper to render pyecharts
 def render_pyecharts(chart):
-    return chart.render_embed()
+    return HTML(chart.render_embed())
 
 ```
 
