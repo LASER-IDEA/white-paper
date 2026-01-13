@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, BarChart, Bar, ComposedChart,
@@ -87,15 +87,18 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
 
 // 5. Nightingale Rose Chart (Commercial Maturity)
 export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
-  const maxVal = Math.max(...data.map((d: any) => d.value));
+  const { maxVal, roseData } = useMemo(() => {
+    const maxVal = Math.max(...data.map((d: any) => d.value));
 
-  const roseData = data.map((d: any) => ({
-    ...d,
-    realValue: d.value,
-    value: 1
-  }));
+    const roseData = data.map((d: any) => ({
+      ...d,
+      realValue: d.value,
+      value: 1
+    }));
+    return { maxVal, roseData };
+  }, [data]);
 
-  const RoseShape = (props: any) => {
+  const RoseShape = useCallback((props: any) => {
      const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
      const val = payload.realValue;
      const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
@@ -113,7 +116,7 @@ export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
           strokeWidth={1}
         />
      );
-  };
+  }, [maxVal]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
