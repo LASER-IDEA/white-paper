@@ -24,8 +24,11 @@ def traffic_area_chart(data):
     Traffic Area Chart - Professional implementation inspired by Charts.tsx
     Shows daily flight sorties with smooth area visualization
     """
-    x_data = [d['date'] for d in data]
-    y_data = [d['value'] for d in data]
+    x_data = []
+    y_data = []
+    for d in data:
+        x_data.append(d['date'])
+        y_data.append(d['value'])
 
     c = (
         Line()
