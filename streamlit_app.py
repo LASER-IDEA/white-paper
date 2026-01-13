@@ -9,7 +9,11 @@ st.title("Low Altitude Economy Development Index")
 st.markdown("### White Paper 2024 Dashboard")
 
 # Load Data
-data = data_factory.generate_data()
+@st.cache_data
+def load_data():
+    return data_factory.generate_data()
+
+data = load_data()
 
 # ----------------- Dashboard Overview -----------------
 st.divider()
