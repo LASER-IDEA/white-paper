@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, BarChart, Bar, ComposedChart,
@@ -63,12 +63,14 @@ export const StackedBarChart = ({ data }: { data: any[] }) => (
 
 // 4. Pareto (Concentration)
 export const ParetoChart = ({ data }: { data: any[] }) => {
-  const total = data.reduce((acc, cur) => acc + cur.volume, 0);
-  let cumulative = 0;
-  const processedData = data.map(d => {
-    cumulative += d.volume;
-    return { ...d, cumulative: Math.round((cumulative / total) * 100) };
-  });
+  const processedData = React.useMemo(() => {
+    const total = data.reduce((acc, cur) => acc + cur.volume, 0);
+    let cumulative = 0;
+    return data.map(d => {
+      cumulative += d.volume;
+      return { ...d, cumulative: Math.round((cumulative / total) * 100) };
+    });
+  }, [data]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -108,14 +110,35 @@ const RoseShape = (props: any) => {
 
 export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
   const { maxVal, roseData } = useMemo(() => {
-    const max = Math.max(...data.map((d: any) => d.value));
-    const processed = data.map((d: any) => ({
+    const maxVal = Math.max(...data.map((d: any) => d.value));
+
+    const roseData = data.map((d: any) => ({
       ...d,
       realValue: d.value,
       value: 1
     }));
-    return { maxVal: max, roseData: processed };
+    return { maxVal, roseData };
   }, [data]);
+
+  const RoseShape = useCallback((props: any) => {
+     const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
+     const val = payload.realValue;
+     const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
+
+     return (
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={R}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={fill}
+          stroke="#fff"
+          strokeWidth={1}
+        />
+     );
+  }, [maxVal]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
