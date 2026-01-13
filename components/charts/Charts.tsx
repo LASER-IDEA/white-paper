@@ -63,12 +63,14 @@ export const StackedBarChart = ({ data }: { data: any[] }) => (
 
 // 4. Pareto (Concentration)
 export const ParetoChart = ({ data }: { data: any[] }) => {
-  const total = data.reduce((acc, cur) => acc + cur.volume, 0);
-  let cumulative = 0;
-  const processedData = data.map(d => {
-    cumulative += d.volume;
-    return { ...d, cumulative: Math.round((cumulative / total) * 100) };
-  });
+  const processedData = React.useMemo(() => {
+    const total = data.reduce((acc, cur) => acc + cur.volume, 0);
+    let cumulative = 0;
+    return data.map(d => {
+      cumulative += d.volume;
+      return { ...d, cumulative: Math.round((cumulative / total) * 100) };
+    });
+  }, [data]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
