@@ -54,11 +54,17 @@ def generate_data():
 
     # 7. Regional Balance (Map)
     data["map"] = [
-        {"name": "Nanshan", "value": np.random.randint(20, 100)},
-        {"name": "Futian", "value": np.random.randint(20, 100)},
-        {"name": "Luohu", "value": np.random.randint(20, 100)},
-        {"name": "Baoan", "value": np.random.randint(20, 100)},
-        {"name": "Longgang", "value": np.random.randint(20, 100)}
+        {"name": "南山区", "value": np.random.randint(20, 100)},
+        {"name": "福田区", "value": np.random.randint(20, 100)},
+        {"name": "罗湖区", "value": np.random.randint(20, 100)},
+        {"name": "宝安区", "value": np.random.randint(20, 100)},
+        {"name": "龙岗区", "value": np.random.randint(20, 100)},
+        {"name": "盐田区", "value": np.random.randint(20, 100)},
+        {"name": "龙华区", "value": np.random.randint(20, 100)},
+        {"name": "坪山区", "value": np.random.randint(20, 100)},
+        {"name": "光明区", "value": np.random.randint(20, 100)},
+        {"name": "大鹏新区", "value": np.random.randint(20, 100)},
+        {"name": "其他区", "value": np.random.randint(20, 100)}
     ]
 
     # 8. All Weather (Polar Clock)

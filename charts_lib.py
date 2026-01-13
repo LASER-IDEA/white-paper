@@ -595,25 +595,108 @@ def treemap_chart(data):
     return c
 
 def map_chart(data):
-    # Since pyecharts Python doesn't support custom GeoJSON registration,
-    # we'll create a horizontal bar chart showing regional flight density
-    # with Shenzhen district names and color-coded bars
+    """
+    Map Chart - Using streamlit-echarts with custom Shenzhen GeoJSON
+    Returns ECharts options for st_echarts, following the reference example
+    """
+    import json
 
+    # Load Shenzhen GeoJSON data
+    try:
+        with open("./data/shenzhen.json", "r", encoding='utf-8-sig') as f:
+            shenzhen_geojson = json.loads(f.read())
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Warning: Could not load GeoJSON data ({e}), using fallback")
+        return fallback_map_chart(data)
+
+    # Prepare map data (following the reference example structure)
+    map_data = []
+    for d in data:
+        map_data.append({
+            "name": d['name'],
+            "value": d['value']
+        })
+
+    # Create ECharts options following the reference example
+    options = {
+        "title": {
+            "text": "深圳各区无人机飞行密度分布图",
+            "subtext": "基于区域飞行频率与地理位置数据\n深圳坐标系：WGS84 | 数据更新：2024年",
+            "left": "center",
+            "top": 20,
+            "textStyle": {
+                "color": CHART_CONFIG['title_color'],
+                "fontSize": CHART_CONFIG['title_font_size'],
+                "fontWeight": "bold"
+            },
+            "subtextStyle": {
+                "color": CHART_CONFIG['text_color'],
+                "fontSize": 11,
+                "lineHeight": 18
+            }
+        },
+        "tooltip": {
+            "trigger": "item",
+            "showDelay": 0,
+            "transitionDuration": 0.2,
+            "formatter": "function (params) {\n"
+                        f"    var value = (params.value + '').split('.');\n"
+                        f"    value = value[0].replace(/(\\d{{1,3}})(?=(\\d{{3}})+(?!\\d))/g, '$1,');\n"
+                        f"    return params.seriesName + '<br/>' + params.name + ': ' + value;\n"
+                        f"}}"
+        },
+        "toolbox": {
+            "show": True,
+            "left": "left",
+            "top": "top",
+            "feature": {
+                "dataView": {"readOnly": False, "title": "数据视图"},
+                "restore": {"title": "重置"},
+                "saveAsImage": {"title": "保存为图片"}
+            }
+        },
+        "visualMap": {
+            "left": "right",
+            "min": min([d['value'] for d in data]),
+            "max": max([d['value'] for d in data]),
+            "inRange": {
+                "color": [
+                    "#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8",
+                    "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"
+                ]
+            },
+            "text": ["高密度", "低密度"],
+            "calculable": True
+        },
+        "series": [
+            {
+                "name": "深圳各区飞行密度",
+                "type": "map",
+                "roam": True,
+                "map": "Shenzhen",
+                "emphasis": {"label": {"show": True}},
+                "data": map_data
+            }
+        ]
+    }
+
+    # Return both the options and the map object (following reference example)
+    from streamlit_echarts import Map
+    map_obj = Map(
+        "Shenzhen",
+        shenzhen_geojson,
+        {}
+    )
+
+    return {"options": options, "map": map_obj}
+
+
+def fallback_map_chart(data):
+    """
+    Fallback map visualization when GeoJSON is not available
+    """
     district_names = [d['name'] for d in data]
     density_values = [d['value'] for d in data]
-
-    # Create color mapping based on density levels
-    def get_bar_color(value):
-        if value >= 80:
-            return '#dc2626'  # red-600 - high density
-        elif value >= 60:
-            return '#ea580c'  # orange-600 - medium-high
-        elif value >= 40:
-            return '#ca8a04'  # yellow-600 - medium
-        elif value >= 20:
-            return '#65a30d'  # lime-600 - low-medium
-        else:
-            return '#0891b2'  # cyan-600 - low
 
     c = (
         Bar()
@@ -621,37 +704,32 @@ def map_chart(data):
         .add_yaxis(
             "飞行密度指数",
             density_values,
-            itemstyle_opts=opts.ItemStyleOpts(
-                color=lambda x: get_bar_color(density_values[x])
-            ),
+            itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]),
             label_opts=opts.LabelOpts(
                 position="right",
                 formatter="{c}"
             )
         )
-        .reversal_axis()  # Make it horizontal
+        .reversal_axis()
         .set_global_opts(
             title_opts=opts.TitleOpts(
                 title="深圳各区无人机飞行密度分布",
-                subtitle="Regional Flight Density Distribution in Shenzhen"
-            ),
-            xaxis_opts=opts.AxisOpts(
-                name="密度指数",
-                name_location="center",
-                name_gap=30
-            ),
-            yaxis_opts=opts.AxisOpts(
-                name="行政区",
-                name_location="center",
-                name_gap=50
-            ),
-            legend_opts=opts.LegendOpts(is_show=False),
-            toolbox_opts=opts.ToolboxOpts(
-                feature=opts.ToolBoxFeatureOpts(
-                    save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(title="保存为图片"),
-                    restore=opts.ToolBoxFeatureRestoreOpts(title="重置"),
-                    data_view=opts.ToolBoxFeatureDataViewOpts(title="数据视图", is_read_only=False)
+                subtitle="GeoJSON文件未找到，使用柱状图显示",
+                title_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['title_color'],
+                    font_size=CHART_CONFIG['title_font_size'],
+                    font_weight="bold"
+                ),
+                subtitle_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['text_color'],
+                    font_size=12
                 )
+            ),
+            tooltip_opts=opts.TooltipOpts(
+                trigger="axis",
+                background_color=CHART_CONFIG['tooltip_bg'],
+                border_color=CHART_CONFIG['tooltip_border'],
+                textstyle_opts=opts.TextStyleOpts(color="#374151")
             )
         )
     )

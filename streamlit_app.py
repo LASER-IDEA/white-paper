@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_echarts import st_pyecharts
+from streamlit_echarts import st_pyecharts, st_echarts
 import data_factory
 import charts_lib
 
@@ -53,7 +53,8 @@ st.header("3. Time & Space")
 c1, c2 = st.columns([2, 1])
 with c1:
     st.subheader("Regional Heatmap")
-    st_pyecharts(charts_lib.map_chart(data["map"]), height="500px")
+    map_result = charts_lib.map_chart(data["map"])
+    st_echarts(map_result["options"], map=map_result["map"], height="500px")
 with c2:
     st_pyecharts(charts_lib.polar_clock_chart(data["polar"]), height="500px")
 
