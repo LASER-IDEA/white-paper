@@ -88,6 +88,26 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
 };
 
 // 5. Nightingale Rose Chart (Commercial Maturity)
+const RoseShape = (props: any) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, maxVal } = props;
+  const val = payload.realValue;
+  const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
+
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={R}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+      stroke="#fff"
+      strokeWidth={1}
+    />
+  );
+};
+
 export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
   const { maxVal, roseData } = useMemo(() => {
     const maxVal = Math.max(...data.map((d: any) => d.value));
@@ -130,7 +150,7 @@ export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
           innerRadius={30}
           outerRadius={130}
           dataKey="value"
-          shape={<RoseShape />}
+          shape={<RoseShape maxVal={maxVal} />}
           paddingAngle={0}
         >
           {roseData.map((entry: any, index: number) => (
