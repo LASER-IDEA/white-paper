@@ -24,11 +24,7 @@ def traffic_area_chart(data):
     Traffic Area Chart - Professional implementation inspired by Charts.tsx
     Shows daily flight sorties with smooth area visualization
     """
-    x_data = []
-    y_data = []
-    for d in data:
-        x_data.append(d['date'])
-        y_data.append(d['value'])
+    x_data, y_data = zip(*[(d['date'], d['value']) for d in data])
 
     c = (
         Line()
@@ -119,9 +115,7 @@ def operation_dual_line(data):
     Dual Line Chart - Professional implementation inspired by Charts.tsx
     Shows operation duration and distance with dual Y-axes
     """
-    x_data = [d['name'] for d in data]
-    durations = [d['duration'] for d in data]
-    distances = [d['distance'] for d in data]
+    x_data, durations, distances = zip(*[(d['name'], d['duration'], d['distance']) for d in data])
 
     bar = (
         Bar()
@@ -243,10 +237,7 @@ def fleet_stacked_bar(data):
     Stacked Bar Chart - Professional implementation inspired by Charts.tsx
     Shows fleet composition by aircraft type with stacked visualization
     """
-    x_data = [d['name'] for d in data]
-    mr = [d['MultiRotor'] for d in data]
-    fw = [d['FixedWing'] for d in data]
-    hc = [d['Helicopter'] for d in data]
+    x_data, mr, fw, hc = zip(*[(d['name'], d['MultiRotor'], d['FixedWing'], d['Helicopter']) for d in data])
 
     c = (
         Bar()
@@ -350,8 +341,7 @@ def pareto_chart(data):
     Pareto Chart - Professional implementation inspired by Charts.tsx
     Shows 80/20 rule with volume bars and cumulative percentage line
     """
-    x_data = [d['name'] for d in data]
-    volumes = [d['volume'] for d in data]
+    x_data, volumes = zip(*[(d['name'], d['volume']) for d in data])
     total = sum(volumes)
     cumulative = []
     curr = 0
@@ -478,7 +468,10 @@ def rose_chart(data):
     Nightingale Rose Chart - Professional implementation inspired by Charts.tsx
     Shows sector maturity with custom rose shape and professional styling
     """
-    max_val = max([d['value'] for d in data])
+    if not data:
+        return Pie()
+
+    max_val = max(d.get('value', 0) for d in data)
 
     # Create rose data with custom scaling
     rose_data = []
@@ -613,12 +606,7 @@ def map_chart(data):
         return fallback_map_chart(data)
 
     # Prepare map data (following the reference example structure)
-    map_data = []
-    for d in data:
-        map_data.append({
-            "name": d['name'],
-            "value": d['value']
-        })
+    map_data = [{'name': d['name'], 'value': d['value']} for d in data]
 
     # Create ECharts options following the reference example
     options = {
@@ -698,8 +686,7 @@ def fallback_map_chart(data):
     """
     Fallback map visualization when GeoJSON is not available
     """
-    district_names = [d['name'] for d in data]
-    density_values = [d['value'] for d in data]
+    district_names, density_values = zip(*[(d['name'], d['value']) for d in data])
 
     c = (
         Bar()
@@ -743,8 +730,7 @@ def polar_clock_chart(data):
     Polar Clock Chart - Professional implementation inspired by Charts.tsx
     Shows 24-hour activity distribution in polar coordinates
     """
-    hours = [d['hour'] for d in data]
-    values = [d['value'] for d in data]
+    hours, values = zip(*[(d['hour'], d['value']) for d in data])
 
     c = (
         Polar()
@@ -839,7 +825,7 @@ def gauge_chart(data):
 def funnel_chart(data):
     c = (
         Funnel()
-        .add("Mission", [list(z) for z in zip([d['name'] for d in data], [d['value'] for d in data])],
+        .add("Mission", [[d['name'], d['value']] for d in data],
              gap=2,
              tooltip_opts=opts.TooltipOpts(trigger="item", formatter="{a} <br/>{b} : {c}%"),
              label_opts=opts.LabelOpts(is_show=True, position="inside"))
@@ -849,10 +835,11 @@ def funnel_chart(data):
     return c
 
 def histogram_chart(data):
+    x_data, y_data = zip(*[(d['name'], d['value']) for d in data])
     c = (
         Bar()
-        .add_xaxis([d['name'] for d in data])
-        .add_yaxis("Count", [d['value'] for d in data], category_gap=0, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
+        .add_xaxis(list(x_data))
+        .add_yaxis("Count", list(y_data), category_gap=0, itemstyle_opts=opts.ItemStyleOpts(color=COLORS[0]))
         .set_global_opts(title_opts=opts.TitleOpts(title="Flight Distance Distribution"))
     )
     return c
@@ -870,10 +857,11 @@ def chord_chart(data):
     return c
 
 def airspace_bar(data):
+    x_data, y_data = zip(*[(d['name'], d['value']) for d in data])
     c = (
         Bar()
-        .add_xaxis([d['name'] for d in data])
-        .add_yaxis("Sorties", [d['value'] for d in data], itemstyle_opts=opts.ItemStyleOpts(color=COLORS[4]))
+        .add_xaxis(list(x_data))
+        .add_yaxis("Sorties", list(y_data), itemstyle_opts=opts.ItemStyleOpts(color=COLORS[4]))
         .set_global_opts(title_opts=opts.TitleOpts(title="Vertical Airspace"))
     )
     return c
@@ -892,10 +880,11 @@ def calendar_heatmap(data):
     return c
 
 def night_wave_chart(data):
+    x_data, y_data = zip(*[(d['hour'], d['value']) for d in data])
     c = (
         Line()
-        .add_xaxis([d['hour'] for d in data])
-        .add_yaxis("Activity", [d['value'] for d in data], is_smooth=True,
+        .add_xaxis(list(x_data))
+        .add_yaxis("Activity", list(y_data), is_smooth=True,
                    areastyle_opts=opts.AreaStyleOpts(opacity=0.6, color=COLORS[5]),
                    linestyle_opts=opts.LineStyleOpts(width=2))
         .set_global_opts(title_opts=opts.TitleOpts(title="Night Economy"))
