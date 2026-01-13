@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, BarChart, Bar, ComposedChart,
@@ -86,34 +86,36 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
 };
 
 // 5. Nightingale Rose Chart (Commercial Maturity)
+const RoseShape = (props: any) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, maxVal } = props;
+  const val = payload.realValue;
+  const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
+
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={R}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+      stroke="#fff"
+      strokeWidth={1}
+    />
+  );
+};
+
 export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
-  const maxVal = Math.max(...data.map((d: any) => d.value));
-
-  const roseData = data.map((d: any) => ({
-    ...d,
-    realValue: d.value,
-    value: 1
-  }));
-
-  const RoseShape = (props: any) => {
-     const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
-     const val = payload.realValue;
-     const R = innerRadius + (val / maxVal) * (outerRadius - innerRadius);
-
-     return (
-        <Sector
-          cx={cx}
-          cy={cy}
-          innerRadius={innerRadius}
-          outerRadius={R}
-          startAngle={startAngle}
-          endAngle={endAngle}
-          fill={fill}
-          stroke="#fff"
-          strokeWidth={1}
-        />
-     );
-  };
+  const { maxVal, roseData } = useMemo(() => {
+    const max = Math.max(...data.map((d: any) => d.value));
+    const processed = data.map((d: any) => ({
+      ...d,
+      realValue: d.value,
+      value: 1
+    }));
+    return { maxVal: max, roseData: processed };
+  }, [data]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -125,7 +127,7 @@ export const NightingaleRoseChart = ({ data }: { data: any[] }) => {
           innerRadius={30}
           outerRadius={130}
           dataKey="value"
-          shape={<RoseShape />}
+          shape={<RoseShape maxVal={maxVal} />}
           paddingAngle={0}
         >
           {roseData.map((entry: any, index: number) => (

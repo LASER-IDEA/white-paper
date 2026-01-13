@@ -16,7 +16,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/react-test-renderer": "^19.1.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "react-test-renderer": "^19.2.3",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }
