@@ -33,7 +33,8 @@ with st.sidebar:
     st.header("Data Upload")
 
     # Download Sample Button
-    with open("../data/sample_flight_data.csv", "rb") as f:
+    data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "sample_flight_data.csv")
+    with open(data_file_path, "rb") as f:
         st.download_button(
             label="Download Sample CSV",
             data=f,
@@ -125,7 +126,7 @@ with tab1:
     col1, col2 = st.columns([1, 3])
     with col1:
         if "dashboard" in data:
-            st_pyecharts(charts_lib.dashboard_chart(data["dashboard"]), height="300px")
+            st_pyecharts(charts.dashboard_chart(data["dashboard"]), height="300px")
     with col2:
         st.markdown("""
         **Executive Summary**
@@ -143,26 +144,26 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         if "traffic" in data:
-            st_pyecharts(charts_lib.traffic_area_chart(data["traffic"]), height="400px")
+            st_pyecharts(charts.traffic_area_chart(data["traffic"]), height="400px")
     with col2:
         if "operation" in data:
-            st_pyecharts(charts_lib.operation_dual_line(data["operation"]), height="400px")
+            st_pyecharts(charts.operation_dual_line(data["operation"]), height="400px")
 
     # ----------------- 2. Structure & Entity -----------------
     st.header("2. Structure & Entity")
     c1, c2, c3 = st.columns(3)
     with c1:
         if "fleet" in data:
-            st_pyecharts(charts_lib.fleet_stacked_bar(data["fleet"]), height="350px")
+            st_pyecharts(charts.fleet_stacked_bar(data["fleet"]), height="350px")
     with c2:
         if "pareto" in data:
-            st_pyecharts(charts_lib.pareto_chart(data["pareto"]), height="350px")
+            st_pyecharts(charts.pareto_chart(data["pareto"]), height="350px")
     with c3:
         if "rose" in data:
-            st_pyecharts(charts_lib.rose_chart(data["rose"]), height="350px")
+            st_pyecharts(charts.rose_chart(data["rose"]), height="350px")
 
     if "treemap" in data:
-        st_pyecharts(charts_lib.treemap_chart(data["treemap"]), height="400px")
+        st_pyecharts(charts.treemap_chart(data["treemap"]), height="400px")
 
     # ----------------- 3. Time & Space -----------------
     st.header("3. Time & Space")
@@ -170,49 +171,49 @@ with tab1:
     with c1:
         st.subheader("Regional Heatmap")
         if "map" in data:
-            map_result = charts_lib.map_chart(data["map"])
+            map_result = charts.map_chart(data["map"])
             st_echarts(map_result["options"], map=map_result["map"], height="500px")
     with c2:
         if "polar" in data:
-            st_pyecharts(charts_lib.polar_clock_chart(data["polar"]), height="500px")
+            st_pyecharts(charts.polar_clock_chart(data["polar"]), height="500px")
 
     st.subheader("Calendar Activity")
     if "calendar" in data:
-        st_pyecharts(charts_lib.calendar_heatmap(data["calendar"]), height="250px")
+        st_pyecharts(charts.calendar_heatmap(data["calendar"]), height="250px")
 
     c1, c2 = st.columns(2)
     with c1:
         if "night" in data:
-            st_pyecharts(charts_lib.night_wave_chart(data["night"]), height="300px")
+            st_pyecharts(charts.night_wave_chart(data["night"]), height="300px")
     with c2:
         if "chord" in data:
-            st_pyecharts(charts_lib.chord_chart(data["chord"]), height="400px")
+            st_pyecharts(charts.chord_chart(data["chord"]), height="400px")
 
     # ----------------- 4. Efficiency & Quality -----------------
     st.header("4. Efficiency & Quality")
     c1, c2, c3 = st.columns(3)
     with c1:
         if "seasonal" in data:
-            st_pyecharts(charts_lib.seasonal_boxplot(data["seasonal"]), height="350px")
+            st_pyecharts(charts.seasonal_boxplot(data["seasonal"]), height="350px")
     with c2:
         if "gauge" in data:
-            st_pyecharts(charts_lib.gauge_chart(data["gauge"]), height="350px")
+            st_pyecharts(charts.gauge_chart(data["gauge"]), height="350px")
     with c3:
         if "funnel" in data:
-            st_pyecharts(charts_lib.funnel_chart(data["funnel"]), height="350px")
+            st_pyecharts(charts.funnel_chart(data["funnel"]), height="350px")
 
     if "histogram" in data:
-        st_pyecharts(charts_lib.histogram_chart(data["histogram"]), height="300px")
+        st_pyecharts(charts.histogram_chart(data["histogram"]), height="300px")
 
     # ----------------- 5. Innovation & Integration -----------------
     st.header("5. Innovation & Integration")
     c1, c2 = st.columns(2)
     with c1:
         if "radar" in data:
-            st_pyecharts(charts_lib.radar_chart(data["radar"]), height="400px")
+            st_pyecharts(charts.radar_chart(data["radar"]), height="400px")
     with c2:
         if "airspace" in data:
-            st_pyecharts(charts_lib.airspace_bar(data["airspace"]), height="400px")
+            st_pyecharts(charts.airspace_bar(data["airspace"]), height="400px")
 
     st.markdown("---")
     st.markdown("© 2024 Low Altitude Economy Research Institute")

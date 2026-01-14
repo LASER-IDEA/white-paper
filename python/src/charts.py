@@ -1,3 +1,6 @@
+import os
+import math
+import json
 from pyecharts import options as opts
 from pyecharts.charts import Line, Bar, Pie, Map, Radar, Gauge, Funnel, HeatMap, TreeMap, Graph, Polar, Boxplot, Calendar
 
@@ -595,11 +598,10 @@ def map_chart(data):
     Map Chart - Using streamlit-echarts with custom Shenzhen GeoJSON
     Returns ECharts options for st_echarts, following the reference example
     """
-    import json
-
     # Load Shenzhen GeoJSON data
     try:
-        with open("./data/shenzhen.json", "r", encoding='utf-8-sig') as f:
+        shenzhen_path = os.path.join(os.path.dirname(__file__), "..", "data", "shenzhen.json")
+        with open(shenzhen_path, "r", encoding='utf-8-sig') as f:
             shenzhen_geojson = json.loads(f.read())
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Warning: Could not load GeoJSON data ({e}), using fallback")

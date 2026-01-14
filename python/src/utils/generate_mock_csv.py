@@ -1,8 +1,14 @@
 import pandas as pd
 import numpy as np
+import os
 from datetime import datetime, timedelta
 
-def generate_mock_csv(filepath="data/sample_flight_data.csv", num_rows=500):
+def generate_mock_csv(filepath=None, num_rows=500):
+    if filepath is None:
+        # Default to data directory relative to this script
+        script_dir = os.path.dirname(__file__)
+        data_dir = os.path.join(script_dir, "..", "..", "data")
+        filepath = os.path.join(data_dir, "sample_flight_data.csv")
     start_date = datetime(2023, 1, 1)
     dates = [start_date + timedelta(days=np.random.randint(0, 365)) for _ in range(num_rows)]
     regions = ["Nanshan", "Futian", "Luohu", "Baoan", "Longgang", "Yantian", "Longhua", "Pingshan", "Guangming", "Dapeng"]
