@@ -2,18 +2,51 @@ import streamlit as st
 from streamlit_echarts import st_pyecharts, st_echarts
 import data_factory
 import charts_lib
+import pandas as pd
+import data_processor
+import json
 
 st.set_page_config(page_title="Low Altitude Economy Index", layout="wide")
 
 st.title("Low Altitude Economy Development Index")
 st.markdown("### White Paper 2024 Dashboard")
 
-# Load Data
-@st.cache_data
-def load_data():
-    return data_factory.generate_data()
+# Initialize session state for data
+if 'data' not in st.session_state:
+    st.session_state.data = data_factory.generate_data()
+if 'ts_data' not in st.session_state:
+    st.session_state.ts_data = None
 
-data = load_data()
+# Sidebar for CSV Upload
+with st.sidebar:
+    st.header("Data Upload")
+    uploaded_file = st.file_uploader("Upload Flight Data CSV", type=['csv'])
+
+    if uploaded_file is not None:
+        if st.button("Compute"):
+            try:
+                df = pd.read_csv(uploaded_file)
+                processed_data, ts_data = data_processor.process_csv(df)
+                st.session_state.data = processed_data
+                st.session_state.ts_data = ts_data
+                st.success("Data computed successfully!")
+            except Exception as e:
+                st.error(f"Error processing CSV: {e}")
+
+    if st.session_state.ts_data:
+        st.divider()
+        st.header("Export")
+        ts_json = json.dumps(st.session_state.ts_data, indent=2, ensure_ascii=False)
+        st.download_button(
+            label="Export JSON for White Paper",
+            data=ts_json,
+            file_name="white_paper_data.json",
+            mime="application/json"
+        )
+        st.info("Exported JSON can be used in the TypeScript visualization application.")
+
+# Use data from session state
+data = st.session_state.data
 
 # ----------------- Dashboard Overview -----------------
 st.divider()
