@@ -3,6 +3,103 @@ import numpy as np
 import json
 from datetime import datetime
 
+def reconstruct_streamlit_data(ts_data):
+    """
+    Reconstructs the dictionary required by charts_lib from the list of MetricData objects (ts_data).
+    """
+    streamlit_data = {}
+
+    # Map ID to key
+    # IDs are "01", "02"... etc.
+    # We need to match what streamlit_app.py uses:
+    # "traffic", "operation", "fleet", "pareto", "rose", "treemap", "map",
+    # "polar", "calendar", "night", "chord", "seasonal", "gauge", "funnel",
+    # "histogram", "radar", "airspace", "dashboard"
+
+    id_map = {
+        "01": "traffic",
+        "02": "operation", # Note: TS data for 02 is Monthly, Streamlit original was Region.
+                           # Charts lib operation_dual_line expects 'name' (regions usually), 'duration', 'distance'.
+                           # data_processor.py 'process_csv' sets 'operation' as Region stats.
+                           # BUT 'ts_data' set it as Monthly stats.
+                           # This creates a conflict if we reconstruct strictly from TS data.
+                           # To support "View", TS data needs to contain compatible data.
+                           # Let's check: process_csv sets ts_data[1].chartData = monthly_ops.
+                           # streamlit_data['operation'] = region_stats.
+                           # If we reload from JSON, we get monthly stats.
+                           # Can operation_dual_line handle monthly stats? Yes, as long as it has 'name', 'duration', 'distance'.
+                           # It will just show Months on X-axis instead of Regions. This is acceptable for "viewing exported data".
+        "03": "fleet",
+        "04": "pareto",
+        "05": "rose",
+        "06": "treemap",
+        "07": "map",
+        "08": "polar",
+        "09": "seasonal", # TS data has [{name, min, q1...}], charts_lib.seasonal_boxplot expects {categories:[], values:[]}
+        "10": "gauge",
+        "11": "funnel",
+        "12": "histogram",
+        "13": "chord", # TS data: [{x, y, value}]. charts_lib expects {nodes: [], links: []}
+        "14": "airspace",
+        "15": "calendar", # TS data: [{date, value}]. charts_lib expects [[date, value], ...]
+        "16": "night",
+        "17": "radar", # TS data: [{subject, fullMark, A, B}]. charts_lib expects {indicator: [], data: []}
+        "18": "dashboard"
+    }
+
+    metric_dict = {m['id']: m for m in ts_data}
+
+    for mid, key in id_map.items():
+        if mid not in metric_dict:
+            continue
+
+        m_data = metric_dict[mid]['chartData']
+
+        # Handle format conversions
+        if key == "seasonal":
+            # Convert TS [{name, min, q1...}] back to {categories: [], values: []}
+            cats = [d['name'] for d in m_data]
+            vals = [[d['min'], d['q1'], d['median'], d['q3'], d['max']] for d in m_data]
+            streamlit_data[key] = {"categories": cats, "values": vals}
+
+        elif key == "chord":
+            # Convert TS [{x, y, value}] back to {nodes: [], links: []}
+            links = [{"source": d['x'], "target": d['y'], "value": d['value']} for d in m_data]
+            # Extract unique nodes
+            node_names = set([d['x'] for d in m_data] + [d['y'] for d in m_data])
+            nodes = [{"name": n} for n in node_names]
+            streamlit_data[key] = {"nodes": nodes, "links": links}
+
+        elif key == "calendar":
+            # Convert TS [{date, value}] back to [[date, value]]
+            streamlit_data[key] = [[d['date'], d['value']] for d in m_data]
+
+        elif key == "radar":
+            # Convert TS [{subject, fullMark, EntA: val, EntB: val}] back to {indicator: [], data: []}
+            # Need to identify entity names.
+            if not m_data:
+                streamlit_data[key] = {"indicator": [], "data": []}
+                continue
+
+            first = m_data[0]
+            # Keys that are not subject or fullMark
+            entities = [k for k in first.keys() if k not in ['subject', 'fullMark']]
+
+            indicators = [{"name": d['subject'], "max": d.get('fullMark', 100)} for d in m_data]
+
+            data_list = []
+            for ent in entities:
+                vals = [d[ent] for d in m_data]
+                data_list.append({"name": ent, "value": vals})
+
+            streamlit_data[key] = {"indicator": indicators, "data": data_list}
+
+        else:
+            # Direct copy for others (Area, Bar, etc.)
+            streamlit_data[key] = m_data
+
+    return streamlit_data
+
 def process_csv(df):
     """
     Process the uploaded CSV file and generate data for Streamlit and TypeScript export.

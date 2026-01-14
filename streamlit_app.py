@@ -20,18 +20,43 @@ if 'ts_data' not in st.session_state:
 # Sidebar for CSV Upload
 with st.sidebar:
     st.header("Data Upload")
-    uploaded_file = st.file_uploader("Upload Flight Data CSV", type=['csv'])
+
+    # Download Sample Button
+    with open("data/sample_flight_data.csv", "rb") as f:
+        st.download_button(
+            label="Download Sample CSV",
+            data=f,
+            file_name="sample_flight_data.csv",
+            mime="text/csv"
+        )
+
+    uploaded_file = st.file_uploader("Upload Flight Data (CSV or JSON)", type=['csv', 'json'])
 
     if uploaded_file is not None:
-        if st.button("Compute"):
-            try:
-                df = pd.read_csv(uploaded_file)
-                processed_data, ts_data = data_processor.process_csv(df)
-                st.session_state.data = processed_data
-                st.session_state.ts_data = ts_data
-                st.success("Data computed successfully!")
-            except Exception as e:
-                st.error(f"Error processing CSV: {e}")
+        file_type = uploaded_file.name.split('.')[-1].lower()
+
+        if file_type == 'csv':
+            if st.button("Compute"):
+                try:
+                    df = pd.read_csv(uploaded_file)
+                    processed_data, ts_data = data_processor.process_csv(df)
+                    st.session_state.data = processed_data
+                    st.session_state.ts_data = ts_data
+                    st.success("Data computed successfully!")
+                except Exception as e:
+                    st.error(f"Error processing CSV: {e}")
+
+        elif file_type == 'json':
+            if st.button("View Dashboard"):
+                try:
+                    ts_data = json.load(uploaded_file)
+                    reconstructed_data = data_processor.reconstruct_streamlit_data(ts_data)
+                    st.session_state.data = reconstructed_data
+                    st.session_state.ts_data = ts_data
+                    st.success("Dashboard view loaded successfully!")
+                except Exception as e:
+                    st.error(f"Error loading JSON: {e}")
+
 
     if st.session_state.ts_data:
         st.divider()
@@ -52,7 +77,8 @@ data = st.session_state.data
 st.divider()
 col1, col2 = st.columns([1, 3])
 with col1:
-    st_pyecharts(charts_lib.dashboard_chart(data["dashboard"]), height="300px")
+    if "dashboard" in data:
+        st_pyecharts(charts_lib.dashboard_chart(data["dashboard"]), height="300px")
 with col2:
     st.markdown("""
     **Executive Summary**
@@ -69,60 +95,77 @@ with col2:
 st.header("1. Scale & Growth")
 col1, col2 = st.columns(2)
 with col1:
-    st_pyecharts(charts_lib.traffic_area_chart(data["traffic"]), height="400px")
+    if "traffic" in data:
+        st_pyecharts(charts_lib.traffic_area_chart(data["traffic"]), height="400px")
 with col2:
-    st_pyecharts(charts_lib.operation_dual_line(data["operation"]), height="400px")
+    if "operation" in data:
+        st_pyecharts(charts_lib.operation_dual_line(data["operation"]), height="400px")
 
 # ----------------- 2. Structure & Entity -----------------
 st.header("2. Structure & Entity")
 c1, c2, c3 = st.columns(3)
 with c1:
-    st_pyecharts(charts_lib.fleet_stacked_bar(data["fleet"]), height="350px")
+    if "fleet" in data:
+        st_pyecharts(charts_lib.fleet_stacked_bar(data["fleet"]), height="350px")
 with c2:
-    st_pyecharts(charts_lib.pareto_chart(data["pareto"]), height="350px")
+    if "pareto" in data:
+        st_pyecharts(charts_lib.pareto_chart(data["pareto"]), height="350px")
 with c3:
-    st_pyecharts(charts_lib.rose_chart(data["rose"]), height="350px")
+    if "rose" in data:
+        st_pyecharts(charts_lib.rose_chart(data["rose"]), height="350px")
 
-st_pyecharts(charts_lib.treemap_chart(data["treemap"]), height="400px")
+if "treemap" in data:
+    st_pyecharts(charts_lib.treemap_chart(data["treemap"]), height="400px")
 
 # ----------------- 3. Time & Space -----------------
 st.header("3. Time & Space")
 c1, c2 = st.columns([2, 1])
 with c1:
     st.subheader("Regional Heatmap")
-    map_result = charts_lib.map_chart(data["map"])
-    st_echarts(map_result["options"], map=map_result["map"], height="500px")
+    if "map" in data:
+        map_result = charts_lib.map_chart(data["map"])
+        st_echarts(map_result["options"], map=map_result["map"], height="500px")
 with c2:
-    st_pyecharts(charts_lib.polar_clock_chart(data["polar"]), height="500px")
+    if "polar" in data:
+        st_pyecharts(charts_lib.polar_clock_chart(data["polar"]), height="500px")
 
 st.subheader("Calendar Activity")
-st_pyecharts(charts_lib.calendar_heatmap(data["calendar"]), height="250px")
+if "calendar" in data:
+    st_pyecharts(charts_lib.calendar_heatmap(data["calendar"]), height="250px")
 
 c1, c2 = st.columns(2)
 with c1:
-    st_pyecharts(charts_lib.night_wave_chart(data["night"]), height="300px")
+    if "night" in data:
+        st_pyecharts(charts_lib.night_wave_chart(data["night"]), height="300px")
 with c2:
-    st_pyecharts(charts_lib.chord_chart(data["chord"]), height="400px") # Micro circulation often spatial
+    if "chord" in data:
+        st_pyecharts(charts_lib.chord_chart(data["chord"]), height="400px")
 
 # ----------------- 4. Efficiency & Quality -----------------
 st.header("4. Efficiency & Quality")
 c1, c2, c3 = st.columns(3)
 with c1:
-    st_pyecharts(charts_lib.seasonal_boxplot(data["seasonal"]), height="350px")
+    if "seasonal" in data:
+        st_pyecharts(charts_lib.seasonal_boxplot(data["seasonal"]), height="350px")
 with c2:
-    st_pyecharts(charts_lib.gauge_chart(data["gauge"]), height="350px")
+    if "gauge" in data:
+        st_pyecharts(charts_lib.gauge_chart(data["gauge"]), height="350px")
 with c3:
-    st_pyecharts(charts_lib.funnel_chart(data["funnel"]), height="350px")
+    if "funnel" in data:
+        st_pyecharts(charts_lib.funnel_chart(data["funnel"]), height="350px")
 
-st_pyecharts(charts_lib.histogram_chart(data["histogram"]), height="300px")
+if "histogram" in data:
+    st_pyecharts(charts_lib.histogram_chart(data["histogram"]), height="300px")
 
 # ----------------- 5. Innovation & Integration -----------------
 st.header("5. Innovation & Integration")
 c1, c2 = st.columns(2)
 with c1:
-    st_pyecharts(charts_lib.radar_chart(data["radar"]), height="400px")
+    if "radar" in data:
+        st_pyecharts(charts_lib.radar_chart(data["radar"]), height="400px")
 with c2:
-    st_pyecharts(charts_lib.airspace_bar(data["airspace"]), height="400px") # Vertical integration
+    if "airspace" in data:
+        st_pyecharts(charts_lib.airspace_bar(data["airspace"]), height="400px")
 
 st.markdown("---")
 st.markdown("© 2024 Low Altitude Economy Research Institute")
