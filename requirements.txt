@@ -3,3 +3,5 @@ streamlit-echarts
 pandas
 numpy
 scipy
+python-dotenv
+openai

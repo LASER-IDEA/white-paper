@@ -6,6 +6,14 @@ import pandas as pd
 import data_processor
 import json
 import llm_helper
+import os
+
+# Load environment variables
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 st.set_page_config(page_title="Low Altitude Economy Index", layout="wide")
 
@@ -75,9 +83,34 @@ with st.sidebar:
 
     st.divider()
     st.header("AI Settings")
-    api_key = st.text_input("OpenAI/DeepSeek API Key", type="password")
-    base_url = st.text_input("Base URL (optional, e.g. for DeepSeek)", value="https://api.openai.com/v1")
-    model = st.text_input("Model", value="gpt-3.5-turbo")
+
+    # API Key input - never show default value for security
+    api_key_placeholder = "Enter your DeepSeek API key" if not os.environ.get("DEEPSEEK_API_KEY") else "API key loaded from .env file"
+    api_key = st.text_input("OpenAI/DeepSeek API Key", type="password",
+                           placeholder=api_key_placeholder)
+
+    # Show status of API key loading
+    if os.environ.get("DEEPSEEK_API_KEY"):
+        st.success("✅ API key loaded from .env file")
+    else:
+        st.warning("⚠️ Please enter your API key or set it in .env file")
+
+    base_url = st.text_input("Base URL (optional, e.g. for DeepSeek)",
+                            value=os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1"))
+    model = st.text_input("Model (leave empty for auto-selection)",
+                         value=os.environ.get("DEEPSEEK_CHAT_MODEL", ""),
+                         placeholder="Auto-selected based on task complexity")
+    st.caption("💡 Auto-selection: 'deepseek-chat' for simple tasks, 'deepseek-reasoner' for complex analysis")
+
+    # Security notice
+    with st.expander("🔒 Security Notice"):
+        st.markdown("""
+        **API Key Security:**
+        - Your API key is stored securely in the `.env` file (not committed to version control)
+        - The input field above masks your key when typing
+        - If no key is entered, the system will use the one from `.env`
+        - Never share your API key or commit it to version control
+        """)
 
 
 # Use data from session state
