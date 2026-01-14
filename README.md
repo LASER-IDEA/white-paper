@@ -267,6 +267,40 @@ For questions or support, please open an issue on GitHub or contact the developm
 ## 贡献者
 
 <!-- readme: collaborators,contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/sunshuo0410-del">
+                    <img src="https://avatars.githubusercontent.com/u/225815183?v=4" width="100;" alt="sunshuo0410-del"/>
+                    <br />
+                    <sub><b>sunshuo0410-del</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/zzzhangllei">
+                    <img src="https://avatars.githubusercontent.com/u/254819203?v=4" width="100;" alt="zzzhangllei"/>
+                    <br />
+                    <sub><b>zzzhangllei</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/xiahaa">
+                    <img src="https://avatars.githubusercontent.com/u/36867143?v=4" width="100;" alt="xiahaa"/>
+                    <br />
+                    <sub><b>estimation</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/hux062303">
+                    <img src="https://avatars.githubusercontent.com/u/7478889?v=4" width="100;" alt="hux062303"/>
+                    <br />
+                    <sub><b>hux062303</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
 ---
