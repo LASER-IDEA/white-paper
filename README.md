@@ -264,6 +264,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions or support, please open an issue on GitHub or contact the development team.
 
+## 贡献者
+
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
 ---
 
 **🏢 Low Altitude Economy Research Institute** | **📊 Data-Driven Insights for Aviation Innovation**
