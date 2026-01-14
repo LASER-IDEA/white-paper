@@ -1,89 +1,269 @@
-# Low Altitude Economy Development Index (Streamlit Framework)
+# 🚁 Low Altitude Economy Development Index Dashboard
 
-This project provides a comprehensive dashboard for visualizing the Low Altitude Economy Development Index using **Streamlit** and **ECharts**.
+A comprehensive, dual-platform dashboard for analyzing and visualizing China's Low Altitude Economy (LAE) development metrics. This project combines **Streamlit (Python)** and **React (TypeScript)** implementations to provide interactive data exploration and professional reporting capabilities.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-3178C6.svg)](https://www.typescriptlang.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io/)
+[![ECharts](https://img.shields.io/badge/ECharts-5.4+-EE6666.svg)](https://echarts.apache.org/)
 
-- **5 Dimensions Analysis**: Scale, Structure, Space, Efficiency, Innovation.
-- **18 Interactive Metrics**: Visualized using ECharts for high interactivity.
-- **Mock Data Generation**: Built-in data factory for testing and development.
+## 🌟 Key Features
 
-## Prerequisites
+### 📊 Comprehensive Analytics Framework
+- **5 Core Dimensions**: Scale, Structure, Space, Efficiency, Innovation
+- **18 Key Metrics**: Flight operations, fleet composition, airspace utilization, and more
+- **Time Series Analysis**: Calendar heatmaps, seasonal patterns, and trend analysis
+- **Geographic Insights**: Regional distribution and spatial analysis
 
-- Python 3.8+
-- Pip
+### 🤖 AI-Powered Analysis (Optional)
+- **Intelligent Query Processing**: Natural language data exploration
+- **Auto Model Selection**: Context-aware choice between `deepseek-chat` and `deepseek-reasoner`
+- **Dynamic Visualization**: AI-generated charts based on user queries
+- **Smart Insights**: Automated pattern recognition and trend analysis
 
-## Installation
+### 🎨 Professional Visualizations
+- **Interactive Charts**: Powered by ECharts for rich interactivity
+- **Dual Implementation**: Consistent experience across Python and TypeScript
+- **Responsive Design**: Optimized for desktop and mobile viewing
+- **Export Capabilities**: PDF generation and data export features
 
-1. Clone the repository and switch to the `streamlit-implementation` branch.
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🏗️ Project Structure
 
-## AI Configuration (Optional)
-
-The application includes AI-powered data analysis features using DeepSeek models.
-
-### Setup API Key
-
-1. **Copy the environment template:**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Edit `.env` file:**
-   ```bash
-   # Replace with your actual DeepSeek API key
-   DEEPSEEK_API_KEY=your_actual_deepseek_api_key_here
-   ```
-
-3. **Get API Key:**
-   - Visit [DeepSeek Platform](https://platform.deepseek.com/)
-   - Create an account and get your API key
-   - Replace `your_actual_deepseek_api_key_here` with your real key
-
-### Security Notes
-- 🔒 The `.env` file is automatically ignored by Git
-- 🔒 API keys are never displayed in the UI
-- 🔒 Never commit real API keys to version control
-- 🔒 Use the `.env.example` file as a template
-
-### AI Features
-- **Auto Model Selection**: `deepseek-chat` for simple tasks, `deepseek-reasoner` for complex analysis
-- **Intelligent Analysis**: Ask questions about the data and get AI-powered insights
-- **Chart Generation**: AI can suggest and create new visualizations based on your queries
-
-## Usage
-
-
-Run the Streamlit application:
-```bash
-streamlit run streamlit_app.py
+```
+white-paper/
+├── python/                    # Python Streamlit Application
+│   ├── src/
+│   │   ├── app.py            # Main Streamlit application
+│   │   ├── charts.py         # ECharts visualization library
+│   │   ├── data_factory.py   # Mock data generation
+│   │   ├── data_processor.py # Data processing utilities
+│   │   ├── llm_helper.py     # AI integration module
+│   │   └── utils/
+│   │       └── generate_mock_csv.py
+│   ├── data/                 # Sample datasets
+│   │   ├── sample_flight_data.csv
+│   │   └── shenzhen.json
+│   └── tests/                # Unit tests
+│       └── test.py
+├── web/                      # TypeScript React Application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── charts/
+│   │   │   │   └── Charts.tsx
+│   │   │   └── ReportPage.tsx
+│   │   ├── utils/
+│   │   │   └── mockData.ts
+│   │   ├── App.tsx
+│   │   ├── index.tsx
+│   │   └── types.ts
+│   ├── public/
+│   │   └── data/
+│   │       └── shenzhen.json
+│   ├── test/                 # HTML test files
+│   │   ├── geo_guangdong.html
+│   │   └── geo_lines.html
+│   ├── index.html
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+├── docs/                     # Documentation and Assets
+│   ├── pdf/                  # White papers and reports
+│   │   ├── Low-Altitude Economy White Paper.pdf
+│   │   └── 白皮书.pdf
+│   └── figures/              # Generated chart exports
+│       └── index_files/
+│           └── figure-pdf/
+├── config/                   # Configuration Files
+│   ├── requirements.txt      # Python dependencies
+│   └── .env.example          # Environment template
+├── .gitignore
+└── README.md
 ```
 
-## Project Structure
+## 🚀 Quick Start
 
-- `streamlit_app.py`: Main application entry point defining the layout.
-- `charts_lib.py`: Library of ECharts visualization components.
-- `data_factory.py`: Module for generating mock data.
-- `requirements.txt`: Python dependencies.
+### Python Streamlit Version
 
+#### Prerequisites
+- Python 3.8 or higher
+- pip package manager
 
-# Nodejs version
+#### Installation
+```bash
+# Clone repository
+git clone <repository-url>
+cd white-paper
 
-## Run Locally
+# Install Python dependencies
+pip install -r config/requirements.txt
+```
 
-**Prerequisites:**  Node.js
+#### AI Setup (Optional)
+```bash
+# Copy environment template
+cp config/.env.example .env
 
+# Edit .env file with your DeepSeek API key
+# DEEPSEEK_API_KEY=your_actual_api_key_here
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+#### Running the Application
+```bash
+# Navigate to Python app directory
+cd python
 
+# Run Streamlit app
+streamlit run src/app.py
+```
 
-## reference
-https://github.com/mikedeng/city_geojson/tree/master
-https://echarts.streamlit.app/
+### TypeScript React Version
+
+#### Prerequisites
+- Node.js 16 or higher
+- npm or yarn package manager
+
+#### Installation
+```bash
+# Navigate to web app directory
+cd web
+
+# Install dependencies
+npm install
+# or
+yarn install
+```
+
+#### Running the Application
+```bash
+# Start development server
+npm run dev
+# or
+yarn dev
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the project root (copy from `config/.env.example`):
+
+```bash
+# DeepSeek API Configuration
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
+DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
+
+# Model Selection (auto-selected based on query complexity)
+DEEPSEEK_CHAT_MODEL=deepseek-chat
+DEEPSEEK_REASONER_MODEL=deepseek-reasoner
+```
+
+### API Key Security
+- 🔐 API keys are stored securely in `.env` files (ignored by Git)
+- 🔐 Keys are never displayed in the UI interface
+- 🔐 Environment variables are loaded automatically
+- ⚠️ Never commit real API keys to version control
+
+## 📈 Data Dimensions & Metrics
+
+### 1. Scale & Growth 📈
+- **Traffic Volume**: Daily/weekly flight operations
+- **Market Size**: Economic indicators and growth metrics
+- **Demand Patterns**: Seasonal and temporal analysis
+
+### 2. Structure & Entity 🏗️
+- **Fleet Composition**: Aircraft types and distribution
+- **Entity Analysis**: Market participant segmentation
+- **Operational Networks**: Route and connectivity patterns
+
+### 3. Space & Geography 🗺️
+- **Airspace Utilization**: Geographic coverage analysis
+- **Regional Distribution**: Provincial and municipal metrics
+- **Infrastructure Mapping**: Airport and facility networks
+
+### 4. Efficiency & Quality ⚡
+- **Operational Metrics**: Performance and reliability indicators
+- **Quality Standards**: Safety and service quality measures
+- **Resource Optimization**: Capacity and utilization analysis
+
+### 5. Innovation & Integration 🚀
+- **Technology Adoption**: Emerging tech integration
+- **Regulatory Framework**: Policy and compliance metrics
+- **Market Integration**: Cross-sector collaboration indicators
+
+## 🤖 AI Features
+
+### Intelligent Analysis
+- **Natural Language Queries**: Ask questions in plain English
+- **Contextual Understanding**: AI interprets data relationships
+- **Automated Insights**: Pattern recognition and trend analysis
+
+### Smart Model Selection
+- **Simple Queries** → `deepseek-chat`: Fast responses for basic analysis
+- **Complex Analysis** → `deepseek-reasoner`: Deep reasoning for complex queries
+
+### Dynamic Visualization
+- **Chart Generation**: AI creates appropriate visualizations
+- **Data Exploration**: Interactive chart recommendations
+- **Custom Analysis**: Tailored insights based on user needs
+
+## 🛠️ Development
+
+### Python Development
+```bash
+# Install development dependencies
+pip install -r config/requirements.txt
+
+# Run tests
+cd python && python -m pytest tests/
+
+# Format code
+black src/ tests/
+```
+
+### TypeScript Development
+```bash
+# Install dependencies
+cd web && npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+```
+
+## 📚 Documentation
+
+- **[Technical White Paper](docs/pdf/Low-Altitude%20Economy%20White%20Paper.pdf)**: Comprehensive analysis framework
+- **[中文白皮书](docs/pdf/白皮书.pdf)**: Chinese version of the technical documentation
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **ECharts**: Powerful charting library for interactive visualizations
+- **Streamlit**: Framework for building data applications
+- **DeepSeek**: AI models for intelligent data analysis
+- **Vite**: Fast build tool for modern web applications
+
+## 📞 Support
+
+For questions or support, please open an issue on GitHub or contact the development team.
+
+---
+
+**🏢 Low Altitude Economy Research Institute** | **📊 Data-Driven Insights for Aviation Innovation**

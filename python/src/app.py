@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_echarts import st_pyecharts, st_echarts
 import data_factory
-import charts_lib
+import charts
 import pandas as pd
 import data_processor
 import json
@@ -33,7 +33,7 @@ with st.sidebar:
     st.header("Data Upload")
 
     # Download Sample Button
-    with open("data/sample_flight_data.csv", "rb") as f:
+    with open("../data/sample_flight_data.csv", "rb") as f:
         st.download_button(
             label="Download Sample CSV",
             data=f,
