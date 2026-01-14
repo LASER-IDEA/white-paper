@@ -25,3 +25,4 @@ dist-ssr
 index_files
 .quarto
 __pycache__
+test/

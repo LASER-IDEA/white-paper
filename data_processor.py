@@ -191,6 +191,44 @@ def process_csv(df):
     if 'start_region' not in df.columns: df['start_region'] = df['region']
     if 'end_region' not in df.columns: df['end_region'] = df['region']
 
+    # we need to convert region to chinese
+    df['region'] = df['region'].map({
+        'Nanshan': '南山区',
+        'Futian': '福田区',
+        'Luohu': '罗湖区',
+        'Baoan': '宝安区',
+        'Longgang': '龙岗区',
+        'Yantian': '盐田区',
+        'Longhua': '龙华区',
+        'Pingshan': '坪山区',
+        'Guangming': '光明区',
+        'Dapeng': '大鹏新区',
+    })
+    df['start_region'] = df['start_region'].map({
+        'Nanshan': '南山区',
+        'Futian': '福田区',
+        'Luohu': '罗湖区',
+        'Baoan': '宝安区',
+        'Longgang': '龙岗区',
+        'Yantian': '盐田区',
+        'Longhua': '龙华区',
+        'Pingshan': '坪山区',
+        'Guangming': '光明区',
+        'Dapeng': '大鹏新区',
+    })
+    df['end_region'] = df['end_region'].map({
+        'Nanshan': '南山区',
+        'Futian': '福田区',
+        'Luohu': '罗湖区',
+        'Baoan': '宝安区',
+        'Longgang': '龙岗区',
+        'Yantian': '盐田区',
+        'Longhua': '龙华区',
+        'Pingshan': '坪山区',
+        'Guangming': '光明区',
+        'Dapeng': '大鹏新区',
+    })
+
     # --- Compute Indicators for Streamlit (matching data_factory.py) ---
     streamlit_data = {}
 
