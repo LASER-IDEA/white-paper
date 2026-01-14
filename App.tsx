@@ -31,10 +31,11 @@ const App: React.FC = () => {
           <p className="text-xs text-slate-500 mt-2">发展指数仪表盘</p>
         </div>
 
-        <nav className="mt-4 px-4 space-y-1">
+        <nav className="mt-4 px-4 space-y-1" aria-label="Main navigation">
            <button
               onClick={() => setSelectedDimension('All')}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              aria-current={selectedDimension === 'All' ? 'page' : undefined}
+              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${
                 selectedDimension === 'All'
                 ? 'bg-[#002FA7] text-white'
                 : 'text-slate-600 hover:bg-slate-50'
@@ -46,7 +47,8 @@ const App: React.FC = () => {
             <button
               key={dim}
               onClick={() => setSelectedDimension(dim)}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              aria-current={selectedDimension === dim ? 'page' : undefined}
+              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${
                 selectedDimension === dim
                 ? 'bg-blue-50 text-[#002FA7] border border-[#002FA7]/20'
                 : 'text-slate-600 hover:bg-slate-50'
@@ -60,9 +62,9 @@ const App: React.FC = () => {
         <div className="absolute bottom-0 w-full p-4 border-t border-slate-200 bg-white">
           <button
             onClick={handlePrint}
-            className="w-full flex items-center justify-center space-x-2 bg-[#002FA7] hover:bg-[#001F7A] text-white py-2.5 rounded-lg shadow-sm transition-all font-medium text-sm"
+            className="w-full flex items-center justify-center space-x-2 bg-[#002FA7] hover:bg-[#001F7A] text-white py-2.5 rounded-lg shadow-sm transition-all font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+            <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
             <span>导出 PDF</span>
           </button>
         </div>
