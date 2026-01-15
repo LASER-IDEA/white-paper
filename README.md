@@ -271,6 +271,13 @@ For questions or support, please open an issue on GitHub or contact the developm
 	<tbody>
 		<tr>
             <td align="center">
+                <a href="https://github.com/stevedegit">
+                    <img src="https://avatars.githubusercontent.com/u/30927032?v=4" width="100;" alt="stevedegit"/>
+                    <br />
+                    <sub><b>stevedegit</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sallychenhk">
                     <img src="https://avatars.githubusercontent.com/u/199864563?v=4" width="100;" alt="sallychenhk"/>
                     <br />
