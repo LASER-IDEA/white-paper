@@ -319,4 +319,9 @@ For questions or support, please open an issue on GitHub or contact the developm
 
 ---
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=LASER-IDEA/white-paper.git&type=date&legend=top-left)](https://www.star-history.com/#LASER-IDEA/white-paper.git&type=date&legend=top-left)
+---
+
 **🏢 Low Altitude Economy Research Institute** | **📊 Data-Driven Insights for Aviation Innovation**
