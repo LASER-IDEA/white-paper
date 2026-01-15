@@ -21,9 +21,13 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
                 <span className="text-5xl font-extrabold text-[#002FA7] tracking-tight">{data.value}</span>
                 <span className="text-sm text-slate-600">{data.unit}</span>
             </div>
-             <div className={`flex items-center ${trendColor} font-medium mt-1`}>
-                <span className="mr-1 text-lg">{trendIcon}</span>
-                <span className="text-slate-600">{Math.abs(data.trend * 100).toFixed(1)}% 环比</span>
+             <div
+               className={`flex items-center ${trendColor} font-medium mt-1`}
+               role="img"
+               aria-label={`${Math.abs(data.trend * 100).toFixed(1)}% 环比${isGrowth ? '增长' : '下降'}`}
+             >
+                <span className="mr-1 text-lg" aria-hidden="true">{trendIcon}</span>
+                <span className="text-slate-600" aria-hidden="true">{Math.abs(data.trend * 100).toFixed(1)}% 环比</span>
             </div>
         </div>
       </div>
