@@ -1026,13 +1026,28 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 export const ChartRenderer = ({ type, data, definition }: { type: string, data: any, definition?: string }) => {
     // Add a subtle info icon if definition is present
     const Container = ({ children }: { children: React.ReactNode }) => (
-      <div className="w-full h-full relative group">
+      <div className="w-full h-full relative">
          {children}
          {definition && (
-           <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <div className="bg-slate-800 text-white text-xs p-2 rounded max-w-xs shadow-lg">
-                <span className="font-bold block mb-1">定义:</span>
-                {definition}
+           <div className="absolute top-2 right-2 z-20 flex flex-col items-end group">
+              <button
+                aria-label="查看指标定义"
+                className="w-5 h-5 flex items-center justify-center bg-white/80 backdrop-blur rounded-full shadow-sm border border-slate-200 text-slate-400 hover:text-[#002FA7] hover:border-[#002FA7] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#002FA7] focus:ring-offset-1 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <div
+                role="tooltip"
+                className="absolute top-6 right-0 w-64 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
+              >
+                 <div className="mt-2 bg-slate-800 text-white text-xs p-3 rounded-lg shadow-xl border border-slate-700 relative">
+                    {/* Little arrow */}
+                    <div className="absolute top-0 right-1.5 -mt-1 w-2 h-2 bg-slate-800 transform rotate-45 border-t border-l border-slate-700"></div>
+                    <div className="font-bold mb-1 border-b border-slate-600 pb-1 text-slate-200">指标定义</div>
+                    <p className="leading-relaxed text-slate-300">{definition}</p>
+                 </div>
               </div>
            </div>
          )}
