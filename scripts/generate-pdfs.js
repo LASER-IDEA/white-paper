@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const { chromium } = require('playwright');
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
@@ -16,10 +16,21 @@ async function generatePDFs() {
   });
 
   try {
+    console.log('Installing Playwright browsers...');
+    const { execSync } = require('child_process');
+    execSync('npx playwright install chromium', { stdio: 'inherit' });
+
     // Launch browser
-    const browser = await puppeteer.launch({
+    const browser = await chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--disable-gpu'
+      ]
     });
 
     const dimensions = [
@@ -40,10 +51,9 @@ async function generatePDFs() {
       const page = await browser.newPage();
 
       // Set viewport for A4
-      await page.setViewport({
-        width: 210 * 3.78, // A4 width in pixels at 96 DPI
-        height: 297 * 3.78, // A4 height in pixels at 96 DPI
-        deviceScaleFactor: 1
+      await page.setViewportSize({
+        width: Math.round(210 * 3.78), // A4 width in pixels at 96 DPI
+        height: Math.round(297 * 3.78), // A4 height in pixels at 96 DPI
       });
 
       // Navigate to the page
@@ -51,7 +61,7 @@ async function generatePDFs() {
         ? `http://localhost:${port}?dimension=${encodeURIComponent(dimension.param)}`
         : `http://localhost:${port}`;
 
-      await page.goto(url, { waitUntil: 'networkidle2' });
+      await page.goto(url, { waitUntil: 'networkidle' });
 
       // Wait for content to load
       await page.waitForTimeout(2000);
