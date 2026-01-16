@@ -63,8 +63,23 @@ async function generatePDFs() {
 
       await page.goto(url, { waitUntil: 'networkidle' });
 
-      // Wait for content to load
-      await page.waitForTimeout(2000);
+      // Inject Chinese font CSS
+      await page.addStyleTag({
+        content: `
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+          * {
+            font-family: 'Noto Sans SC', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', 'Microsoft YaHei', 'SimHei', sans-serif !important;
+          }
+
+          body {
+            font-family: 'Noto Sans SC', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', 'Microsoft YaHei', 'SimHei', sans-serif !important;
+          }
+        `
+      });
+
+      // Wait for content to load and fonts to apply
+      await page.waitForTimeout(3000);
 
       // Generate PDF
       await page.pdf({
