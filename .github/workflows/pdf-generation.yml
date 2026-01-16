@@ -10,6 +10,8 @@ on:
 jobs:
   build-and-generate-pdfs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout repository
@@ -43,7 +45,7 @@ jobs:
 
     - name: Commit and push PDFs
       run: |
-        git config --local user.email "action@github.com"
+        git config --local user.email "hux062303@gmail.com"
         git config --local user.name "GitHub Action"
         git add docs/pdf/*.pdf
         if git diff --staged --quiet; then
