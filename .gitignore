@@ -27,3 +27,4 @@ index_files
 __pycache__
 test/
 .env
+evidence-debug/

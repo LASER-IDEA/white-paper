@@ -1,0 +1,53 @@
+name: Generate PDFs
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-and-generate-pdfs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install root dependencies
+      run: npm ci
+
+    - name: Install web app dependencies
+      run: |
+        cd web
+        npm ci
+
+    - name: Build web app
+      run: |
+        cd web
+        npm run build
+
+    - name: Generate PDFs
+      run: |
+        node scripts/generate-pdfs.js
+
+    - name: Commit and push PDFs
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/pdf/*.pdf
+        if git diff --staged --quiet; then
+          echo "No PDF changes to commit"
+        else
+          git commit -m "Auto-generate PDFs from web app [skip ci]"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

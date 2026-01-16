@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReportPage from './components/ReportPage';
 import { getAllData } from './utils/mockData';
 import { Dimension } from './types';
 
 const App: React.FC = () => {
   const allData = getAllData();
-  const [selectedDimension, setSelectedDimension] = useState<string>('All');
+
+  // Get dimension from URL parameter, default to 'All'
+  const getDimensionFromUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('dimension') || 'All';
+  };
+
+  const [selectedDimension, setSelectedDimension] = useState<string>(getDimensionFromUrl());
+
+  // Update selectedDimension when URL changes
+  useEffect(() => {
+    const handleUrlChange = () => {
+      setSelectedDimension(getDimensionFromUrl());
+    };
+
+    window.addEventListener('popstate', handleUrlChange);
+    return () => window.removeEventListener('popstate', handleUrlChange);
+  }, []);
 
   // Filter Data
   const filteredData = selectedDimension === 'All' 
@@ -17,6 +34,17 @@ const App: React.FC = () => {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const updateDimension = (dimension: string) => {
+    setSelectedDimension(dimension);
+    const url = new URL(window.location.href);
+    if (dimension === 'All') {
+      url.searchParams.delete('dimension');
+    } else {
+      url.searchParams.set('dimension', dimension);
+    }
+    window.history.pushState({}, '', url.toString());
   };
 
   return (
@@ -33,7 +61,7 @@ const App: React.FC = () => {
 
         <nav className="mt-4 px-4 space-y-1" aria-label="Main navigation">
            <button
-              onClick={() => setSelectedDimension('All')}
+              onClick={() => updateDimension('All')}
               aria-current={selectedDimension === 'All' ? 'page' : undefined}
               className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${
                 selectedDimension === 'All'
@@ -46,7 +74,7 @@ const App: React.FC = () => {
           {dimensions.map((dim) => (
             <button
               key={dim}
-              onClick={() => setSelectedDimension(dim)}
+              onClick={() => updateDimension(dim)}
               aria-current={selectedDimension === dim ? 'page' : undefined}
               className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${
                 selectedDimension === dim
