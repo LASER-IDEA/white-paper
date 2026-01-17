@@ -227,39 +227,36 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
     });
 
     // Load Shenzhen GeoJSON data
-    fetch('/data/shenzhen.json')
+    fetch('/white-paper/data/shenzhen.json')
       .then(response => response.json())
       .then(geoJson => {
-        // Hide loading first
-        chartInstance.current.hideLoading();
-
         // Register the map
         echarts.registerMap('Shenzhen', geoJson);
 
-        // Calculate density statistics
-        const values = data.map(d => d.value);
-        const maxValue = Math.max(...values);
-        const minValue = Math.min(...values);
+      // Calculate density statistics
+      const values = data.map(d => d.value);
+      const maxValue = Math.max(...values);
+      const minValue = Math.min(...values);
 
-        // Create pie series for major airports/hubs
-        const createPieSeries = (center: [number, number], radius: number, title: string, hubData: any[]) => {
-          return {
-            name: title,
-            type: 'pie',
-            coordinateSystem: 'geo',
-            tooltip: {
-              formatter: `{a}<br/>{b}: {c}架次 ({d}%)`
-            },
-            label: {
-              show: false
-            },
-            labelLine: {
-              show: false
-            },
-            animationDuration: 1200,
-            animationEasing: 'elasticOut',
-            radius,
-            center,
+      // Create pie series for major airports/hubs
+      const createPieSeries = (center: [number, number], radius: number, title: string, hubData: any[]) => {
+        return {
+          name: title,
+          type: 'pie',
+          coordinateSystem: 'geo',
+          tooltip: {
+            formatter: `{a}<br/>{b}: {c}架次 ({d}%)`
+          },
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
+          },
+          animationDuration: 1200,
+          animationEasing: 'elasticOut',
+          radius,
+          center,
             data: hubData,
             emphasis: {
               label: {
@@ -481,6 +478,10 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
 
         // Set options
         chartInstance.current.setOption(option);
+      })
+      .then(() => {
+        // Hide loading after successful setup
+        chartInstance.current.hideLoading();
       })
       .catch(error => {
         console.error('Failed to load Shenzhen map data:', error);
