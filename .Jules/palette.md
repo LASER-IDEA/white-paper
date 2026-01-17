@@ -7,3 +7,7 @@
 ## 2024-05-23 - Chart Definition Accessibility
 **Learning:** Tooltips that appear only on hover are a major accessibility barrier in data visualization. Users relying on keyboards or touch screens cannot access critical context like metric definitions.
 **Action:** Always pair hover-based tooltips with a persistent, focusable trigger (like an info icon button) to ensure definitions are discoverable and accessible to all users.
+
+## 2024-05-27 - Mobile Navigation in Fixed Sidebar Dashboards
+**Learning:** Dashboards with fixed sidebars often break completely on mobile, becoming unusable. Simply hiding the sidebar is not a responsiveness strategy.
+**Action:** Implement a lightweight mobile toggle (hamburger menu) that exposes the existing sidebar structure without needing a complete mobile redesign.
