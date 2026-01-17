@@ -11,6 +11,10 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 [![Deploy to GitHub Pages](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-00ADD8.svg)](https://LASER-IDEA.github.io/white-paper/)
 
+## ⚠️ 数据说明
+
+**重要提醒**: 本仓库中的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。数据不代表任何真实的市场情况、统计数据或商业信息。
+
 ## 🌐 Live Demo
 
 🚀 **View the live dashboard**: [https://LASER-IDEA.github.io/white-paper/](https://LASER-IDEA.github.io/white-paper/)
@@ -45,12 +49,12 @@ white-paper/
 │   ├── src/
 │   │   ├── app.py            # Main Streamlit application
 │   │   ├── charts.py         # ECharts visualization library
-│   │   ├── data_factory.py   # Mock data generation
+│   │   ├── data_factory.py   # Mock data generation (模拟数据生成)
 │   │   ├── data_processor.py # Data processing utilities
 │   │   ├── llm_helper.py     # AI integration module
 │   │   └── utils/
 │   │       └── generate_mock_csv.py
-│   ├── data/                 # Sample datasets
+│   ├── data/                 # Sample datasets (模拟数据集)
 │   │   ├── sample_flight_data.csv
 │   │   └── shenzhen.json
 │   └── tests/                # Unit tests
@@ -62,13 +66,13 @@ white-paper/
 │   │   │   │   └── Charts.tsx
 │   │   │   └── ReportPage.tsx
 │   │   ├── utils/
-│   │   │   └── mockData.ts
+│   │   │   └── mockData.ts    # Mock data utilities (模拟数据工具)
 │   │   ├── App.tsx
 │   │   ├── index.tsx
 │   │   └── types.ts
 │   ├── public/
 │   │   └── data/
-│   │       └── shenzhen.json
+│   │       └── shenzhen.json   # Mock geographic data (模拟地理数据)
 │   ├── test/                 # HTML test files
 │   │   ├── geo_guangdong.html
 │   │   └── geo_lines.html
@@ -178,6 +182,8 @@ DEEPSEEK_REASONER_MODEL=deepseek-reasoner
 - ⚠️ Never commit real API keys to version control
 
 ## 📈 Data Dimensions & Metrics
+
+**数据来源**: 所有展示的数据均为模拟生成，用于展示系统功能和界面设计。实际应用中需要接入真实的数据源。
 
 ### 1. Scale & Growth 📈
 - **Traffic Volume**: Daily/weekly flight operations
