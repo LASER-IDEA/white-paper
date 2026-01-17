@@ -25,8 +25,8 @@ const App: React.FC = () => {
   }, []);
 
   // Filter Data
-  const filteredData = selectedDimension === 'All' 
-    ? allData 
+  const filteredData = selectedDimension === 'All'
+    ? allData
     : allData.filter(d => d.dimension === selectedDimension);
 
   // Group Dimensions for Sidebar
@@ -49,7 +49,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white font-sans text-[#002FA7] print:block print:h-auto print:overflow-visible print:bg-white">
-      
+
       {/* Sidebar Navigation (Hidden on Print) */}
       <aside className="w-64 bg-white border-r border-slate-200 fixed h-full overflow-y-auto no-print z-10 hidden md:block">
         <div className="p-6">
@@ -101,14 +101,14 @@ const App: React.FC = () => {
       {/* Main Content Area */}
       <main className="flex-1 ml-0 md:ml-64 p-8 overflow-y-auto print:ml-0 print:p-0 print:overflow-visible print:h-auto print:static">
         <div className="max-w-[210mm] mx-auto print:max-w-none print:mx-0 print:w-full">
-          
+
           {/* Cover Page Placeholder (Only visible on All) */}
            {selectedDimension === 'All' && (
              <div className="w-[210mm] h-[297mm] bg-gradient-to-br from-[#002FA7] to-[#001F7A] text-white shadow-2xl mx-auto my-8 p-[20mm] flex flex-col justify-between page-break relative overflow-hidden print:shadow-none print:m-0 print:w-full print:rounded-none">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 print:opacity-40"></div>
 
                 <div className="relative z-10">
-                   <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">内部机密报告</div>
+                   <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">本页面展示的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。不代表任何真实的市场情况、统计数据或商业信息。</div>
                    <h1 className="text-6xl font-extrabold leading-tight tracking-tight text-white print:text-white">
                     低空经济 <br/>
                     <br/>
@@ -137,10 +137,10 @@ const App: React.FC = () => {
 
           {/* Render Pages */}
           {filteredData.map((data, index) => (
-            <ReportPage 
-              key={data.id} 
-              data={data} 
-              pageNumber={index + 1} 
+            <ReportPage
+              key={data.id}
+              data={data}
+              pageNumber={index + 1}
             />
           ))}
 
