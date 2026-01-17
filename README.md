@@ -9,6 +9,13 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 [![ECharts](https://img.shields.io/badge/ECharts-5.4+-EE6666.svg)](https://echarts.apache.org/)
 
 [![Deploy to GitHub Pages](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-00ADD8.svg)](https://LASER-IDEA.github.io/white-paper/)
+
+## 🌐 Live Demo
+
+🚀 **View the live dashboard**: [https://LASER-IDEA.github.io/white-paper/](https://LASER-IDEA.github.io/white-paper/)
+
+The GitHub Pages deployment automatically updates whenever code is pushed to the `main` branch, ensuring the live demo always reflects the latest features and improvements.
 
 ## 🌟 Key Features
 
@@ -84,6 +91,10 @@ white-paper/
 ```
 
 ## 🚀 Quick Start
+
+### 🎯 Try the Live Demo First
+
+Want to explore the dashboard without setup? Visit our **[live demo](https://LASER-IDEA.github.io/white-paper/)** hosted on GitHub Pages!
 
 ### Python Streamlit Version
 
