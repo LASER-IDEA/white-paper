@@ -8,7 +8,7 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io/)
 [![ECharts](https://img.shields.io/badge/ECharts-5.4+-EE6666.svg)](https://echarts.apache.org/)
 
-[![Generate PDFs](https://github.com/LASER-IDEA/white-paper/actions/workflows/pdf-generation.yml/badge.svg?branch=main)](https://github.com/LASER-IDEA/white-paper/actions/workflows/pdf-generation.yml)
+[![Deploy to GitHub Pages](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml)
 
 ## 🌟 Key Features
 
