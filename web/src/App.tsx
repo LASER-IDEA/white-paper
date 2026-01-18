@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReportPage from './components/ReportPage';
+import BackToTop from './components/BackToTop';
 import { getAllData } from './utils/mockData';
 import { Dimension } from './types';
 
@@ -151,6 +152,7 @@ const App: React.FC = () => {
           )}
 
         </div>
+        <BackToTop />
       </main>
     </div>
   );
