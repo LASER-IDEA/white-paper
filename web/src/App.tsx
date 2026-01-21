@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReportPage from './components/ReportPage';
 import BackToTop from './components/BackToTop';
 import { getAllData } from './utils/mockData';
@@ -15,6 +15,8 @@ const App: React.FC = () => {
 
   const [selectedDimension, setSelectedDimension] = useState<string>(getDimensionFromUrl());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mainContentRef = useRef<HTMLElement>(null);
+  const isFirstRender = useRef(true);
 
   // Update selectedDimension when URL changes
   useEffect(() => {
@@ -25,6 +27,18 @@ const App: React.FC = () => {
     window.addEventListener('popstate', handleUrlChange);
     return () => window.removeEventListener('popstate', handleUrlChange);
   }, []);
+
+  // Manage focus when dimension changes
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    // Small timeout to ensure content has updated
+    setTimeout(() => {
+      mainContentRef.current?.focus();
+    }, 0);
+  }, [selectedDimension]);
 
   // Filter Data
   const filteredData = selectedDimension === 'All'
@@ -138,7 +152,12 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main id="main-content" className="flex-1 ml-0 md:ml-64 p-8 overflow-y-auto print:ml-0 print:p-0 print:overflow-visible print:h-auto print:static">
+      <main
+        id="main-content"
+        ref={mainContentRef}
+        tabIndex={-1}
+        className="flex-1 ml-0 md:ml-64 p-8 overflow-y-auto outline-none print:ml-0 print:p-0 print:overflow-visible print:h-auto print:static"
+      >
         <div className="max-w-[210mm] mx-auto print:max-w-none print:mx-0 print:w-full">
 
           {/* Cover Page Placeholder (Only visible on All) */}
