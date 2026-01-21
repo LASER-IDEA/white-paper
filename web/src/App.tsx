@@ -52,6 +52,12 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-white font-sans text-[#002FA7] print:block print:h-auto print:overflow-visible print:bg-white">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-[#002FA7] focus:shadow-lg focus:rounded-lg focus:ring-2 focus:ring-[#002FA7] focus:outline-none transition-all"
+      >
+        跳转至主要内容
+      </a>
 
       {/* Mobile Header */}
       <div className="md:hidden sticky top-0 bg-white border-b border-slate-200 z-30 px-4 py-3 flex items-center justify-between shadow-sm">
@@ -132,7 +138,7 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 ml-0 md:ml-64 p-8 overflow-y-auto print:ml-0 print:p-0 print:overflow-visible print:h-auto print:static">
+      <main id="main-content" className="flex-1 ml-0 md:ml-64 p-8 overflow-y-auto print:ml-0 print:p-0 print:overflow-visible print:h-auto print:static">
         <div className="max-w-[210mm] mx-auto print:max-w-none print:mx-0 print:w-full">
 
           {/* Cover Page Placeholder (Only visible on All) */}
