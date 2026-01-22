@@ -52,21 +52,21 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
          <div className="flex items-start space-x-3">
              <div className="w-1 h-full min-h-[20px] bg-slate-400 rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-slate-500 uppercase mb-1">指标定义</span>
+                 <h3 className="block text-xs font-bold text-slate-500 uppercase mb-1">指标定义</h3>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.definition}</p>
              </div>
          </div>
          <div className="flex items-start space-x-3">
              <div className="w-1 h-full min-h-[20px] bg-[#002FA7] rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-[#002FA7] uppercase mb-1">数据洞察</span>
+                 <h3 className="block text-xs font-bold text-[#002FA7] uppercase mb-1">数据洞察</h3>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.insight}</p>
              </div>
          </div>
          <div className="flex items-start space-x-3">
              <div className="w-1 h-full min-h-[20px] bg-[#1e40af] rounded-full mt-1 print:print-color-adjust-exact"></div>
              <div>
-                 <span className="block text-xs font-bold text-[#1e40af] uppercase mb-1">策略建议</span>
+                 <h3 className="block text-xs font-bold text-[#1e40af] uppercase mb-1">策略建议</h3>
                  <p className="text-sm text-slate-700 leading-relaxed">{data.suggestion}</p>
              </div>
          </div>
