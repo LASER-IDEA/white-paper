@@ -105,6 +105,10 @@ const BackToTop: React.FC<BackToTopProps> = ({ scrollContainerRef }) => {
       <svg className="w-5 h-5 relative z-10 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10l7-7m0 0l7 7m-7-7v18" />
       </svg>
+      {/* Tooltip */}
+      <span className="absolute right-14 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity whitespace-nowrap shadow-sm pointer-events-none">
+        返回顶部
+      </span>
     </button>
   );
 };
