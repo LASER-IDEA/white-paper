@@ -19,3 +19,7 @@
 ## 2025-05-24 - Semantic Structure in Visual Reports
 **Learning:** Visual reports often use styled `span` or `div` elements for section headers to achieve specific looks, breaking document outline navigation for screen readers.
 **Action:** Use semantic heading tags (`h1`-`h6`) even for visually small headers, relying on CSS (e.g., Tailwind classes) to reset styles to match the design. This preserves the document outline without compromising the visual design.
+
+## 2025-05-26 - Actionable Empty States
+**Learning:** Empty states that only say "No data" are dead ends for users, creating frustration.
+**Action:** Transform empty states into navigational opportunities by providing a clear explanation and a primary action to recover (e.g., "Clear filters" or "View all"), using illustrations to reduce visual friction.
