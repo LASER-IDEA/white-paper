@@ -15,3 +15,7 @@
 ## 2025-02-14 - Scroll Progress Indicator
 **Learning:** Adding a visual scroll progress indicator to the "Back to Top" button provides immediate context about the user's position in long reports without needing a separate progress bar. It turns a reactive utility (back to top) into a proactive information element.
 **Action:** When designing for long-form content, consider combining "position" indicators with "navigation" actions to save screen real estate and provide dual value. Always ensure the progress value is exposed to screen readers (e.g., via `aria-label`).
+
+## 2025-05-24 - Semantic Structure in Visual Reports
+**Learning:** Visual reports often use styled `span` or `div` elements for section headers to achieve specific looks, breaking document outline navigation for screen readers.
+**Action:** Use semantic heading tags (`h1`-`h6`) even for visually small headers, relying on CSS (e.g., Tailwind classes) to reset styles to match the design. This preserves the document outline without compromising the visual design.
