@@ -224,8 +224,20 @@ const App: React.FC = () => {
           ))}
 
           {filteredData.length === 0 && (
-            <div className="flex items-center justify-center h-96">
-              <p className="text-slate-400">该维度暂无数据。</p>
+            <div className="flex flex-col items-center justify-center h-96 text-center">
+              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-slate-900 mb-1">暂无相关数据</h3>
+              <p className="text-slate-500 mb-6 max-w-sm">该维度下目前没有可展示的指标数据，您可以查看其他维度或返回完整报告。</p>
+              <button
+                onClick={() => updateDimension('All')}
+                className="inline-flex items-center px-4 py-2 bg-[#002FA7] text-white text-sm font-medium rounded-lg hover:bg-[#001F7A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002FA7] transition-colors"
+              >
+                查看完整报告
+              </button>
             </div>
           )}
 
