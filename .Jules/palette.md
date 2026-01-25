@@ -19,3 +19,7 @@
 ## 2025-05-24 - Semantic Structure in Visual Reports
 **Learning:** Visual reports often use styled `span` or `div` elements for section headers to achieve specific looks, breaking document outline navigation for screen readers.
 **Action:** Use semantic heading tags (`h1`-`h6`) even for visually small headers, relying on CSS (e.g., Tailwind classes) to reset styles to match the design. This preserves the document outline without compromising the visual design.
+
+## 2025-05-24 - Visual Anchors for Abstract Dimensions
+**Learning:** In text-heavy "white paper" dashboards, abstract dimensions (like "Structure", "Efficiency") are cognitively expensive to distinguish quickly.
+**Action:** Use consistent iconography as visual anchors in navigation to reduce cognitive load and improve scannability when switching between abstract data views.
