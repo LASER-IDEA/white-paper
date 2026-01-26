@@ -109,18 +109,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Notify on Feishu (optional)
-        if: env.FEISHU_ROBOT_WEBHOOK_URL != ''
+      - name: Notify on WeCom (optional)
         env:
-          ACTIONS_FEISHU_TAG: 'v1.3.1'
-          INPUT_WEBHOOK: "${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}"
-          INPUT_MESSAGE_TYPE: "post"
-          INPUT_TITLE: "PDF Build and Merge Successful!"
-          INPUT_CONTENT: "Complete report generated and released\n
-                          Tag: ${{ github.ref_name }}\n
-                          View Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}\n
-                          Download PDF: ${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/Low-Altitude-Economy-Complete-Report.pdf"
+          WECOM_WEBHOOK: "${{ secrets.WECOM_ROBOT_WEBHOOK_URL }}"
         run: |
-          wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
-          tar zxf linux-amd64-actions-feishu.tar.gz feishu
-          ./feishu
+          curl -X POST "${WECOM_WEBHOOK}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"msgtype\": \"markdown\",
+              \"markdown\": {
+                \"content\": \"**📄 PDF Build and Merge Successful!**\n\n✅ Complete report generated and released\n\n**Tag:** ${{ github.ref_name }}\n**View Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}\n**Download PDF:** ${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/Low-Altitude-Economy-Complete-Report.pdf\"
+              }
+            }"

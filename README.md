@@ -163,6 +163,16 @@ yarn dev
 
 ### Environment Variables
 
+#### Webhook Notifications (Optional)
+For automated notifications when PDFs are built and released:
+
+**WeCom (企业微信) Setup:**
+1. Create a WeCom group robot in your WeCom group
+2. Get the webhook URL from the robot settings
+3. Add the webhook URL to your repository secrets as `WECOM_ROBOT_WEBHOOK_URL`
+
+The workflow will automatically send notifications to your WeCom group when new PDF releases are created.
+
 Create a `.env` file in the project root (copy from `config/.env.example`):
 
 ```bash
