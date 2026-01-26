@@ -1,0 +1,126 @@
+name: Build and Merge PDFs
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build_and_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            web/package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install web dependencies
+        working-directory: ./web
+        run: npm ci
+
+      - name: Build React application
+        working-directory: ./web
+        run: npm run build
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyPDF2
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: docs/main.tex
+          working_directory: docs
+          latexmk_use_xelatex: true
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Generate React PDFs
+        run: node scripts/generate-pdfs.js
+
+      - name: Merge PDFs
+        run: |
+          python3 -c "
+          from PyPDF2 import PdfMerger
+          import os
+
+          merger = PdfMerger()
+
+          # Add LaTeX PDF first
+          if os.path.exists('docs/main.pdf'):
+              merger.append('docs/main.pdf')
+              print('✓ Added LaTeX PDF')
+
+          # Add React generated PDFs
+          pdf_dir = 'docs/pdf'
+          if os.path.exists(pdf_dir):
+              pdf_files = [f for f in os.listdir(pdf_dir) if f.endswith('.pdf')]
+              pdf_files.sort()  # Sort for consistent order
+
+              for pdf_file in pdf_files:
+                  pdf_path = os.path.join(pdf_dir, pdf_file)
+                  merger.append(pdf_path)
+                  print(f'✓ Added {pdf_file}')
+
+          # Save merged PDF
+          output_path = 'Low-Altitude-Economy-Complete-Report.pdf'
+          merger.write(output_path)
+          merger.close()
+
+          print(f'✓ Merged PDF saved as: {output_path}')
+          "
+
+      - name: Upload merged PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: complete-report-pdf
+          path: Low-Altitude-Economy-Complete-Report.pdf
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Low-Altitude-Economy-Complete-Report.pdf
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            Complete Low-Altitude Economy Report including:
+            - LaTeX white paper documentation
+            - Interactive charts and visualizations (PDF format)
+            - All data dimensions and analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify on Feishu (optional)
+        if: env.FEISHU_ROBOT_WEBHOOK_URL != ''
+        env:
+          ACTIONS_FEISHU_TAG: 'v1.3.1'
+          INPUT_WEBHOOK: "${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}"
+          INPUT_MESSAGE_TYPE: "post"
+          INPUT_TITLE: "PDF Build and Merge Successful!"
+          INPUT_CONTENT: "Complete report generated and released\n
+                          Tag: ${{ github.ref_name }}\n
+                          View Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}\n
+                          Download PDF: ${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/Low-Altitude-Economy-Complete-Report.pdf"
+        run: |
+          wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
+          tar zxf linux-amd64-actions-feishu.tar.gz feishu
+          ./feishu
