@@ -199,7 +199,7 @@ async function generatePDFs() {
           bodyText: body?.textContent?.substring(0, 200) || '',
           hasCharts: !!document.querySelector('.echarts-for-react, canvas, svg'),
           hasError: !!document.querySelector('.error, .loading-error'),
-          consoleErrors: (window as any).consoleErrors || []
+          consoleErrors: window.consoleErrors || []
         };
       });
 
