@@ -120,11 +120,16 @@ jobs:
         env:
           WECOM_WEBHOOK: "${{ secrets.WECOM_ROBOT_WEBHOOK_URL }}"
         run: |
-          curl -X POST "${WECOM_WEBHOOK}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"msgtype\": \"markdown\",
-              \"markdown\": {
-                \"content\": \"**📄 PDF Build and Merge Successful!**\n\n✅ Complete report generated and released\n\n**Tag:** ${{ github.ref_name }}\n**View Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}\n**Download PDF:** ${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/Low-Altitude-Economy-Complete-Report.pdf\"
-              }
-            }"
+          if [ -n "${WECOM_WEBHOOK}" ] && [ "${WECOM_WEBHOOK}" != "" ]; then
+            echo "Sending WeCom notification..."
+            curl -X POST "${WECOM_WEBHOOK}" \
+              -H "Content-Type: application/json" \
+              -d "{
+                \"msgtype\": \"markdown\",
+                \"markdown\": {
+                  \"content\": \"**📄 PDF Build and Merge Successful!**\n\n✅ Complete report generated and released\n\n**Tag:** ${{ github.ref_name }}\n**View Release:** ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}\n**Download PDF:** ${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/Low-Altitude-Economy-Complete-Report.pdf\"
+                }
+              }"
+          else
+            echo "WeCom webhook URL not configured, skipping notification"
+          fi
