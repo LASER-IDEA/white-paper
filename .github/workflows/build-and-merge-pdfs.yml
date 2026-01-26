@@ -62,6 +62,10 @@ jobs:
       - name: Generate React PDFs
         run: node scripts/generate-pdfs.js
 
+      - name: Rebuild React app for GitHub Pages
+        working-directory: ./web
+        run: npm run build
+
       - name: Merge PDFs
         run: |
           python3 -c "

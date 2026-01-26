@@ -7,7 +7,36 @@ async function generatePDFs() {
   const app = express();
   const port = 3001;
 
-  // Serve the built web app
+  // Temporarily rebuild the web app with base path '/' for local PDF generation
+  console.log('Building web app for PDF generation...');
+  const { execSync } = require('child_process');
+  const originalDir = process.cwd();
+  process.chdir(path.join(__dirname, '../web'));
+
+  try {
+    // Temporarily modify vite.config.ts for local PDF generation
+    const viteConfigPath = 'vite.config.ts';
+    const viteConfigContent = require('fs').readFileSync(viteConfigPath, 'utf8');
+
+    // Replace base path temporarily
+    const tempConfigContent = viteConfigContent.replace("base: '/white-paper/',", "base: '/',");
+    require('fs').writeFileSync(viteConfigPath, tempConfigContent);
+
+    // Build with temporary config
+    execSync('npm run build', { stdio: 'inherit' });
+
+    // Restore original config
+    require('fs').writeFileSync(viteConfigPath, viteConfigContent);
+
+    console.log('Web app built successfully for PDF generation');
+  } catch (error) {
+    console.error('Failed to build web app:', error);
+    process.exit(1);
+  }
+
+  process.chdir(originalDir);
+
+  // Serve the rebuilt web app
   app.use(express.static(path.join(__dirname, '../web/dist')));
 
   // Start server
@@ -17,7 +46,6 @@ async function generatePDFs() {
 
   try {
     console.log('Installing Playwright browsers...');
-    const { execSync } = require('child_process');
     execSync('npx playwright install chromium', { stdio: 'inherit' });
 
     // Launch browser
@@ -61,7 +89,17 @@ async function generatePDFs() {
         ? `http://localhost:${port}?dimension=${encodeURIComponent(dimension.param)}`
         : `http://localhost:${port}`;
 
+      console.log(`Navigating to: ${url}`);
       await page.goto(url, { waitUntil: 'networkidle' });
+
+      // Wait for React app to fully load and render
+      console.log('Waiting for React app to load...');
+      await page.waitForFunction(() => {
+        // Check if React has mounted and basic elements are present
+        return document.querySelector('#main-content') &&
+               document.querySelector('[role="main"]') &&
+               window.getComputedStyle(document.body).visibility !== 'hidden';
+      }, { timeout: 10000 });
 
       // Inject Chinese font CSS
       await page.addStyleTag({
@@ -78,12 +116,41 @@ async function generatePDFs() {
         `
       });
 
-      // Wait for content to load and fonts to apply
-      await page.waitForTimeout(3000);
+      // Wait for fonts to load and charts to render
+      console.log('Waiting for content and fonts to load...');
+      await page.waitForTimeout(5000);
+
+      // Additional wait for any dynamic content
+      try {
+        await page.waitForFunction(() => {
+          // Check if charts or data visualization elements are loaded
+          const charts = document.querySelectorAll('.echarts-for-react, canvas, svg');
+          return charts.length > 0 || document.querySelector('#main-content')?.children.length > 0;
+        }, { timeout: 5000 });
+      } catch (error) {
+        console.log('Dynamic content check timed out, proceeding with PDF generation');
+      }
+
+      // Debug: Check page content before PDF generation
+      const contentCheck = await page.evaluate(() => {
+        const mainContent = document.querySelector('#main-content');
+        const body = document.body;
+        return {
+          title: document.title,
+          bodyVisible: window.getComputedStyle(body).visibility,
+          mainContentExists: !!mainContent,
+          mainContentChildren: mainContent ? mainContent.children.length : 0,
+          bodyText: body.textContent?.substring(0, 200) || '',
+          hasCharts: !!document.querySelector('.echarts-for-react, canvas, svg')
+        };
+      });
+
+      console.log(`Page content check for ${dimension.name}:`, contentCheck);
 
       // Generate PDF
+      const pdfPath = path.join(__dirname, `../docs/pdf/${dimension.filename}`);
       await page.pdf({
-        path: path.join(__dirname, `../docs/pdf/${dimension.filename}`),
+        path: pdfPath,
         format: 'A4',
         printBackground: true,
         margin: {
@@ -97,7 +164,18 @@ async function generatePDFs() {
       });
 
       await page.close();
-      console.log(`✓ Generated ${dimension.filename}`);
+
+      // Verify PDF was created and has content
+      const fs = require('fs').promises;
+      try {
+        const stats = await fs.stat(pdfPath);
+        console.log(`✓ Generated ${dimension.filename} (${stats.size} bytes)`);
+        if (stats.size < 10000) {
+          console.warn(`⚠️ Warning: PDF file is very small (${stats.size} bytes), might be blank`);
+        }
+      } catch (error) {
+        console.error(`✗ Failed to verify ${dimension.filename}:`, error);
+      }
     }
 
     await browser.close();
