@@ -47,9 +47,10 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: docs/main.tex
+          root_file: main.tex
           working_directory: docs
           latexmk_use_xelatex: true
+          latexmk_shell_escape: true
 
       - name: Install Playwright browsers
         run: npx playwright install chromium
@@ -66,9 +67,12 @@ jobs:
           merger = PdfMerger()
 
           # Add LaTeX PDF first
-          if os.path.exists('docs/main.pdf'):
-              merger.append('docs/main.pdf')
+          latex_pdf_path = 'docs/main.pdf'
+          if os.path.exists(latex_pdf_path):
+              merger.append(latex_pdf_path)
               print('✓ Added LaTeX PDF')
+          else:
+              print('⚠️ LaTeX PDF not found at:', latex_pdf_path)
 
           # Add React generated PDFs
           pdf_dir = 'docs/pdf'
