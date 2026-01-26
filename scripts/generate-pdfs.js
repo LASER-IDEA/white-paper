@@ -17,16 +17,30 @@ async function generatePDFs() {
     // Temporarily modify vite.config.ts for local PDF generation
     const viteConfigPath = 'vite.config.ts';
     const viteConfigContent = require('fs').readFileSync(viteConfigPath, 'utf8');
+    const originalConfigContent = viteConfigContent;
+
+    console.log('Original vite config base path check:', viteConfigContent.includes("base: '/white-paper/'"));
 
     // Replace base path temporarily
     const tempConfigContent = viteConfigContent.replace("base: '/white-paper/',", "base: '/',");
     require('fs').writeFileSync(viteConfigPath, tempConfigContent);
 
-    // Build with temporary config
-    execSync('npm run build', { stdio: 'inherit' });
+    console.log('Modified vite config, building with base path: /');
+
+    // Clean and build with temporary config
+    try {
+      execSync('rm -rf dist', { stdio: 'inherit' });
+      execSync('npm run build', { stdio: 'inherit' });
+    } catch (buildError) {
+      console.error('Build failed:', buildError);
+      // Restore config even if build fails
+      require('fs').writeFileSync(viteConfigPath, originalConfigContent);
+      throw buildError;
+    }
 
     // Restore original config
-    require('fs').writeFileSync(viteConfigPath, viteConfigContent);
+    require('fs').writeFileSync(viteConfigPath, originalConfigContent);
+    console.log('Restored original vite config');
 
     console.log('Web app built successfully for PDF generation');
   } catch (error) {
@@ -90,16 +104,45 @@ async function generatePDFs() {
         : `http://localhost:${port}`;
 
       console.log(`Navigating to: ${url}`);
-      await page.goto(url, { waitUntil: 'networkidle' });
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-      // Wait for React app to fully load and render
+      // Debug: Check initial page load
+      console.log('Page loaded, checking basic content...');
+      const initialCheck = await page.evaluate(() => ({
+        title: document.title,
+        hasBody: !!document.body,
+        bodyChildren: document.body ? document.body.children.length : 0,
+        hasScript: !!document.querySelector('script[src*="index"]'),
+        readyState: document.readyState
+      }));
+      console.log('Initial page check:', initialCheck);
+
+      // Wait for basic page load
+      await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {
+        console.log('Network idle timeout, continuing...');
+      });
+
+      // Wait for React app to load (with simpler conditions first)
       console.log('Waiting for React app to load...');
-      await page.waitForFunction(() => {
-        // Check if React has mounted and basic elements are present
-        return document.querySelector('#main-content') &&
-               document.querySelector('[role="main"]') &&
-               window.getComputedStyle(document.body).visibility !== 'hidden';
-      }, { timeout: 10000 });
+      try {
+        await page.waitForFunction(() => {
+          // Simpler check: just wait for the main content div to exist
+          return !!document.querySelector('#main-content');
+        }, { timeout: 15000 });
+
+        console.log('✓ Main content found');
+
+        // Then wait for some content to be rendered
+        await page.waitForFunction(() => {
+          const mainContent = document.querySelector('#main-content');
+          return mainContent && mainContent.children.length > 0;
+        }, { timeout: 10000 });
+
+        console.log('✓ Content rendered');
+      } catch (error) {
+        console.log('Warning: React app loading timeout, proceeding with PDF generation anyway');
+        console.log('Error details:', error.message);
+      }
 
       // Inject Chinese font CSS
       await page.addStyleTag({
@@ -131,37 +174,76 @@ async function generatePDFs() {
         console.log('Dynamic content check timed out, proceeding with PDF generation');
       }
 
+      // Debug: Take screenshot for troubleshooting
+      try {
+        await page.screenshot({ path: `debug-${dimension.name}.png`, fullPage: true });
+        console.log(`✓ Screenshot saved: debug-${dimension.name}.png`);
+      } catch (error) {
+        console.log(`⚠️ Failed to save screenshot: ${error.message}`);
+      }
+
       // Debug: Check page content before PDF generation
       const contentCheck = await page.evaluate(() => {
         const mainContent = document.querySelector('#main-content');
         const body = document.body;
+        const root = document.querySelector('#root');
         return {
           title: document.title,
-          bodyVisible: window.getComputedStyle(body).visibility,
+          url: window.location.href,
+          bodyVisible: window.getComputedStyle(body || {}).visibility,
+          bodyDisplay: window.getComputedStyle(body || {}).display,
+          rootExists: !!root,
+          rootChildren: root ? root.children.length : 0,
           mainContentExists: !!mainContent,
           mainContentChildren: mainContent ? mainContent.children.length : 0,
-          bodyText: body.textContent?.substring(0, 200) || '',
-          hasCharts: !!document.querySelector('.echarts-for-react, canvas, svg')
+          bodyText: body?.textContent?.substring(0, 200) || '',
+          hasCharts: !!document.querySelector('.echarts-for-react, canvas, svg'),
+          hasError: !!document.querySelector('.error, .loading-error'),
+          consoleErrors: (window as any).consoleErrors || []
         };
       });
 
-      console.log(`Page content check for ${dimension.name}:`, contentCheck);
+      console.log(`Page content check for ${dimension.name}:`, JSON.stringify(contentCheck, null, 2));
 
-      // Generate PDF
+      // Fallback: if no content detected, wait a bit more and try again
+      if (!contentCheck.mainContentExists || contentCheck.mainContentChildren === 0) {
+        console.log('No content detected, waiting additional time...');
+        await page.waitForTimeout(5000);
+
+        const retryCheck = await page.evaluate(() => ({
+          mainContentExists: !!document.querySelector('#main-content'),
+          mainContentChildren: document.querySelector('#main-content')?.children.length || 0,
+          bodyText: document.body?.textContent?.substring(0, 100) || ''
+        }));
+
+        console.log('Retry check:', retryCheck);
+
+        if (!retryCheck.mainContentExists) {
+          console.log('⚠️ Still no main content detected, but proceeding with PDF generation anyway');
+        }
+      }
+
+      // Generate PDF (with fallback)
       const pdfPath = path.join(__dirname, `../docs/pdf/${dimension.filename}`);
-      await page.pdf({
-        path: pdfPath,
-        format: 'A4',
-        printBackground: true,
-        margin: {
-          top: '20mm',
-          right: '20mm',
-          bottom: '20mm',
-          left: '20mm'
-        },
-        displayHeaderFooter: false,
-        preferCSSPageSize: false
-      });
+      try {
+        await page.pdf({
+          path: pdfPath,
+          format: 'A4',
+          printBackground: true,
+          margin: {
+            top: '20mm',
+            right: '20mm',
+            bottom: '20mm',
+            left: '20mm'
+          },
+          displayHeaderFooter: false,
+          preferCSSPageSize: false
+        });
+        console.log(`✓ PDF generated successfully: ${dimension.filename}`);
+      } catch (pdfError) {
+        console.error(`✗ PDF generation failed for ${dimension.filename}:`, pdfError.message);
+        throw pdfError;
+      }
 
       await page.close();
 
