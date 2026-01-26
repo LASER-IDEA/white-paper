@@ -6,6 +6,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build_and_merge:
     runs-on: ubuntu-latest
@@ -100,7 +104,7 @@ jobs:
           path: Low-Altitude-Economy-Complete-Report.pdf
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: Low-Altitude-Economy-Complete-Report.pdf
           tag_name: ${{ github.ref_name }}
@@ -110,8 +114,7 @@ jobs:
             - LaTeX white paper documentation
             - Interactive charts and visualizations (PDF format)
             - All data dimensions and analysis
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Notify on WeCom (optional)
         env:
