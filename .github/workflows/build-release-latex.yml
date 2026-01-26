@@ -1,0 +1,77 @@
+name: Build and Release LaTeX document
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+    - 'v*'
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build_release_latex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+
+      - name: Stash PDF
+        run: |
+          mv main.pdf $HOME # cache the file
+
+      - name: Create Branch
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: gh_actions_builds
+
+      - name: Checkout gh_actions_builds Branch
+        uses: actions/checkout@v1
+        with:
+          ref: gh_actions_builds
+
+      - name: Commit PDF
+        run: |
+          git config --local user.email "raven.xu98@gmail.com"
+          git config --local user.name "Raven Xu"
+          mv $HOME/main.pdf $(pwd) # bring it back
+          git add -f main.pdf
+          git commit -m "Updated by GitHub Action Automatically"
+
+      - name: Push PDF
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          branch: gh_actions_builds
+          force: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify
+        env:
+          ACTIONS_FEISHU_TAG: 'v1.3.1'
+          INPUT_WEBHOOK: "${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}"
+          INPUT_MESSAGE_TYPE: "post"
+          INPUT_TITLE: "Compile and release Successfully!"
+          INPUT_CONTENT: "from Github Action\n
+                          View in Repo: ${{ secrets.VIEW_GITHUB_REPOSITORY }}\n
+                          Get Releases: ${{ secrets.VIEW_GITHUB_RELEASES }}\n
+                          View in Pages (~2m delay): ${{ secrets.VIEW_GITHUB_PAGES }}"
+        run: |
+          wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
+          tar zxf linux-amd64-actions-feishu.tar.gz feishu
+          ./feishu

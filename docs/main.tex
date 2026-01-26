@@ -1,0 +1,170 @@
+\documentclass[a4paper, 12pt]{article}
+
+% --- 中文支持 ---
+\usepackage[UTF8, heading=true, scheme=chinese]{ctex}
+
+% --- 页面布局 ---
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
+
+% --- 颜色与图形 ---
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{float}
+
+% --- 定义品牌色 (Low-Altitude Colors) ---
+\definecolor{techblue}{RGB}{0, 102, 204}    % 科技蓝 (用于标题)
+\definecolor{deepspace}{RGB}{20, 30, 60}    % 深空色 (用于封面背景/大标题)
+\definecolor{highlightbg}{RGB}{240, 248, 255} % 浅蓝背景 (用于高亮框)
+
+% --- 字体增强 (可选，取决于系统字体) ---
+% \setmainfont{Times New Roman}
+% \setCJKmainfont{SimSun}
+
+% --- 链接与书签 ---
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=deepspace,
+    urlcolor=techblue,
+    pdftitle={低空经济发展 LEAP 指数白皮书},
+    pdfauthor={您的机构名称}
+}
+
+% --- 漂亮的文本框 (用于核心观点/Key Takeaways) ---
+\usepackage[most]{tcolorbox}
+\newtcolorbox{insightbox}[1][]{
+    colback=highlightbg,
+    colframe=techblue,
+    title=\textbf{#1},
+    coltitle=white,
+    boxrule=0.5mm,
+    arc=2mm,
+    fonttitle=\bfseries
+}
+
+% --- 页眉页脚 ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{gray}{\small 2025 低空经济 LEAP 指数白皮书}}
+\rhead{\textcolor{gray}{\small 您的机构名称}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% --- 标题样式定制 ---
+\usepackage{titlesec}
+\titleformat{\section}
+  {\color{deepspace}\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\color{techblue}\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% ==========================================
+%                 正文开始
+% ==========================================
+\begin{document}
+
+% --- 封面 ---
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        % 侧边装饰条
+        \fill[techblue] (current page.north west) rectangle ([xshift=2cm]current page.south west);
+        % 顶部深色块
+        \fill[deepspace] (current page.north west) rectangle ([yshift=-6cm]current page.north east);
+    \end{tikzpicture}
+
+    \vspace*{2cm}
+
+    % 标题部分
+    \begin{center}
+        \textcolor{white}{\LARGE \textbf{2025 中国低空经济发展研究报告}} \\[0.5cm]
+        \textcolor{white}{\Huge \textbf{LEAP 指数白皮书}} \\[1cm]
+        \textcolor{white}{\large \textit{Low-altitude Economy Analysis of Performance}}
+    \end{center}
+
+    \vspace{6cm}
+
+    % 报告信息
+    \begin{flushright}
+        \Large
+        \textbf{发布机构：} [您的研究院/公司名称] \\[0.5cm]
+        \textbf{发布日期：} 2025年10月 \\[0.5cm]
+        \textbf{报告编号：} LA-2025-001
+    \end{flushright}
+
+    \vfill
+    \begin{center}
+        \small 本报告版权归发布机构所有，未经授权不得转载。
+    \end{center}
+\end{titlepage}
+
+% --- 目录 ---
+\newpage
+\tableofcontents
+\newpage
+
+% --- 第一章：执行摘要 ---
+\section{执行摘要 (Executive Summary)}
+
+低空经济作为新质生产力的代表，正在重塑城市空间与经济结构。本报告基于\textbf{LEAP指数（Low-altitude Economy Analysis of Performance）}，对全国前沿城市的低空经济发展水平进行了深度测算。
+
+\begin{insightbox}[核心发现]
+\begin{itemize}
+    \item \textbf{产业爆发期已至}：2025年行业总规模突破1.5万亿。
+    \item \textbf{基础设施先行}：深圳、上海等城市在“低空智联网”建设上遥遥领先。
+    \item \textbf{LEAP指数显示}：第一梯队城市在“应用场景(Usage)”维度的得分普遍高于“政策支持(Policy)”维度，说明市场驱动力正在增强。
+\end{itemize}
+\end{insightbox}
+
+% --- 第二章：LEAP 模型详解 ---
+\section{LEAP 评价模型详解}
+
+为了科学量化低空经济的动态发展，我们构建了包含五个维度的 LEAP 评价体系。
+
+\subsection{模型定义}
+LEAP 模型由以下五个核心维度构成，旨在捕捉“动态运行数据”的价值：
+
+\begin{enumerate}
+    \item \textbf{L (Logistics \& Infrastructure) - 基建与物流}：衡量起降点密度与物流网络覆盖。
+    \item \textbf{E (Enterprise \& Ecosystem) - 企业与生态}：衡量产业链完备度。
+    \item \textbf{A (Activity \& Application) - 活跃度与应用}：基于实时飞行架次数据的活跃度监测。
+    \item \textbf{P (Policy \& Pilot) - 政策与试点}：政府支持力度与空域开放度。
+\end{enumerate}
+
+\subsection{测算方法}
+本指数采用熵值法（Entropy Weight Method）确定客观权重...
+
+% --- 第三章：数据分析 ---
+\section{区域发展全景分析}
+
+\subsection{综合排名 TOP 10}
+根据 LEAP 指数测算，本年度综合竞争力最强的城市依次为：
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{排名} & \textbf{城市} & \textbf{LEAP 指数} & \textbf{优势维度} \\
+    \hline
+    1 & 深圳 & 94.5 & 产业生态 (E) \\
+    \hline
+    2 & 北京 & 89.2 & 科技创新 \\
+    \hline
+    3 & 上海 & 88.7 & 应用场景 (A) \\
+    \hline
+    \end{tabular}
+    \caption{2025 LEAP 指数城市排名概览}
+\end{table}
+
+\subsection{典型案例分析}
+\textbf{深圳模式}：以“无人机之都”为基础，向eVTOL产业高地转型...
+
+% --- 第四章：结论与展望 ---
+\section{趋势展望}
+
+未来三年，低空经济将呈现以下趋势：
+\begin{quote}
+    ``从‘隔离运行’向‘融合飞行’转变，从‘演示验证’向‘商业闭环’跨越。''
+\end{quote}
+
+\end{document}
