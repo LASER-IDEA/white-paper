@@ -1024,10 +1024,10 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 };
 
 // Map chart types to components
-export const ChartRenderer = ({ type, data, definition }: { type: string, data: any, definition?: string }) => {
+export const ChartRenderer = ({ type, data, definition, title }: { type: string, data: any, definition?: string, title?: string }) => {
     // Add a subtle info icon if definition is present
     const Container = ({ children }: { children: React.ReactNode }) => (
-      <div className="w-full h-full relative">
+      <div className="w-full h-full relative" role="figure" aria-label={title ? `${title} 统计图` : "统计图"}>
          {children}
          {definition && (
            <div className="absolute top-2 right-2 z-20 flex flex-col items-end group">
