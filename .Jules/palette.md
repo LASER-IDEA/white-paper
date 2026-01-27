@@ -27,6 +27,11 @@
 ## 2025-05-26 - Actionable Empty States
 **Learning:** Empty states that only say "No data" are dead ends for users, creating frustration.
 **Action:** Transform empty states into navigational opportunities by providing a clear explanation and a primary action to recover (e.g., "Clear filters" or "View all"), using illustrations to reduce visual friction.
+
 ## 2025-05-28 - Chart Container Accessibility
 **Learning:** Complex SVG charts (like Recharts) are often opaque to screen readers. Providing a semantic wrapper with `role="figure"` and a descriptive `aria-label` provides essential context that the chart internals often miss.
 **Action:** Wrap all chart components in a semantic container that identifies the chart's purpose/title to screen readers before they navigate into the complex data visualization.
+
+## 2025-05-30 - Interactive Heatmap Accessibility
+**Learning:** Visualization elements like calendar heatmaps are often implemented as static divs, making their rich data (tooltips) inaccessible to keyboard and screen reader users.
+**Action:** Convert interactive data cells to semantic `button` elements (or use `tabindex="0"` with `role="gridcell"`), ensuring `onFocus` behavior mirrors `onHover` to provide equal access to data details.
