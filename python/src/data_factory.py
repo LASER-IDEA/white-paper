@@ -3,33 +3,39 @@ import numpy as np
 from datetime import datetime, timedelta
 
 def generate_data():
-    """Generates mock data for the 18 metrics."""
+    """Generates mock data for the 20 indices."""
     data = {}
+    months = pd.date_range(start="2023-01-01", periods=12, freq="MS").strftime("%Y-%m")
 
     # 1. Traffic (Area)
-    dates = pd.date_range(start="2023-01-01", periods=30, freq="D")
+    base = 100
     data["traffic"] = pd.DataFrame({
-        "date": dates.strftime("%Y-%m-%d"),
-        "value": np.random.randint(100, 500, size=30)
+        "date": months,
+        "value": [base + i * 5 + np.random.randint(-5, 8) for i in range(12)]
     }).to_dict(orient="records")
 
     # 2. Operation Intensity (Dual Line)
-    regions = ["Nanshan", "Futian", "Luohu", "Baoan", "Longgang"]
     data["operation"] = pd.DataFrame({
-        "name": regions,
-        "duration": np.random.randint(1000, 5000, size=len(regions)),
-        "distance": np.random.randint(5000, 20000, size=len(regions))
+        "name": months,
+        "duration": np.random.randint(3000, 8000, size=12),
+        "distance": np.random.randint(12000, 26000, size=12)
     }).to_dict(orient="records")
 
-    # 3. Fleet Structure (Stacked Bar)
+    # 3. Active Fleet (Stacked Bar)
     data["fleet"] = pd.DataFrame({
-        "name": ["Q1", "Q2", "Q3", "Q4"],
-        "MultiRotor": np.random.randint(50, 150, size=4),
-        "FixedWing": np.random.randint(20, 80, size=4),
-        "Helicopter": np.random.randint(5, 20, size=4)
+        "name": months,
+        "MultiRotor": np.random.randint(800, 1400, size=12),
+        "FixedWing": np.random.randint(150, 350, size=12),
+        "Helicopter": np.random.randint(50, 120, size=12)
     }).to_dict(orient="records")
 
-    # 4. Concentration (Pareto)
+    # 4. Growth Momentum (Area)
+    data["growth"] = pd.DataFrame({
+        "date": months,
+        "value": np.random.randint(-5, 18, size=12)
+    }).to_dict(orient="records")
+
+    # 5. Concentration (Pareto)
     companies = [f"Company {i}" for i in range(1, 11)]
     vols = sorted(np.random.randint(50, 500, size=10), reverse=True)
     data["pareto"] = pd.DataFrame({
@@ -37,120 +43,174 @@ def generate_data():
         "volume": vols
     }).to_dict(orient="records")
 
-    # 5. Commercial Maturity (Rose)
-    sectors = ["Logistics", "Inspection", "Surveying", "Agriculture", "Emergency", "Tourism"]
+    # 6. Commercial Maturity (Rose)
+    user_types = ["企业用户", "个人用户", "未知用户"]
     data["rose"] = pd.DataFrame({
-        "name": sectors,
-        "value": np.random.randint(10, 100, size=len(sectors))
+        "name": user_types,
+        "value": [520, 260, 80]
     }).to_dict(orient="records")
 
-    # 6. Diversity (Treemap)
+    # 7. Aircraft Diversity (Treemap)
     data["treemap"] = [
-        {"name": "Logistics", "value": 40},
-        {"name": "Inspection", "value": 30},
-        {"name": "Survey", "value": 20},
-        {"name": "Agri", "value": 10}
+        {"name": "DJI M300", "value": 400},
+        {"name": "Autel Dragonfish", "value": 220},
+        {"name": "XAG P100", "value": 180},
+        {"name": "EHang 216", "value": 120},
+        {"name": "其他", "value": 260}
     ]
 
-    # 7. Regional Balance (Map)
+    # 8. Regional Balance (Map)
     data["map"] = [
         {"name": "南山区", "value": np.random.randint(20, 100)},
         {"name": "福田区", "value": np.random.randint(20, 100)},
         {"name": "罗湖区", "value": np.random.randint(20, 100)},
         {"name": "宝安区", "value": np.random.randint(20, 100)},
         {"name": "龙岗区", "value": np.random.randint(20, 100)},
-        {"name": "盐田区", "value": np.random.randint(20, 100)},
-        {"name": "龙华区", "value": np.random.randint(20, 100)},
-        {"name": "坪山区", "value": np.random.randint(20, 100)},
-        {"name": "光明区", "value": np.random.randint(20, 100)},
-        {"name": "大鹏新区", "value": np.random.randint(20, 100)},
-        {"name": "其他区", "value": np.random.randint(20, 100)}
+        {"name": "盐田区", "value": np.random.randint(20, 100)}
     ]
 
-    # 8. All Weather (Polar Clock)
+    # 9. All-Time Operation (Polar Clock)
     hours = [f"{i}:00" for i in range(24)]
     data["polar"] = pd.DataFrame({
         "hour": hours,
-        "value": np.abs(np.sin(np.linspace(0, np.pi*2, 24)) * 100 + np.random.normal(0, 10, 24)).astype(int)
+        "value": np.abs(np.sin(np.linspace(0, np.pi * 2, 24)) * 100 + np.random.normal(0, 8, 24)).astype(int)
     }).to_dict(orient="records")
 
-    # 9. Seasonal (Box Plot)
-    # ECharts boxplot expects [min, Q1, median, Q3, max]
+    # 10. Seasonal Stability (Box Plot)
     data["seasonal"] = {
-        "categories": ["Spring", "Summer", "Autumn", "Winter"],
-        "values": [
-            [10, 20, 30, 50, 70],
-            [20, 40, 60, 80, 100],
-            [15, 30, 45, 60, 80],
-            [5, 15, 25, 40, 50]
+        "categories": list(months),
+        "values": [[10, 20, 30, 45, 60] for _ in range(12)]
+    }
+
+    # 11. Networked Hub (Graph)
+    regions = ["宝安区", "南山区", "福田区", "龙岗区", "罗湖区"]
+    hub_values = [88, 72, 65, 58, 40]
+    data["hub"] = {
+        "categories": [
+            {"name": "核心枢纽"},
+            {"name": "区域枢纽"},
+            {"name": "末端节点"}
+        ],
+        "nodes": [
+            {"name": "宝安区", "value": 88, "symbolSize": 46, "category": 0},
+            {"name": "南山区", "value": 76, "symbolSize": 40, "category": 0},
+            {"name": "福田区", "value": 62, "symbolSize": 34, "category": 1},
+            {"name": "龙岗区", "value": 54, "symbolSize": 30, "category": 1},
+            {"name": "罗湖区", "value": 38, "symbolSize": 24, "category": 2}
+        ],
+        "links": [
+            {"source": "宝安区", "target": "南山区", "value": 45},
+            {"source": "南山区", "target": "福田区", "value": 28},
+            {"source": "宝安区", "target": "龙岗区", "value": 22},
+            {"source": "福田区", "target": "罗湖区", "value": 16},
+            {"source": "龙岗区", "target": "罗湖区", "value": 12}
         ]
     }
 
-    # 10. Efficiency (Gauge)
-    data["gauge"] = [{"value": 85, "name": "Efficiency"}]
+    # 12. Per-Unit Efficiency (Gauge)
+    data["gauge"] = [{"value": 78, "name": "Efficiency"}]
 
-    # 11. Endurance (Funnel)
+    # 13. Long-Endurance (Funnel)
     data["funnel"] = [
-        {"value": 100, "name": "Plan"},
-        {"value": 95, "name": "Takeoff"},
-        {"value": 90, "name": "Cruise"},
-        {"value": 85, "name": "Mission"},
-        {"value": 80, "name": "Return"},
-        {"value": 75, "name": "Land"}
+        {"value": 1200, "name": "<10m"},
+        {"value": 900, "name": "10-30m"},
+        {"value": 400, "name": "30-60m"},
+        {"value": 150, "name": ">60m"}
     ]
 
-    # 12. Wide Area (Histogram)
+    # 14. Wide-Area Coverage (Histogram)
     data["histogram"] = pd.DataFrame({
-        "name": ["0-5km", "5-10km", "10-20km", "20-50km", ">50km"],
-        "value": np.random.randint(10, 100, size=5)
+        "name": ["0-1km", "1-5km", "5-10km", "10-20km", "20-50km", ">50km"],
+        "value": np.random.randint(10, 120, size=6)
     }).to_dict(orient="records")
 
-    # 13. Micro Circulation (Chord -> Graph/Sankey)
-    data["chord"] = {
-        "nodes": [{"name": "Nanshan"}, {"name": "Futian"}, {"name": "Luohu"}, {"name": "Baoan"}, {"name": "Longgang"}],
-        "links": [
-            {"source": "Nanshan", "target": "Futian", "value": 50},
-            {"source": "Futian", "target": "Luohu", "value": 40},
-            {"source": "Nanshan", "target": "Baoan", "value": 60},
-            {"source": "Baoan", "target": "Longgang", "value": 30}
+    # 15. Task Completion Quality (Control Chart)
+    data["quality"] = {
+        "latestTqi": 92.3,
+        # Trajectory deviation data (24 hours)
+        "trajData": [
+            {"time": "00:00", "deviation": 0.08, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "02:00", "deviation": -0.05, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "04:00", "deviation": 0.12, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "06:00", "deviation": 0.15, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "08:00", "deviation": 0.22, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "10:00", "deviation": 0.18, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "12:00", "deviation": 0.28, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},  # Out of control
+            {"time": "14:00", "deviation": 0.20, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "16:00", "deviation": 0.10, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "18:00", "deviation": 0.05, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "20:00", "deviation": -0.03, "mean": 0.0, "ucl": 0.25, "lcl": -0.25},
+            {"time": "22:00", "deviation": 0.02, "mean": 0.0, "ucl": 0.25, "lcl": -0.25}
+        ],
+        # TQI history (30 days)
+        "tqiHistory": [
+            {"time": "01-01", "tqi": 88.5, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-05", "tqi": 89.2, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-08", "tqi": 91.0, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-12", "tqi": 90.5, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-15", "tqi": 92.3, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-18", "tqi": 93.1, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-22", "tqi": 91.8, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-25", "tqi": 92.5, "mean": 90, "ucl": 98, "lcl": 75},
+            {"time": "01-27", "tqi": 92.3, "mean": 90, "ucl": 98, "lcl": 75}
+        ],
+        # Plan vs Actual (30 days)
+        "planActual": [
+            {"time": "01-01", "actual": 445, "planned": 500},
+            {"time": "01-05", "actual": 468, "planned": 520},
+            {"time": "01-08", "actual": 520, "planned": 560},
+            {"time": "01-12", "actual": 485, "planned": 530},
+            {"time": "01-15", "actual": 540, "planned": 580},
+            {"time": "01-18", "actual": 565, "planned": 600},
+            {"time": "01-22", "actual": 498, "planned": 540},
+            {"time": "01-25", "actual": 525, "planned": 560},
+            {"time": "01-27", "actual": 510, "planned": 550}
         ]
     }
 
-    # 14. Vertical Airspace (3D Bar -> Bar)
+    # 16. Micro Circulation (Chord)
+    data["chord"] = {
+        "nodes": [{"name": "南山区"}, {"name": "福田区"}, {"name": "宝安区"}, {"name": "龙岗区"}],
+        "links": [
+            {"source": "南山区", "target": "福田区", "value": 50},
+            {"source": "福田区", "target": "宝安区", "value": 40},
+            {"source": "宝安区", "target": "龙岗区", "value": 30},
+            {"source": "龙岗区", "target": "南山区", "value": 20}
+        ]
+    }
+
+    # 17. Airspace Efficiency (3D Bar -> Bar)
     data["airspace"] = [
-        {"name": "<120m", "value": 500},
-        {"name": "120-300m", "value": 300},
-        {"name": ">300m", "value": 100}
+        {"name": "<120m", "value": 600},
+        {"name": "120-300m", "value": 380},
+        {"name": "300-600m", "value": 200},
+        {"name": ">600m", "value": 80}
     ]
 
-    # 15. Calendar Heatmap
-    # Generate full year 2023
+    # 18. Calendar Heatmap
     cal_dates = pd.date_range(start="2023-01-01", end="2023-12-31", freq="D")
     data["calendar"] = [[d.strftime("%Y-%m-%d"), np.random.randint(100, 1000)] for d in cal_dates]
 
-    # 16. Night Economy (Wave)
-    night_hours = [f"{i}:00" for i in range(18, 30)]
+    # 19. Night Economy (Wave)
+    night_hours = [f"{i}:00" for i in range(19, 25)] + [f"{i}:00" for i in range(0, 7)]
     data["night"] = pd.DataFrame({
-        "hour": [h if int(h.split(":")[0]) < 24 else f"0{int(h.split(':')[0])-24}:00" for h in night_hours],
-        "value": np.random.randint(10, 100, size=len(night_hours))
+        "hour": night_hours,
+        "value": np.random.randint(10, 120, size=len(night_hours))
     }).to_dict(orient="records")
 
-    # 17. Leading Entity (Radar)
+    # 20. Leading Entity (Radar)
     data["radar"] = {
         "indicator": [
-             {"name": "Tech", "max": 100},
-             {"name": "Scale", "max": 100},
-             {"name": "Safe", "max": 100},
-             {"name": "Eco", "max": 100},
-             {"name": "Grow", "max": 100}
+            {"name": "长航时", "max": 100},
+            {"name": "长里程", "max": 100},
+            {"name": "夜间", "max": 100},
+            {"name": "航程均值", "max": 100},
+            {"name": "时长均值", "max": 100}
         ],
         "data": [
             {"value": [80, 90, 70, 85, 95], "name": "Company A"},
-            {"value": [70, 80, 90, 60, 75], "name": "Company B"}
+            {"value": [70, 75, 88, 60, 72], "name": "Company B"}
         ]
     }
-
-    # 18. Dashboard (Composite)
-    data["dashboard"] = [{"value": 88.5, "name": "Index"}]
 
     return data

@@ -141,13 +141,16 @@ with tab1:
 
     # ----------------- 1. Scale & Growth -----------------
     st.header("1. Scale & Growth")
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         if "traffic" in data:
-            st_pyecharts(charts.traffic_area_chart(data["traffic"]), height="400px")
+            st_pyecharts(charts.traffic_area_chart(data["traffic"]), height="350px")
     with col2:
         if "operation" in data:
-            st_pyecharts(charts.operation_dual_line(data["operation"]), height="400px")
+            st_pyecharts(charts.operation_dual_line(data["operation"]), height="350px")
+    with col3:
+        if "growth" in data:
+            st_pyecharts(charts.growth_area_chart(data["growth"]), height="350px")
 
     # ----------------- 2. Structure & Entity -----------------
     st.header("2. Structure & Entity")
@@ -189,6 +192,9 @@ with tab1:
         if "chord" in data:
             st_pyecharts(charts.chord_chart(data["chord"]), height="400px")
 
+    if "hub" in data:
+        st_pyecharts(charts.hub_graph_chart(data["hub"]), height="500px")
+
     # ----------------- 4. Efficiency & Quality -----------------
     st.header("4. Efficiency & Quality")
     c1, c2, c3 = st.columns(3)
@@ -201,6 +207,13 @@ with tab1:
     with c3:
         if "funnel" in data:
             st_pyecharts(charts.funnel_chart(data["funnel"]), height="350px")
+
+    # Full width for control chart
+    if "quality" in data:
+        st.subheader("任务完成质量控制图")
+        quality_options = charts.quality_control_chart(data["quality"])
+        if quality_options:
+            st_echarts(quality_options, height="600px")
 
     if "histogram" in data:
         st_pyecharts(charts.histogram_chart(data["histogram"]), height="300px")

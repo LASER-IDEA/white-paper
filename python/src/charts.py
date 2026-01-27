@@ -113,6 +113,34 @@ def traffic_area_chart(data):
     )
     return c
 
+def growth_area_chart(data):
+    """
+    Growth Momentum Area Chart
+    Shows month-over-month growth rate trend
+    """
+    if not data:
+        return Line()
+    x_data, y_data = zip(*[(d['date'], d['value']) for d in data])
+    c = (
+        Line()
+        .add_xaxis(list(x_data))
+        .add_yaxis(
+            "增长率",
+            list(y_data),
+            is_smooth=True,
+            areastyle_opts=opts.AreaStyleOpts(opacity=0.6, color=COLORS[1]),
+            linestyle_opts=opts.LineStyleOpts(width=2, color=COLORS[1]),
+            label_opts=opts.LabelOpts(is_show=False)
+        )
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="增长动能指数", subtitle="月度增长率趋势"),
+            yaxis_opts=opts.AxisOpts(
+                axislabel_opts=opts.LabelOpts(formatter="{value}%")
+            )
+        )
+    )
+    return c
+
 def operation_dual_line(data):
     """
     Dual Line Chart - Professional implementation inspired by Charts.tsx
@@ -683,6 +711,107 @@ def map_chart(data):
 
     return {"options": options, "map": map_obj}
 
+def hub_graph_chart(data):
+    """
+    Networked Hub Index - Graph Visualization
+    Shows network structure with nodes and links
+    """
+    if not data or "nodes" not in data or "links" not in data:
+        return Graph()
+
+    nodes = data.get("nodes", [])
+    links = data.get("links", [])
+    categories = data.get("categories", [{"name": "Hub"}])
+
+    # Prepare node data with styling
+    node_data = []
+    for node in nodes:
+        node_data.append(
+            opts.GraphNode(
+                name=node.get("name", ""),
+                symbol_size=node.get("symbolSize", 30),
+                value=node.get("value", 0),
+                category=node.get("category", 0)
+            )
+        )
+
+    # Prepare link data
+    link_data = []
+    for link in links:
+        link_data.append(
+            opts.GraphLink(
+                source=link.get("source", ""),
+                target=link.get("target", ""),
+                value=link.get("value", 1)
+            )
+        )
+
+    # Prepare categories
+    category_data = [opts.GraphCategory(name=cat.get("name", "")) for cat in categories]
+
+    c = (
+        Graph()
+        .add(
+            "枢纽网络",
+            node_data,
+            link_data,
+            categories=category_data,
+            layout="force",
+            repulsion=2000,
+            edge_length=[100, 200],
+            is_roam=True,
+            is_draggable=True,
+            label_opts=opts.LabelOpts(
+                is_show=True,
+                position="right",
+                color=CHART_CONFIG['title_color'],
+                font_size=11,
+                font_weight="bold"
+            ),
+            linestyle_opts=opts.LineStyleOpts(
+                color="source",
+                curve=0.3,
+                width=2,
+                opacity=0.6
+            ),
+            itemstyle_opts=opts.ItemStyleOpts(
+                border_color="#fff",
+                border_width=2
+            )
+        )
+        .set_global_opts(
+            title_opts=opts.TitleOpts(
+                title="网络化枢纽结构",
+                subtitle="基于起降点航线网络的连接度与流量",
+                title_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['title_color'],
+                    font_size=CHART_CONFIG['title_font_size'],
+                    font_weight="bold"
+                ),
+                subtitle_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['text_color'],
+                    font_size=12
+                )
+            ),
+            tooltip_opts=opts.TooltipOpts(
+                trigger="item",
+                background_color=CHART_CONFIG['tooltip_bg'],
+                border_color=CHART_CONFIG['tooltip_border'],
+                textstyle_opts=opts.TextStyleOpts(color="#374151")
+            ),
+            legend_opts=opts.LegendOpts(
+                orient="vertical",
+                pos_left="left",
+                pos_top="80px",
+                textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['text_color'],
+                    font_size=12
+                )
+            )
+        )
+    )
+    return c
+
 
 def fallback_map_chart(data):
     """
@@ -823,6 +952,263 @@ def gauge_chart(data):
         .set_global_opts(title_opts=opts.TitleOpts(title="Efficiency Index"))
     )
     return c
+
+def quality_control_chart(data):
+    """
+    Quality Control Chart - Three-in-one visualization
+    Shows: Control Chart + Gauge + Time Series Trend
+    Returns ECharts options for st_echarts
+    """
+    if not data:
+        return None
+
+    latest_tqi = data.get("latestTqi", 92.3)
+    traj_data = data.get("trajData", [])
+    tqi_history = data.get("tqiHistory", [])
+    plan_actual = data.get("planActual", [])
+
+    # Build options dict for st_echarts
+    options = {
+        "title": [
+            {
+                "text": "航迹偏离度控制图",
+                "left": "6%",
+                "top": "2%",
+                "textStyle": {
+                    "fontSize": 13,
+                    "fontWeight": "bold",
+                    "color": CHART_CONFIG['title_color']
+                }
+            },
+            {
+                "text": "任务完成质量指数",
+                "left": "60%",
+                "top": "2%",
+                "textStyle": {
+                    "fontSize": 13,
+                    "fontWeight": "bold",
+                    "color": CHART_CONFIG['title_color']
+                }
+            },
+            {
+                "text": "TQI 历史趋势",
+                "left": "6%",
+                "top": "58%",
+                "textStyle": {
+                    "fontSize": 13,
+                    "fontWeight": "bold",
+                    "color": CHART_CONFIG['title_color']
+                }
+            }
+        ],
+        "grid": [
+            {"id": "g1", "left": "6%", "top": "10%", "width": "42%", "height": "34%"},
+            {"id": "g2", "left": "60%", "top": "10%", "width": "35%", "height": "34%"},
+            {"id": "g3", "left": "6%", "top": "66%", "width": "90%", "height": "28%"}
+        ],
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {"type": "line"},
+            "textStyle": {"fontSize": 11},
+            "padding": 8,
+            "backgroundColor": "rgba(255, 255, 255, 0.95)",
+            "borderColor": "#e5e7eb",
+            "borderWidth": 1
+        },
+        "xAxis": [
+            {
+                "gridIndex": 0,
+                "type": "category",
+                "data": [d.get("time", "") for d in traj_data],
+                "axisLabel": {"fontSize": 9, "color": CHART_CONFIG['text_color'], "rotate": 0},
+                "axisLine": {"show": False},
+                "axisTick": {"show": False}
+            },
+            {
+                "gridIndex": 2,
+                "type": "category",
+                "data": [d.get("time", "") for d in tqi_history],
+                "axisLabel": {"fontSize": 9, "color": CHART_CONFIG['text_color'], "rotate": 0},
+                "axisLine": {"show": False},
+                "axisTick": {"show": False}
+            }
+        ],
+        "yAxis": [
+            {
+                "gridIndex": 0,
+                "type": "value",
+                "name": "偏离度",
+                "nameTextStyle": {"fontSize": 10, "color": CHART_CONFIG['text_color']},
+                "nameGap": 30,
+                "axisLabel": {"fontSize": 9, "color": CHART_CONFIG['text_color']},
+                "axisLine": {"show": False},
+                "splitLine": {"lineStyle": {"color": "#f1f5f9", "type": "dashed"}}
+            },
+            {
+                "gridIndex": 2,
+                "type": "value",
+                "name": "TQI (%)",
+                "nameTextStyle": {"fontSize": 10, "color": CHART_CONFIG['text_color']},
+                "nameGap": 30,
+                "axisLabel": {"fontSize": 9, "color": CHART_CONFIG['text_color']},
+                "axisLine": {"show": False},
+                "splitLine": {"lineStyle": {"color": "#f1f5f9", "type": "dashed"}}
+            }
+        ],
+        "series": [
+            # 1. Trajectory Deviation Control Chart
+            {
+                "name": "航迹偏离度",
+                "type": "line",
+                "xAxisIndex": 0,
+                "yAxisIndex": 0,
+                "data": [d.get("deviation", 0) for d in traj_data],
+                "smooth": False,
+                "lineStyle": {"width": 2, "color": "#0ea5e9"},
+                "itemStyle": {"color": "#0ea5e9"},
+                "markLine": {
+                    "silent": True,
+                    "symbol": "none",
+                    "lineStyle": {"type": "dashed", "width": 1.5},
+                    "data": [
+                        {
+                            "yAxis": traj_data[0].get("ucl", 0.25) if traj_data else 0.25,
+                            "name": "UCL",
+                            "lineStyle": {"color": "#ef4444", "opacity": 0.7},
+                            "label": {"formatter": "UCL", "color": "#ef4444", "fontSize": 9, "distance": 5}
+                        },
+                        {
+                            "yAxis": traj_data[0].get("mean", 0) if traj_data else 0,
+                            "name": "Mean",
+                            "lineStyle": {"color": "#10b981", "opacity": 0.7},
+                            "label": {"formatter": "Mean", "color": "#10b981", "fontSize": 9, "distance": 5}
+                        },
+                        {
+                            "yAxis": traj_data[0].get("lcl", -0.25) if traj_data else -0.25,
+                            "name": "LCL",
+                            "lineStyle": {"color": "#ef4444", "opacity": 0.7},
+                            "label": {"formatter": "LCL", "color": "#ef4444", "fontSize": 9, "distance": 5}
+                        }
+                    ]
+                }
+            },
+            # 2. TQI Gauge
+            {
+                "type": "gauge",
+                "center": ["77%", "27%"],
+                "radius": "35%",
+                "min": 0,
+                "max": 100,
+                "startAngle": 225,
+                "endAngle": -45,
+                "splitNumber": 4,
+                "axisLine": {
+                    "lineStyle": {
+                        "width": 18,
+                        "color": [
+                            [0.6, "#ef4444"],
+                            [0.85, "#f59e0b"],
+                            [1, "#10b981"]
+                        ]
+                    }
+                },
+                "pointer": {
+                    "width": 5,
+                    "length": "65%",
+                    "itemStyle": {"color": CHART_CONFIG['title_color']}
+                },
+                "axisTick": {"show": False},
+                "splitLine": {
+                    "length": 18,
+                    "lineStyle": {"color": "#fff", "width": 2}
+                },
+                "axisLabel": {
+                    "distance": 25,
+                    "color": CHART_CONFIG['text_color'],
+                    "fontSize": 10
+                },
+                "detail": {
+                    "valueAnimation": True,
+                    "formatter": "{value}%",
+                    "color": CHART_CONFIG['title_color'],
+                    "fontSize": 18,
+                    "fontWeight": "bold",
+                    "offsetCenter": [0, "70%"]
+                },
+                "data": [{"value": latest_tqi, "name": "TQI"}]
+            },
+            # 3. TQI History Line
+            {
+                "name": "TQI",
+                "type": "line",
+                "xAxisIndex": 1,
+                "yAxisIndex": 1,
+                "data": [d.get("tqi", 0) for d in tqi_history],
+                "smooth": True,
+                "lineStyle": {"width": 3, "color": "#0ea5e9"},
+                "areaStyle": {
+                    "color": {
+                        "type": "linear",
+                        "x": 0, "y": 0, "x2": 0, "y2": 1,
+                        "colorStops": [
+                            {"offset": 0, "color": "rgba(14, 165, 233, 0.3)"},
+                            {"offset": 1, "color": "rgba(14, 165, 233, 0)"}
+                        ]
+                    }
+                },
+                "itemStyle": {"color": "#0ea5e9"},
+                "markLine": {
+                    "silent": True,
+                    "symbol": "none",
+                    "lineStyle": {"type": "dashed", "width": 1.5},
+                    "data": [
+                        {
+                            "yAxis": tqi_history[0].get("mean", 90) if tqi_history else 90,
+                            "name": "Mean",
+                            "lineStyle": {"color": "#10b981", "opacity": 0.7},
+                            "label": {"formatter": "Mean: {c}%", "color": "#10b981", "fontSize": 9, "distance": 5}
+                        },
+                        {
+                            "yAxis": tqi_history[0].get("ucl", 98) if tqi_history else 98,
+                            "name": "UCL",
+                            "lineStyle": {"color": "#f59e0b", "opacity": 0.7},
+                            "label": {"formatter": "UCL: {c}%", "color": "#f59e0b", "fontSize": 9, "distance": 5}
+                        }
+                    ]
+                }
+            },
+            # 4. Actual Sorties Bar
+            {
+                "name": "实际完成",
+                "type": "bar",
+                "xAxisIndex": 1,
+                "yAxisIndex": 1,
+                "data": [d.get("actual", 0) for d in plan_actual],
+                "barWidth": "30%",
+                "itemStyle": {"color": "rgba(14, 165, 233, 0.6)"},
+                "z": 1
+            },
+            # 5. Planned Sorties Bar
+            {
+                "name": "计划报备",
+                "type": "bar",
+                "xAxisIndex": 1,
+                "yAxisIndex": 1,
+                "data": [d.get("planned", 0) for d in plan_actual],
+                "barWidth": "30%",
+                "itemStyle": {"color": "rgba(100, 116, 139, 0.3)"},
+                "z": 0
+            }
+        ],
+        "legend": {
+            "data": ["TQI", "实际完成", "计划报备"],
+            "bottom": "1%",
+            "left": "center",
+            "textStyle": {"color": CHART_CONFIG['text_color'], "fontSize": 10}
+        }
+    }
+
+    return options
 
 def funnel_chart(data):
     c = (
