@@ -87,9 +87,13 @@ white-paper/
 │   └── figures/              # Generated chart exports
 │       └── index_files/
 │           └── figure-pdf/
+├── scripts/                  # Build and automation scripts
+│   └── generate-pdfs.js      # PDF generation script
 ├── config/                   # Configuration Files
 │   ├── requirements.txt      # Python dependencies
 │   └── .env.example          # Environment template
+├── run_python_app.py         # Convenience script to run Python app
+├── run_web_app.py            # Convenience script to run web app
 ├── .gitignore
 └── README.md
 ```
@@ -126,6 +130,14 @@ cp config/.env.example .env
 ```
 
 #### Running the Application
+
+**Option 1: Using the Convenience Script (Recommended)**
+```bash
+# Run from project root
+python run_python_app.py
+```
+
+**Option 2: Manual Method**
 ```bash
 # Navigate to Python app directory
 cd python
@@ -152,7 +164,19 @@ yarn install
 ```
 
 #### Running the Application
+
+**Option 1: Using the Convenience Script (Recommended)**
 ```bash
+# Run from project root
+python run_web_app.py
+```
+This script automatically detects npm or yarn, installs dependencies if needed, and starts the development server.
+
+**Option 2: Manual Method**
+```bash
+# Navigate to web app directory
+cd web
+
 # Start development server
 npm run dev
 # or
