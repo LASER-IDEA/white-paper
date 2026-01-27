@@ -9,6 +9,7 @@ import llm_helper
 import os
 import re
 import ast
+from pathlib import Path
 
 # Load environment variables
 try:
@@ -118,15 +119,26 @@ if "messages" not in st.session_state:
 with st.sidebar:
     st.header("Data Upload")
 
-    # Download Sample Button
-    data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "sample_flight_data.csv")
-    with open(data_file_path, "rb") as f:
-        st.download_button(
-            label="Download Sample CSV",
-            data=f,
-            file_name="sample_flight_data.csv",
-            mime="text/csv"
-        )
+    # Download Sample Button with safer path handling
+    try:
+        base_path = Path(__file__).parent.parent
+        data_file_path = (base_path / "data" / "sample_flight_data.csv").resolve()
+        
+        # Ensure the path is within the expected directory
+        if not data_file_path.is_relative_to(base_path):
+            st.error("Invalid file path")
+        elif data_file_path.exists():
+            with open(data_file_path, "rb") as f:
+                st.download_button(
+                    label="Download Sample CSV",
+                    data=f,
+                    file_name="sample_flight_data.csv",
+                    mime="text/csv"
+                )
+        else:
+            st.warning("Sample data file not found")
+    except Exception as e:
+        st.error(f"Error loading sample file: {e}")
 
     uploaded_file = st.file_uploader("Upload Flight Data (CSV or JSON)", type=['csv', 'json'])
 

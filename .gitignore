@@ -29,3 +29,16 @@ test/
 .env
 evidence-debug/
 tmp/
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Debug files
+debug-*.png
