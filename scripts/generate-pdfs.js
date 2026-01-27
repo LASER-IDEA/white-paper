@@ -29,8 +29,20 @@ async function generatePDFs() {
 
     // Clean and build with temporary config
     try {
-      execSync('rm -rf dist', { stdio: 'inherit' });
-      execSync('npm run build', { stdio: 'inherit' });
+      // Use spawn for safer command execution
+      const { spawnSync } = require('child_process');
+      
+      // Clean dist directory
+      const rmResult = spawnSync('rm', ['-rf', 'dist'], { stdio: 'inherit' });
+      if (rmResult.error) {
+        throw rmResult.error;
+      }
+      
+      // Build the project
+      const buildResult = spawnSync('npm', ['run', 'build'], { stdio: 'inherit' });
+      if (buildResult.error || buildResult.status !== 0) {
+        throw new Error(`Build failed with status ${buildResult.status}`);
+      }
     } catch (buildError) {
       console.error('Build failed:', buildError);
       // Restore config even if build fails
@@ -60,7 +72,11 @@ async function generatePDFs() {
 
   try {
     console.log('Installing Playwright browsers...');
-    execSync('npx playwright install chromium', { stdio: 'inherit' });
+    const { spawnSync } = require('child_process');
+    const installResult = spawnSync('npx', ['playwright', 'install', 'chromium'], { stdio: 'inherit' });
+    if (installResult.error) {
+      throw installResult.error;
+    }
 
     // Launch browser
     const browser = await chromium.launch({

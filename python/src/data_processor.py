@@ -2,12 +2,19 @@ import pandas as pd
 import numpy as np
 import json
 from datetime import datetime
+from typing import Dict, List, Tuple, Any, Optional
 
-def reconstruct_streamlit_data(ts_data):
+def reconstruct_streamlit_data(ts_data: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Reconstructs the dictionary required by charts_lib from the list of MetricData objects (ts_data).
+    
+    Args:
+        ts_data: List of metric data dictionaries with 'id' and 'chartData' keys
+        
+    Returns:
+        Dictionary mapping chart keys to their data
     """
-    streamlit_data = {}
+    streamlit_data: Dict[str, Any] = {}
 
     # Map ID to key
     # IDs are "01", "02"... etc.

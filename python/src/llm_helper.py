@@ -3,6 +3,7 @@ import json
 import re
 import streamlit as st
 import pandas as pd
+from typing import Tuple, Optional, Any, Dict, Union
 
 # Load environment variables from .env file
 try:
@@ -17,10 +18,16 @@ try:
 except ImportError:
     OpenAI = None
 
-def summarize_data(data):
+def summarize_data(data: Union[Dict, pd.DataFrame, Any]) -> str:
     """
     Creates a summary of the data structure (keys, types, sample values)
     to be efficient for the LLM prompt.
+    
+    Args:
+        data: The data to summarize (can be dict, DataFrame, or other types)
+        
+    Returns:
+        String summary of the data structure
     """
     summary = []
 
@@ -53,10 +60,15 @@ def summarize_data(data):
 
     return "\n".join(summary)
 
-def determine_task_complexity(query):
+def determine_task_complexity(query: str) -> bool:
     """
     Determine if a task requires complex reasoning or is simple.
-    Returns True for complex tasks (use deepseek-reasoner), False for simple tasks (use deepseek-chat).
+    
+    Args:
+        query: The user's query string
+        
+    Returns:
+        True for complex tasks (use deepseek-reasoner), False for simple tasks (use deepseek-chat)
     """
     query_lower = query.lower()
 
@@ -84,21 +96,27 @@ def determine_task_complexity(query):
 
     return False
 
-def get_llm_response(query, data_context, api_key=None, base_url=None, model=None):
+def get_llm_response(
+    query: str, 
+    data_context: Union[Dict, pd.DataFrame], 
+    api_key: Optional[str] = None, 
+    base_url: Optional[str] = None, 
+    model: Optional[str] = None
+) -> Tuple[str, Optional[str]]:
     """
     Interact with the LLM to generate a visualization based on the query and data context.
 
     Args:
-        query (str): The user's question or request.
-        data_context (dict or pd.DataFrame): The available data to work with.
-        api_key (str, optional): OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env.
-        base_url (str, optional): OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env.
-        model (str, optional): Model name to use. If None, auto-selects based on task complexity.
+        query: The user's question or request
+        data_context: The available data to work with (dict or DataFrame)
+        api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
+        base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
+        model: Model name to use. If None, auto-selects based on task complexity
 
     Returns:
-        tuple: (explanation, code)
-        explanation (str): The text response from the LLM.
-        code (str): The generated Python code to create the chart.
+        Tuple of (explanation, code):
+            explanation: The text response from the LLM
+            code: The generated Python code to create the chart (or None)
     """
 
     # Load configuration from .env if not provided
