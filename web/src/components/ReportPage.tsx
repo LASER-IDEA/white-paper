@@ -6,7 +6,7 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
   const isGrowth = data.trend > 0;
   const trendColor = isGrowth ? 'text-low-altitude-green-600' : 'text-red-500';
   const trendIcon = isGrowth ? '↑' : '↓';
-  
+
   return (
     <div className="w-[210mm] h-[297mm] bg-white shadow-2xl mx-auto my-8 p-[15mm] flex flex-col relative page-break overflow-hidden print:shadow-none print:m-0 print:border-none print:w-full print:h-[297mm]">
       {/* 1. Header Area (Top 15%) */}
@@ -33,8 +33,8 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
       </div>
 
       {/* 2. Main Chart Area (Middle 45%) */}
-      <div className="h-[45%] w-full bg-slate-50 rounded-xl p-4 mb-6 border border-slate-100 relative print:bg-white print:border-slate-200">
-         <ChartRenderer type={data.chartType} data={data.chartData} definition={data.definition} title={data.title} />
+      <div className="h-[45%] min-h-[360px] w-full min-w-0 bg-slate-50 rounded-xl p-4 mb-6 border border-slate-100 relative print:bg-white print:border-slate-200">
+         <ChartRenderer type={data.chartType} data={data.chartData} definition={data.definition} />
       </div>
 
       {/* 3. Key Metrics Cards (Middle-Bottom 15%) */}

@@ -707,7 +707,423 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
   );
 };
 
-// 14. 3D Bar (Vertical Airspace)
+// 13b. Graph (Network Hub - Les Miserables style)
+export const NetworkGraph = ({ data }: { data: any }) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+    chartInstance.current = echarts.init(chartRef.current);
+
+    const graph = data || { nodes: [], links: [], categories: [] };
+    const nodes = (graph.nodes || []).map((node: any) => ({
+      ...node,
+      label: { show: (node.symbolSize || 0) > 30 }
+    }));
+
+    const option: echarts.EChartsOption = {
+      title: {
+        text: '网络化枢纽结构',
+        subtext: '基于起降点航线网络的连接度与流量',
+        top: 20,
+        left: 'center',
+        textStyle: {
+          color: '#002FA7',
+          fontSize: 16,
+          fontWeight: 'bold'
+        },
+        subtextStyle: {
+          color: '#64748b',
+          fontSize: 12
+        }
+      },
+      tooltip: {
+        formatter: (params: any) => {
+          if (params.dataType === 'edge') {
+            return `${params.data.source} → ${params.data.target}<br/>流量: ${params.data.value}`;
+          } else {
+            return `${params.data.name}<br/>枢纽度: ${params.data.value}<br/>类别: ${params.data.category !== undefined ? graph.categories[params.data.category]?.name : ''}`;
+          }
+        }
+      },
+      legend: [
+        {
+          orient: 'vertical',
+          left: 20,
+          top: 80,
+          data: (graph.categories || []).map((a: { name: string }) => a.name),
+          textStyle: {
+            color: '#64748b',
+            fontSize: 12
+          }
+        }
+      ],
+      animationDuration: 1500,
+      animationEasingUpdate: 'quinticInOut' as any,
+      series: [
+        {
+          name: 'Network Hub',
+          type: 'graph',
+          legendHoverLink: true,
+          layout: 'force',
+          data: nodes,
+          links: graph.links || [],
+          categories: graph.categories || [],
+          roam: true,
+          force: {
+            repulsion: 200,
+            gravity: 0.1,
+            edgeLength: [100, 200],
+            layoutAnimation: true
+          },
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '{b}',
+            fontSize: 11,
+            color: '#002FA7',
+            fontWeight: 'bold'
+          },
+          itemStyle: {
+            borderColor: '#fff',
+            borderWidth: 2,
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          },
+          lineStyle: {
+            color: 'source',
+            curveness: 0.3,
+            width: 2,
+            opacity: 0.6
+          },
+          emphasis: {
+            focus: 'adjacency',
+            lineStyle: {
+              width: 5,
+              opacity: 0.9
+            },
+            itemStyle: {
+              borderWidth: 3,
+              shadowBlur: 20
+            }
+          }
+        }
+      ]
+    };
+
+    chartInstance.current.setOption(option);
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.dispose();
+      }
+    };
+  }, [data]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartInstance.current) {
+        chartInstance.current.resize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div className="w-full h-full relative bg-white rounded-lg overflow-hidden">
+      <div
+        ref={chartRef}
+        className="w-full h-full"
+        style={{ minHeight: '400px' }}
+      />
+    </div>
+  );
+};
+
+// 14. Quality Control Chart (TQI + Control Chart + Time Series)
+export const QualityControlChart = ({ data }: { data: any }) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+    chartInstance.current = echarts.init(chartRef.current);
+
+    const { latestTqi = 0, trajData = [], tqiHistory = [], planActual = [] } = data || {};
+
+    const option: echarts.EChartsOption = {
+      title: [
+        {
+          text: '航迹偏离度控制图',
+          left: '6%',
+          top: '2%',
+          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+        },
+        {
+          text: '任务完成质量指数',
+          left: '60%',
+          top: '2%',
+          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+        },
+        {
+          text: 'TQI 历史趋势',
+          left: '6%',
+          top: '58%',
+          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+        }
+      ],
+      grid: [
+        { id: 'g1', left: '6%', top: '10%', width: '42%', height: '34%' },   // 控制图
+        { id: 'g2', left: '60%', top: '10%', width: '35%', height: '34%' },  // 仪表盘占位（实际不用）
+        { id: 'g3', left: '6%', top: '66%', width: '90%', height: '28%' }    // TQI 历史
+      ],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'line' },
+        textStyle: { fontSize: 11 },
+        padding: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        borderColor: '#e5e7eb',
+        borderWidth: 1
+      },
+      xAxis: [
+        {
+          gridIndex: 0,
+          type: 'category',
+          data: trajData.map((d: any) => d.time),
+          axisLabel: { fontSize: 9, color: '#64748b', rotate: 0 },
+          axisLine: { show: false },
+          axisTick: { show: false }
+        },
+        {
+          gridIndex: 2,
+          type: 'category',
+          data: tqiHistory.map((d: any) => d.time),
+          axisLabel: { fontSize: 9, color: '#64748b', rotate: 0 },
+          axisLine: { show: false },
+          axisTick: { show: false }
+        }
+      ],
+      yAxis: [
+        {
+          gridIndex: 0,
+          type: 'value',
+          name: '偏离度',
+          nameTextStyle: { fontSize: 10, color: '#64748b' },
+          nameGap: 30,
+          axisLabel: { fontSize: 9, color: '#64748b' },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
+        },
+        {
+          gridIndex: 2,
+          type: 'value',
+          name: 'TQI (%)',
+          nameTextStyle: { fontSize: 10, color: '#64748b' },
+          nameGap: 30,
+          axisLabel: { fontSize: 9, color: '#64748b' },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
+        }
+      ],
+      series: [
+        // 1. 航迹偏离度折线
+        {
+          name: '航迹偏离度',
+          type: 'line',
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          data: trajData.map((d: any) => d.deviation),
+          smooth: false,
+          lineStyle: { width: 2, color: '#0ea5e9' },
+          itemStyle: {
+            color: (params: any) => {
+              const val = trajData[params.dataIndex]?.deviation || 0;
+              const ucl = trajData[params.dataIndex]?.ucl || 0.25;
+              const lcl = trajData[params.dataIndex]?.lcl || -0.25;
+              return (val > ucl || val < lcl) ? '#ef4444' : '#0ea5e9';
+            }
+          },
+          markLine: {
+            silent: true,
+            symbol: 'none',
+            lineStyle: { type: 'dashed', width: 1.5 },
+            data: [
+              {
+                yAxis: trajData[0]?.ucl || 0.25,
+                name: 'UCL',
+                lineStyle: { color: '#ef4444', opacity: 0.7 },
+                label: { formatter: 'UCL', color: '#ef4444', fontSize: 9, distance: 5 }
+              },
+              {
+                yAxis: trajData[0]?.mean || 0,
+                name: 'Mean',
+                lineStyle: { color: '#10b981', opacity: 0.7 },
+                label: { formatter: 'Mean', color: '#10b981', fontSize: 9, distance: 5 }
+              },
+              {
+                yAxis: trajData[0]?.lcl || -0.25,
+                name: 'LCL',
+                lineStyle: { color: '#ef4444', opacity: 0.7 },
+                label: { formatter: 'LCL', color: '#ef4444', fontSize: 9, distance: 5 }
+              }
+            ]
+          },
+          markPoint: {
+            symbol: 'circle',
+            symbolSize: 12,
+            itemStyle: { color: '#ef4444', borderColor: '#fff', borderWidth: 2 },
+            label: { show: false },
+            data: trajData.map((d: any, i: number) => {
+              const isOutOfControl = d.deviation > (d.ucl || 0.25) || d.deviation < (d.lcl || -0.25);
+              return isOutOfControl ? { coord: [i, d.deviation], value: '!' } : null;
+            }).filter((p: any) => p !== null)
+          }
+        },
+        // 2. TQI 仪表盘
+        {
+          type: 'gauge',
+          center: ['77%', '27%'],
+          radius: '40%',
+          min: 0,
+          max: 100,
+          startAngle: 225,
+          endAngle: -45,
+          splitNumber: 4,
+          axisLine: {
+            lineStyle: {
+              width: 18,
+              color: [
+                [0.6, '#ef4444'],
+                [0.85, '#f59e0b'],
+                [1, '#10b981']
+              ]
+            }
+          },
+          pointer: {
+            width: 5,
+            length: '65%',
+            itemStyle: { color: '#002FA7' }
+          },
+          axisTick: { show: false },
+          splitLine: {
+            length: 18,
+            lineStyle: { color: '#fff', width: 2 }
+          },
+          axisLabel: {
+            distance: 25,
+            color: '#64748b',
+            fontSize: 10
+          },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}%',
+            color: '#002FA7',
+            fontSize: 18,
+            fontWeight: 'bold',
+            offsetCenter: [0, '70%']
+          },
+          data: [{ value: latestTqi, name: 'TQI' }]
+        },
+        // 3. TQI 历史趋势
+        {
+          name: 'TQI',
+          type: 'line',
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          data: tqiHistory.map((d: any) => d.tqi),
+          smooth: true,
+          lineStyle: { width: 3, color: '#0ea5e9' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(14, 165, 233, 0.3)' },
+              { offset: 1, color: 'rgba(14, 165, 233, 0)' }
+            ])
+          },
+          itemStyle: { color: '#0ea5e9' },
+          markLine: {
+            silent: true,
+            symbol: 'none',
+            lineStyle: { type: 'dashed', width: 1.5 },
+            data: [
+              {
+                yAxis: tqiHistory[0]?.mean || 90,
+                name: 'Mean',
+                lineStyle: { color: '#10b981', opacity: 0.7 },
+                label: { formatter: 'Mean: {c}%', color: '#10b981', fontSize: 9, distance: 5 }
+              },
+              {
+                yAxis: tqiHistory[0]?.ucl || 98,
+                name: 'UCL',
+                lineStyle: { color: '#f59e0b', opacity: 0.7 },
+                label: { formatter: 'UCL: {c}%', color: '#f59e0b', fontSize: 9, distance: 5 }
+              }
+            ]
+          }
+        },
+        // 4. 计划 vs 实际（柱状图）
+        {
+          name: '实际完成',
+          type: 'bar',
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          data: planActual.map((d: any) => d.actual),
+          barWidth: '30%',
+          itemStyle: { color: 'rgba(14, 165, 233, 0.6)' },
+          z: 1
+        },
+        {
+          name: '计划报备',
+          type: 'bar',
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          data: planActual.map((d: any) => d.planned),
+          barWidth: '30%',
+          itemStyle: { color: 'rgba(100, 116, 139, 0.3)' },
+          z: 0
+        }
+      ],
+      legend: {
+        data: ['TQI', '实际完成', '计划报备'],
+        bottom: '1%',
+        left: 'center',
+        textStyle: { color: '#64748b', fontSize: 10 }
+      }
+    };
+
+    chartInstance.current.setOption(option);
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.dispose();
+      }
+    };
+  }, [data]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartInstance.current) {
+        chartInstance.current.resize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div className="w-full h-full relative bg-white rounded-lg overflow-hidden">
+      <div
+        ref={chartRef}
+        className="w-full h-full"
+        style={{ minHeight: '550px' }}
+      />
+    </div>
+  );
+};
+
+// 15. 3D Bar (Vertical Airspace)
 export const AirspaceBarChart = ({ data }: { data: any[] }) => (
   <ResponsiveContainer width="100%" height="100%">
     <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
@@ -1034,7 +1450,7 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 export const ChartRenderer = ({ type, data, definition, title }: { type: string, data: any, definition?: string, title?: string }) => {
     // Add a subtle info icon if definition is present
     const Container = ({ children }: { children: React.ReactNode }) => (
-      <div className="w-full h-full relative" role="figure" aria-label={title ? `${title} 统计图` : "统计图"}>
+      <div className="w-full h-full min-h-[280px] min-w-0 relative">
          {children}
          {definition && (
            <div className="absolute top-2 right-2 z-20 flex flex-col items-end group">
@@ -1077,6 +1493,8 @@ export const ChartRenderer = ({ type, data, definition, title }: { type: string,
         case 'Funnel': ChartComponent = <MissionFunnelChart data={data} />; break;
         case 'Histogram': ChartComponent = <CoverageHistogram data={data} />; break;
         case 'Chord': ChartComponent = <ChordDiagram data={data} />; break;
+        case 'Graph': ChartComponent = <NetworkGraph data={data} />; break;
+        case 'ControlChart': ChartComponent = <QualityControlChart data={data} />; break;
         case '3DBar': ChartComponent = <AirspaceBarChart data={data} />; break;
         case 'Calendar': ChartComponent = <CalendarHeatmap data={data} />; break;
         case 'Wave': ChartComponent = <NightWaveChart data={data} />; break;

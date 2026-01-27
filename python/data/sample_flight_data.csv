@@ -1,501 +1,501 @@
-date,time,region,duration,distance,entity,aircraft_type,aircraft_model,purpose,sn,altitude,start_region,end_region
-2023-03-31,23:15:00,Baoan,110,24.171528495652392,Company E,MultiRotor,M300,Logistics,SN1046,206,Baoan,Luohu
-2023-06-13,01:47:00,Luohu,117,26.43161624831558,Company C,Helicopter,P100,Personal,SN1044,82,Luohu,Baoan
-2023-01-02,15:21:00,Futian,105,7.345831852527264,Company S,MultiRotor,Autel Alpha,Inspection,SN1034,64,Nanshan,Baoan
-2023-07-11,12:15:00,Futian,13,10.621162969651277,Company N,MultiRotor,Dragonfish,Surveying,SN1002,355,Baoan,Yantian
-2023-05-18,15:28:00,Nanshan,65,38.58709503106431,Company H,Helicopter,P100,Logistics,SN1000,167,Dapeng,Longhua
-2023-01-09,14:59:00,Guangming,71,47.72020590104392,Company A,Helicopter,Mavic 3,Emergency,SN1026,345,Guangming,Nanshan
-2023-09-13,10:44:00,Luohu,77,6.11681182985716,Company N,MultiRotor,Autel Alpha,Emergency,SN1047,137,Longgang,Futian
-2023-03-25,02:02:00,Baoan,115,3.1834143560094295,Company N,FixedWing,Mavic 3,Logistics,SN1016,392,Baoan,Longgang
-2023-01-06,12:23:00,Nanshan,40,21.958698022261242,Company R,FixedWing,Mavic 3,Logistics,SN1046,462,Dapeng,Dapeng
-2023-03-13,10:14:00,Pingshan,21,38.09687584486956,Company P,Helicopter,Autel Alpha,Inspection,SN1028,406,Yantian,Longhua
-2023-05-16,07:03:00,Longgang,92,20.17295552362767,Company T,FixedWing,M300,Personal,SN1043,367,Luohu,Futian
-2023-03-21,07:47:00,Nanshan,96,31.226419053438182,Company L,MultiRotor,P100,Emergency,SN1000,276,Luohu,Pingshan
-2023-01-07,02:45:00,Futian,30,26.952145602880215,Company L,FixedWing,Dragonfish,Personal,SN1030,434,Dapeng,Pingshan
-2023-01-03,21:16:00,Luohu,65,13.451421731943299,Company B,Helicopter,Autel Alpha,Logistics,SN1049,277,Luohu,Nanshan
-2023-02-09,13:35:00,Longhua,117,30.61970646103399,Company N,FixedWing,Mavic 3,Personal,SN1004,320,Nanshan,Yantian
-2023-05-12,08:28:00,Yantian,32,1.2560672990906578,Company T,Helicopter,M300,Inspection,SN1011,232,Futian,Longgang
-2023-08-01,20:15:00,Baoan,100,24.32279406076522,Company S,Helicopter,M300,Emergency,SN1013,184,Yantian,Futian
-2023-04-05,14:56:00,Luohu,17,10.340574720224133,Company T,Helicopter,Dragonfish,Emergency,SN1013,130,Yantian,Pingshan
-2023-12-02,19:29:00,Nanshan,50,47.913749973099456,Company T,Helicopter,P100,Personal,SN1049,120,Baoan,Pingshan
-2023-06-24,11:04:00,Longhua,83,49.042643170164844,Company B,Helicopter,M300,Surveying,SN1007,111,Pingshan,Dapeng
-2023-09-20,17:57:00,Pingshan,112,36.2857662486432,Company O,FixedWing,Autel Alpha,Logistics,SN1006,457,Futian,Yantian
-2023-08-23,02:09:00,Dapeng,108,17.276579213461453,Company P,MultiRotor,Dragonfish,Personal,SN1045,72,Nanshan,Longgang
-2023-11-21,06:19:00,Longgang,24,42.77323288037487,Company S,FixedWing,Mavic 3,Logistics,SN1043,312,Baoan,Baoan
-2023-01-25,11:43:00,Pingshan,44,42.43827479300095,Company N,Helicopter,M300,Emergency,SN1037,100,Dapeng,Futian
-2023-01-09,20:05:00,Futian,114,39.8879065192769,Company F,FixedWing,Dragonfish,Surveying,SN1031,205,Guangming,Dapeng
-2023-02-20,08:09:00,Pingshan,107,6.6010271405603005,Company A,Helicopter,Dragonfish,Surveying,SN1006,353,Yantian,Yantian
-2023-10-05,10:34:00,Guangming,98,23.67070392647613,Company M,FixedWing,Mavic 3,Logistics,SN1014,307,Baoan,Nanshan
-2023-04-01,21:17:00,Yantian,28,37.93719778464123,Company N,Helicopter,Autel Alpha,Surveying,SN1013,86,Futian,Longgang
-2023-02-16,07:33:00,Yantian,45,45.83262104351635,Company L,MultiRotor,M300,Surveying,SN1035,344,Baoan,Yantian
-2023-04-04,23:37:00,Longhua,8,8.085170897992498,Company I,Helicopter,M300,Surveying,SN1045,84,Futian,Pingshan
-2023-03-27,09:02:00,Guangming,59,36.35954278051884,Company A,Helicopter,Dragonfish,Surveying,SN1035,198,Luohu,Guangming
-2023-02-24,21:20:00,Futian,111,24.787863755107786,Company B,Helicopter,Autel Alpha,Personal,SN1049,69,Longgang,Longgang
-2023-04-02,09:07:00,Baoan,49,10.298401072801802,Company B,FixedWing,Dragonfish,Surveying,SN1035,346,Luohu,Futian
-2023-11-28,20:03:00,Longhua,70,11.244521147004484,Company J,Helicopter,Dragonfish,Personal,SN1037,452,Pingshan,Longgang
-2023-07-11,13:39:00,Guangming,5,37.301719688074826,Company S,Helicopter,M300,Logistics,SN1022,77,Luohu,Dapeng
-2023-04-22,23:37:00,Pingshan,22,16.521399132411563,Company K,MultiRotor,Autel Alpha,Emergency,SN1042,350,Futian,Longgang
-2023-10-29,17:13:00,Luohu,6,26.86083492943249,Company H,FixedWing,Dragonfish,Personal,SN1024,103,Guangming,Longhua
-2023-11-24,09:08:00,Guangming,61,22.708676898397286,Company Q,Helicopter,Dragonfish,Emergency,SN1044,137,Luohu,Longgang
-2023-08-20,13:27:00,Luohu,87,16.380794500091362,Company P,FixedWing,Dragonfish,Surveying,SN1035,349,Futian,Dapeng
-2023-03-24,21:54:00,Futian,36,34.261559139590375,Company C,Helicopter,Mavic 3,Surveying,SN1027,176,Longgang,Nanshan
-2023-03-24,04:41:00,Dapeng,88,4.877400936899263,Company M,MultiRotor,Mavic 3,Emergency,SN1043,202,Longhua,Yantian
-2023-05-13,11:53:00,Nanshan,71,7.6235384560632005,Company I,MultiRotor,Dragonfish,Surveying,SN1016,117,Pingshan,Yantian
-2023-03-21,14:02:00,Guangming,98,42.09181455643208,Company I,FixedWing,M300,Emergency,SN1037,102,Baoan,Longhua
-2023-01-10,20:03:00,Longgang,72,17.628012925994838,Company I,MultiRotor,M300,Emergency,SN1000,426,Dapeng,Dapeng
-2023-10-10,04:17:00,Guangming,36,27.080713632522222,Company J,Helicopter,Autel Alpha,Personal,SN1006,75,Nanshan,Pingshan
-2023-08-07,10:47:00,Longhua,22,49.17825651716921,Company N,Helicopter,Dragonfish,Personal,SN1006,50,Baoan,Baoan
-2023-05-24,23:41:00,Dapeng,25,16.359227283272972,Company M,Helicopter,P100,Emergency,SN1030,86,Luohu,Guangming
-2023-04-24,21:42:00,Baoan,25,30.051309681843886,Company P,FixedWing,Mavic 3,Surveying,SN1044,371,Guangming,Dapeng
-2023-01-04,18:41:00,Nanshan,8,24.17685000167059,Company R,MultiRotor,P100,Emergency,SN1039,70,Longgang,Dapeng
-2023-12-06,05:40:00,Baoan,49,30.17448764137882,Company N,MultiRotor,P100,Logistics,SN1000,443,Baoan,Futian
-2023-07-29,22:59:00,Luohu,27,31.279093510607197,Company O,Helicopter,M300,Personal,SN1018,458,Yantian,Guangming
-2023-09-03,13:14:00,Pingshan,113,5.017830166342957,Company E,MultiRotor,P100,Personal,SN1043,476,Longhua,Futian
-2023-02-04,06:08:00,Futian,113,49.584424434676116,Company H,MultiRotor,Dragonfish,Emergency,SN1034,461,Guangming,Guangming
-2023-04-19,16:54:00,Baoan,63,31.914069416970715,Company G,MultiRotor,M300,Emergency,SN1014,132,Luohu,Longgang
-2023-01-28,01:22:00,Luohu,91,10.201015736214355,Company Q,MultiRotor,Dragonfish,Surveying,SN1048,122,Luohu,Nanshan
-2023-09-07,23:34:00,Nanshan,99,28.803789215225652,Company K,FixedWing,P100,Personal,SN1027,294,Nanshan,Dapeng
-2023-12-04,04:19:00,Dapeng,43,4.2839738736231805,Company B,Helicopter,P100,Personal,SN1044,259,Guangming,Nanshan
-2023-01-15,09:43:00,Guangming,17,40.76710022393373,Company P,FixedWing,Dragonfish,Personal,SN1021,91,Baoan,Longgang
-2023-07-15,12:01:00,Longgang,5,32.40657796244702,Company E,FixedWing,Mavic 3,Surveying,SN1043,158,Futian,Nanshan
-2023-03-25,07:07:00,Nanshan,72,28.434760098584857,Company F,Helicopter,Dragonfish,Emergency,SN1039,409,Longhua,Guangming
-2023-08-16,20:04:00,Baoan,55,4.949851839001159,Company T,Helicopter,Dragonfish,Emergency,SN1021,307,Longhua,Futian
-2023-12-16,02:35:00,Longgang,106,22.927488882006273,Company E,Helicopter,P100,Logistics,SN1037,211,Longgang,Pingshan
-2023-10-15,11:13:00,Guangming,37,28.982538606887847,Company P,Helicopter,M300,Emergency,SN1031,373,Yantian,Yantian
-2023-01-18,16:19:00,Guangming,109,42.53327177882943,Company L,FixedWing,Autel Alpha,Logistics,SN1042,425,Longhua,Guangming
-2023-11-15,13:29:00,Nanshan,35,48.55408489341332,Company A,Helicopter,Mavic 3,Surveying,SN1007,485,Baoan,Dapeng
-2023-07-19,01:57:00,Yantian,65,25.54244499067325,Company B,Helicopter,M300,Inspection,SN1024,499,Longgang,Nanshan
-2023-09-09,09:00:00,Longhua,44,11.48888934946794,Company O,FixedWing,M300,Personal,SN1049,103,Dapeng,Dapeng
-2023-05-06,06:58:00,Yantian,62,28.839634269374642,Company R,MultiRotor,M300,Logistics,SN1040,247,Nanshan,Baoan
-2023-04-23,04:38:00,Luohu,47,20.80714773901204,Company F,MultiRotor,Dragonfish,Logistics,SN1047,410,Longhua,Longgang
-2023-05-15,23:50:00,Luohu,26,23.82596887407754,Company L,MultiRotor,Dragonfish,Surveying,SN1038,462,Futian,Nanshan
-2023-04-30,04:39:00,Pingshan,17,20.314901951303117,Company S,FixedWing,Autel Alpha,Personal,SN1048,112,Longhua,Yantian
-2023-09-15,02:34:00,Yantian,99,30.848192427578677,Company P,MultiRotor,P100,Surveying,SN1000,389,Luohu,Longhua
-2023-11-23,06:17:00,Pingshan,84,41.92571746865992,Company Q,Helicopter,P100,Emergency,SN1044,461,Longhua,Futian
-2023-07-13,21:09:00,Pingshan,43,45.64523424057352,Company C,FixedWing,Mavic 3,Logistics,SN1036,234,Dapeng,Longgang
-2023-03-18,17:44:00,Guangming,14,16.121415780526362,Company I,Helicopter,Mavic 3,Surveying,SN1036,92,Longgang,Baoan
-2023-10-22,21:36:00,Guangming,7,4.704046616001494,Company P,Helicopter,Mavic 3,Inspection,SN1013,51,Longhua,Nanshan
-2023-10-07,01:21:00,Dapeng,36,29.068936277973666,Company F,MultiRotor,Dragonfish,Emergency,SN1030,393,Futian,Guangming
-2023-01-13,06:44:00,Baoan,115,43.71397480652679,Company N,MultiRotor,Dragonfish,Inspection,SN1001,354,Nanshan,Dapeng
-2023-11-28,15:45:00,Guangming,105,17.51409817612688,Company Q,Helicopter,P100,Personal,SN1049,59,Pingshan,Luohu
-2023-02-19,17:11:00,Longhua,84,37.63948122604915,Company F,MultiRotor,P100,Personal,SN1039,455,Longgang,Yantian
-2023-08-07,19:26:00,Pingshan,103,18.433108112922447,Company S,FixedWing,Mavic 3,Logistics,SN1020,410,Dapeng,Longhua
-2023-07-01,15:09:00,Pingshan,110,24.991463919727465,Company C,MultiRotor,P100,Inspection,SN1044,473,Baoan,Luohu
-2023-07-05,21:27:00,Longhua,71,12.575874896374529,Company E,Helicopter,M300,Inspection,SN1013,474,Baoan,Pingshan
-2023-09-03,23:44:00,Luohu,112,41.393866860027515,Company O,MultiRotor,M300,Emergency,SN1003,322,Yantian,Nanshan
-2023-09-27,04:33:00,Guangming,27,9.528204971292505,Company N,FixedWing,Autel Alpha,Personal,SN1017,92,Luohu,Longhua
-2023-12-28,12:31:00,Baoan,9,36.811972001267414,Company F,Helicopter,P100,Logistics,SN1041,326,Dapeng,Longhua
-2023-09-25,03:35:00,Pingshan,36,31.824934011106375,Company M,Helicopter,M300,Emergency,SN1039,332,Dapeng,Pingshan
-2023-06-12,16:47:00,Futian,108,44.50269846120956,Company D,MultiRotor,P100,Personal,SN1011,116,Nanshan,Longgang
-2023-03-20,14:30:00,Nanshan,66,20.29438169528053,Company S,Helicopter,Mavic 3,Surveying,SN1031,68,Luohu,Yantian
-2023-08-11,02:01:00,Dapeng,60,24.715988258677758,Company I,Helicopter,Mavic 3,Inspection,SN1035,229,Dapeng,Guangming
-2023-08-02,10:28:00,Nanshan,47,4.564473322844887,Company H,FixedWing,M300,Logistics,SN1032,395,Pingshan,Baoan
-2023-01-17,23:22:00,Futian,41,33.15885237833582,Company N,Helicopter,M300,Surveying,SN1016,455,Yantian,Guangming
-2023-10-04,08:31:00,Futian,31,8.43411209097793,Company Q,FixedWing,Mavic 3,Logistics,SN1027,120,Futian,Dapeng
-2023-01-31,11:37:00,Futian,20,1.277102868599242,Company T,Helicopter,P100,Emergency,SN1002,295,Dapeng,Guangming
-2023-04-23,03:35:00,Luohu,8,30.412155705328946,Company J,Helicopter,P100,Emergency,SN1036,314,Longhua,Yantian
-2023-04-16,14:37:00,Baoan,113,6.505552903514797,Company C,Helicopter,Mavic 3,Emergency,SN1031,74,Futian,Luohu
-2023-06-13,00:47:00,Futian,98,31.978924591693936,Company Q,MultiRotor,P100,Surveying,SN1035,425,Dapeng,Nanshan
-2023-07-29,12:39:00,Nanshan,118,10.92071187388323,Company S,Helicopter,M300,Emergency,SN1006,121,Futian,Futian
-2023-12-24,12:33:00,Pingshan,77,25.714752308380287,Company R,MultiRotor,M300,Emergency,SN1019,90,Guangming,Longgang
-2023-11-02,11:22:00,Luohu,118,37.63587344859929,Company G,MultiRotor,Dragonfish,Inspection,SN1009,189,Futian,Luohu
-2023-11-10,18:03:00,Longgang,70,41.81991878350032,Company B,MultiRotor,M300,Personal,SN1048,170,Pingshan,Pingshan
-2023-09-03,23:07:00,Guangming,59,3.651577069802416,Company C,FixedWing,Mavic 3,Inspection,SN1030,74,Pingshan,Yantian
-2023-11-30,02:30:00,Luohu,91,25.37435786537004,Company E,Helicopter,M300,Personal,SN1036,51,Nanshan,Longgang
-2023-10-11,13:10:00,Yantian,72,31.82829330470301,Company R,FixedWing,Mavic 3,Emergency,SN1020,221,Luohu,Guangming
-2023-07-25,23:01:00,Luohu,102,32.15369845051624,Company Q,MultiRotor,P100,Logistics,SN1002,228,Dapeng,Guangming
-2023-02-09,00:48:00,Futian,114,25.615196403074876,Company M,Helicopter,Dragonfish,Emergency,SN1024,283,Futian,Longgang
-2023-06-01,09:38:00,Yantian,87,46.23236760817444,Company A,MultiRotor,Mavic 3,Emergency,SN1039,389,Guangming,Dapeng
-2023-10-05,04:55:00,Baoan,71,21.184215550954136,Company R,FixedWing,M300,Surveying,SN1022,178,Dapeng,Pingshan
-2023-06-07,09:16:00,Yantian,29,8.002078826721807,Company O,Helicopter,Dragonfish,Surveying,SN1010,155,Dapeng,Yantian
-2023-07-19,05:27:00,Longgang,24,43.58413113026141,Company M,Helicopter,Mavic 3,Surveying,SN1040,299,Longgang,Futian
-2023-01-09,00:46:00,Futian,61,26.1932788624636,Company I,Helicopter,Autel Alpha,Surveying,SN1045,450,Baoan,Baoan
-2023-09-26,04:26:00,Longgang,85,18.792496792516978,Company L,MultiRotor,M300,Emergency,SN1024,496,Pingshan,Pingshan
-2023-04-13,09:31:00,Futian,57,48.7175340874684,Company Q,FixedWing,M300,Logistics,SN1040,107,Longgang,Longhua
-2023-01-14,11:30:00,Baoan,16,16.358606125625492,Company G,MultiRotor,Dragonfish,Personal,SN1029,449,Futian,Futian
-2023-02-27,22:42:00,Baoan,38,47.37495586265071,Company P,MultiRotor,Autel Alpha,Surveying,SN1036,400,Guangming,Nanshan
-2023-10-24,15:50:00,Luohu,117,47.98739640694734,Company T,FixedWing,Dragonfish,Surveying,SN1041,158,Luohu,Guangming
-2023-09-22,17:27:00,Yantian,85,23.80593861544972,Company H,MultiRotor,Mavic 3,Inspection,SN1008,253,Baoan,Longgang
-2023-12-14,21:44:00,Longhua,11,29.37947903335795,Company O,FixedWing,P100,Surveying,SN1009,56,Yantian,Futian
-2023-12-06,09:02:00,Dapeng,13,40.51464988382818,Company P,FixedWing,M300,Inspection,SN1038,405,Longhua,Longhua
-2023-12-22,03:26:00,Baoan,108,13.428781914538847,Company C,FixedWing,P100,Logistics,SN1021,309,Futian,Luohu
-2023-08-09,01:10:00,Baoan,34,44.16304931855754,Company D,MultiRotor,M300,Personal,SN1014,144,Dapeng,Baoan
-2023-12-18,20:29:00,Dapeng,70,17.487853682991137,Company A,Helicopter,M300,Logistics,SN1000,360,Yantian,Luohu
-2023-06-17,22:57:00,Dapeng,17,36.51984774941928,Company I,FixedWing,Autel Alpha,Emergency,SN1038,468,Guangming,Baoan
-2023-08-19,20:22:00,Longgang,104,44.15267619578237,Company E,FixedWing,Dragonfish,Emergency,SN1017,65,Nanshan,Pingshan
-2023-05-26,18:37:00,Guangming,13,13.240283014657857,Company E,MultiRotor,P100,Emergency,SN1004,208,Yantian,Nanshan
-2023-09-29,04:53:00,Guangming,34,4.648091970169355,Company E,FixedWing,Dragonfish,Inspection,SN1015,63,Nanshan,Longhua
-2023-05-24,15:54:00,Longhua,117,25.59767722095055,Company D,Helicopter,Autel Alpha,Inspection,SN1042,161,Nanshan,Dapeng
-2023-11-28,21:41:00,Dapeng,55,40.719728170496204,Company M,FixedWing,P100,Surveying,SN1033,146,Luohu,Luohu
-2023-03-05,17:23:00,Futian,51,1.0485533054827894,Company P,FixedWing,P100,Inspection,SN1035,450,Longgang,Longgang
-2023-10-01,16:48:00,Longgang,20,4.42077279933862,Company H,FixedWing,Mavic 3,Personal,SN1000,309,Futian,Pingshan
-2023-04-10,07:11:00,Yantian,118,23.096743184654258,Company L,Helicopter,Dragonfish,Logistics,SN1016,73,Longgang,Nanshan
-2023-09-12,06:00:00,Longgang,105,30.687769789331877,Company S,Helicopter,P100,Surveying,SN1002,246,Dapeng,Yantian
-2023-12-22,17:30:00,Luohu,49,11.3186436782311,Company J,FixedWing,Mavic 3,Emergency,SN1009,293,Guangming,Baoan
-2023-12-23,18:44:00,Longgang,9,23.7484070034393,Company G,Helicopter,M300,Personal,SN1020,469,Dapeng,Pingshan
-2023-11-05,22:43:00,Longgang,117,2.128340713201935,Company A,Helicopter,M300,Inspection,SN1033,191,Dapeng,Baoan
-2023-12-26,13:04:00,Pingshan,81,17.822010052883478,Company G,FixedWing,M300,Inspection,SN1039,338,Guangming,Luohu
-2023-09-04,19:28:00,Futian,43,46.14290598723426,Company F,FixedWing,M300,Surveying,SN1018,108,Guangming,Nanshan
-2023-02-11,22:26:00,Longhua,113,40.71482448226455,Company M,FixedWing,M300,Emergency,SN1046,375,Pingshan,Nanshan
-2023-12-07,16:06:00,Futian,99,6.603715979680925,Company T,FixedWing,M300,Personal,SN1038,285,Longhua,Dapeng
-2023-10-29,03:15:00,Nanshan,88,38.42417165514302,Company I,FixedWing,P100,Surveying,SN1008,251,Guangming,Luohu
-2023-04-10,17:14:00,Nanshan,86,32.206619072447175,Company Q,MultiRotor,M300,Inspection,SN1007,82,Futian,Pingshan
-2023-09-03,20:46:00,Longhua,37,44.79495526254944,Company L,FixedWing,Mavic 3,Logistics,SN1039,316,Longhua,Yantian
-2023-02-12,03:38:00,Nanshan,17,20.009878874021684,Company H,Helicopter,M300,Personal,SN1009,408,Longgang,Nanshan
-2023-10-12,17:41:00,Pingshan,43,27.85365904874221,Company J,FixedWing,Dragonfish,Emergency,SN1022,425,Guangming,Luohu
-2023-12-31,16:20:00,Baoan,114,7.205185150820305,Company C,FixedWing,Dragonfish,Surveying,SN1044,411,Guangming,Yantian
-2023-07-19,10:39:00,Luohu,64,12.10927635840451,Company K,Helicopter,Autel Alpha,Surveying,SN1036,284,Dapeng,Longhua
-2023-08-17,04:30:00,Dapeng,31,34.885340210104175,Company F,MultiRotor,P100,Personal,SN1005,301,Yantian,Futian
-2023-02-01,15:03:00,Longgang,8,10.989170849727678,Company B,MultiRotor,Autel Alpha,Inspection,SN1021,263,Longhua,Baoan
-2023-07-19,17:25:00,Longhua,23,45.74188650815588,Company D,Helicopter,P100,Emergency,SN1003,365,Pingshan,Guangming
-2023-11-14,02:55:00,Guangming,20,5.324981681250296,Company M,MultiRotor,Autel Alpha,Personal,SN1007,222,Guangming,Nanshan
-2023-01-12,06:39:00,Luohu,5,7.470485446223513,Company K,Helicopter,M300,Emergency,SN1046,76,Baoan,Futian
-2023-12-13,17:44:00,Guangming,37,41.88187159006899,Company G,FixedWing,M300,Inspection,SN1031,462,Longhua,Longgang
-2023-01-06,10:48:00,Futian,99,1.6849272132532687,Company K,Helicopter,M300,Logistics,SN1049,387,Longgang,Guangming
-2023-10-03,13:17:00,Nanshan,40,27.7481908504487,Company F,Helicopter,P100,Emergency,SN1040,421,Baoan,Baoan
-2023-12-07,02:02:00,Guangming,46,36.21220829223618,Company L,Helicopter,Autel Alpha,Emergency,SN1012,488,Guangming,Longgang
-2023-01-06,07:50:00,Longgang,46,41.53901667992749,Company L,FixedWing,Mavic 3,Personal,SN1015,480,Guangming,Longgang
-2023-01-08,13:53:00,Longgang,114,37.52814438301845,Company N,MultiRotor,M300,Surveying,SN1010,496,Yantian,Yantian
-2023-07-16,18:53:00,Dapeng,119,7.758356879453968,Company G,MultiRotor,Mavic 3,Logistics,SN1029,233,Guangming,Longhua
-2023-01-18,03:43:00,Pingshan,6,8.931992377320128,Company J,MultiRotor,Mavic 3,Personal,SN1036,459,Yantian,Longhua
-2023-10-03,04:30:00,Nanshan,85,14.469220804220187,Company G,MultiRotor,Autel Alpha,Logistics,SN1046,170,Longgang,Nanshan
-2023-11-01,14:17:00,Longhua,40,1.1734909432497802,Company N,FixedWing,Dragonfish,Surveying,SN1017,199,Longhua,Luohu
-2023-04-15,10:51:00,Luohu,27,14.57053811609264,Company B,Helicopter,P100,Emergency,SN1032,190,Guangming,Longhua
-2023-08-04,11:39:00,Pingshan,57,35.10242862135737,Company J,FixedWing,P100,Personal,SN1003,489,Guangming,Pingshan
-2023-03-11,01:25:00,Luohu,31,22.27971373070039,Company O,FixedWing,Autel Alpha,Emergency,SN1028,484,Luohu,Yantian
-2023-08-25,06:52:00,Luohu,62,33.9282128254924,Company Q,Helicopter,Dragonfish,Inspection,SN1017,276,Longhua,Nanshan
-2023-12-07,11:54:00,Guangming,28,7.585544034616981,Company H,MultiRotor,Autel Alpha,Personal,SN1013,402,Nanshan,Longhua
-2023-09-03,21:34:00,Pingshan,27,4.855738022246024,Company I,Helicopter,Mavic 3,Inspection,SN1005,261,Dapeng,Guangming
-2023-10-12,15:33:00,Longhua,46,23.102847697565597,Company J,FixedWing,P100,Logistics,SN1031,253,Dapeng,Guangming
-2023-06-06,20:15:00,Nanshan,40,3.5082359320101997,Company C,Helicopter,M300,Surveying,SN1025,498,Futian,Dapeng
-2023-07-14,01:21:00,Nanshan,11,35.04004232413362,Company F,FixedWing,Mavic 3,Logistics,SN1017,171,Futian,Pingshan
-2023-09-04,00:10:00,Luohu,66,11.57961930283098,Company D,Helicopter,Mavic 3,Emergency,SN1044,178,Baoan,Guangming
-2023-07-28,10:10:00,Nanshan,107,25.322497010124298,Company D,FixedWing,Autel Alpha,Logistics,SN1014,472,Guangming,Dapeng
-2023-06-01,13:06:00,Longhua,52,16.013288793806986,Company M,MultiRotor,M300,Personal,SN1039,443,Longgang,Baoan
-2023-09-15,23:13:00,Pingshan,41,47.73990848168752,Company A,FixedWing,Mavic 3,Surveying,SN1004,274,Dapeng,Luohu
-2023-07-13,03:53:00,Futian,63,6.061330236767971,Company A,MultiRotor,M300,Surveying,SN1014,53,Guangming,Baoan
-2023-12-10,09:54:00,Guangming,61,19.68633634571099,Company E,FixedWing,Autel Alpha,Personal,SN1011,442,Yantian,Luohu
-2023-04-06,17:36:00,Futian,104,19.742312744862883,Company G,Helicopter,Autel Alpha,Inspection,SN1026,161,Baoan,Luohu
-2023-12-18,08:13:00,Yantian,30,38.50039705690781,Company P,MultiRotor,P100,Emergency,SN1015,204,Futian,Nanshan
-2023-01-06,14:36:00,Dapeng,61,38.85841986414823,Company D,MultiRotor,P100,Personal,SN1004,184,Nanshan,Luohu
-2023-01-03,08:15:00,Longgang,107,29.78248890755188,Company B,MultiRotor,Dragonfish,Surveying,SN1033,424,Futian,Luohu
-2023-06-03,22:38:00,Pingshan,20,44.27267959557013,Company O,Helicopter,Dragonfish,Logistics,SN1003,421,Luohu,Luohu
-2023-09-02,04:57:00,Baoan,118,19.144090329470426,Company N,Helicopter,Dragonfish,Emergency,SN1005,274,Pingshan,Luohu
-2023-01-31,18:25:00,Guangming,39,45.6756712679133,Company M,FixedWing,Mavic 3,Personal,SN1015,474,Yantian,Yantian
-2023-02-23,13:32:00,Longhua,37,24.84820579680165,Company M,MultiRotor,M300,Logistics,SN1042,80,Longgang,Longhua
-2023-02-03,17:57:00,Futian,60,26.357780898316268,Company I,FixedWing,Autel Alpha,Inspection,SN1041,190,Baoan,Nanshan
-2023-06-28,22:25:00,Longhua,119,46.12256042637812,Company L,MultiRotor,M300,Logistics,SN1012,393,Guangming,Baoan
-2023-02-27,22:20:00,Baoan,54,10.858152159579245,Company M,MultiRotor,Dragonfish,Logistics,SN1000,403,Longgang,Yantian
-2023-02-07,09:03:00,Longgang,23,44.67557576990077,Company Q,MultiRotor,Mavic 3,Logistics,SN1037,203,Nanshan,Guangming
-2023-02-20,01:42:00,Yantian,107,36.23009600445325,Company E,FixedWing,Autel Alpha,Inspection,SN1040,484,Guangming,Baoan
-2023-06-19,07:38:00,Luohu,101,41.04135642907142,Company E,Helicopter,M300,Personal,SN1037,265,Longgang,Yantian
-2023-07-15,22:37:00,Longgang,102,35.461755176624045,Company S,Helicopter,P100,Personal,SN1046,156,Guangming,Longhua
-2023-12-26,06:49:00,Futian,31,24.067760341060954,Company H,FixedWing,P100,Surveying,SN1023,483,Longhua,Guangming
-2023-01-03,09:18:00,Guangming,55,6.839511792953235,Company D,MultiRotor,P100,Surveying,SN1043,349,Dapeng,Futian
-2023-04-25,12:51:00,Guangming,103,43.84944404730799,Company J,FixedWing,Mavic 3,Inspection,SN1018,280,Pingshan,Pingshan
-2023-05-21,11:05:00,Yantian,98,38.360897850371835,Company R,FixedWing,Mavic 3,Personal,SN1033,114,Longgang,Guangming
-2023-11-08,08:52:00,Futian,32,38.72517275311663,Company I,FixedWing,M300,Logistics,SN1006,238,Pingshan,Nanshan
-2023-05-15,11:30:00,Pingshan,56,31.61672998889064,Company T,Helicopter,Dragonfish,Surveying,SN1048,193,Nanshan,Longgang
-2023-09-17,17:35:00,Luohu,26,4.7332387233573945,Company E,MultiRotor,Autel Alpha,Surveying,SN1020,390,Dapeng,Longgang
-2023-12-19,01:58:00,Luohu,61,33.055493425849875,Company D,MultiRotor,M300,Logistics,SN1021,391,Pingshan,Guangming
-2023-02-16,15:11:00,Longhua,106,42.82583504228814,Company M,MultiRotor,Mavic 3,Surveying,SN1002,129,Baoan,Nanshan
-2023-06-16,08:00:00,Baoan,76,43.17523446069559,Company G,MultiRotor,P100,Logistics,SN1020,237,Baoan,Baoan
-2023-08-08,06:37:00,Longgang,117,15.363432349329553,Company F,FixedWing,Autel Alpha,Surveying,SN1036,474,Longgang,Nanshan
-2023-07-26,08:43:00,Futian,25,18.21727863331716,Company I,FixedWing,P100,Emergency,SN1042,243,Longgang,Futian
-2023-12-22,12:18:00,Longgang,56,28.758355758858613,Company A,MultiRotor,Dragonfish,Logistics,SN1026,433,Baoan,Luohu
-2023-11-21,02:18:00,Dapeng,69,49.74337766521108,Company H,FixedWing,Autel Alpha,Inspection,SN1043,326,Luohu,Futian
-2023-03-26,16:09:00,Pingshan,55,7.1683947529703005,Company Q,FixedWing,Mavic 3,Emergency,SN1041,362,Nanshan,Longhua
-2023-07-18,03:24:00,Nanshan,86,36.54151391319608,Company D,Helicopter,Mavic 3,Emergency,SN1044,113,Yantian,Baoan
-2023-10-29,05:29:00,Longhua,43,4.977781754646006,Company M,Helicopter,M300,Emergency,SN1022,396,Futian,Nanshan
-2023-04-01,15:24:00,Dapeng,62,13.412379590822619,Company J,MultiRotor,Mavic 3,Logistics,SN1024,432,Yantian,Nanshan
-2023-04-17,08:58:00,Longgang,11,34.24562653635046,Company O,MultiRotor,Dragonfish,Logistics,SN1036,222,Nanshan,Baoan
-2023-07-17,20:52:00,Guangming,70,1.662310588056745,Company G,FixedWing,Dragonfish,Surveying,SN1006,108,Nanshan,Yantian
-2023-02-01,22:25:00,Dapeng,109,4.687277939727779,Company I,MultiRotor,Autel Alpha,Logistics,SN1027,233,Guangming,Futian
-2023-03-08,12:12:00,Futian,107,12.38478744994353,Company J,Helicopter,Dragonfish,Personal,SN1036,113,Luohu,Luohu
-2023-10-24,02:44:00,Futian,101,40.481907689684746,Company I,FixedWing,M300,Inspection,SN1017,101,Longgang,Nanshan
-2023-01-21,02:43:00,Yantian,10,1.7535395580463309,Company Q,Helicopter,P100,Logistics,SN1037,455,Longhua,Nanshan
-2023-07-08,10:52:00,Longhua,43,39.53407861706619,Company B,MultiRotor,Mavic 3,Personal,SN1027,195,Futian,Longgang
-2023-07-31,08:46:00,Longgang,35,15.352086072003816,Company K,FixedWing,M300,Surveying,SN1045,164,Yantian,Longgang
-2023-07-26,22:23:00,Nanshan,45,23.163205393748527,Company O,MultiRotor,Dragonfish,Inspection,SN1049,422,Longhua,Luohu
-2023-01-07,08:32:00,Longhua,53,22.345338617931066,Company Q,FixedWing,P100,Personal,SN1035,464,Longgang,Longgang
-2023-09-27,11:11:00,Longhua,50,1.6669376962511733,Company Q,MultiRotor,Dragonfish,Inspection,SN1027,420,Guangming,Yantian
-2023-06-21,10:19:00,Pingshan,82,29.592208154355102,Company N,FixedWing,M300,Personal,SN1049,432,Dapeng,Dapeng
-2023-08-03,13:27:00,Luohu,87,34.68186745258047,Company K,FixedWing,Mavic 3,Inspection,SN1004,274,Longgang,Nanshan
-2023-07-11,06:26:00,Nanshan,16,34.2935282004318,Company J,FixedWing,P100,Personal,SN1036,219,Nanshan,Guangming
-2023-12-27,02:24:00,Guangming,115,30.95221171699683,Company S,MultiRotor,Mavic 3,Personal,SN1033,187,Baoan,Baoan
-2023-04-11,02:16:00,Guangming,107,1.0438500071779935,Company R,Helicopter,Autel Alpha,Personal,SN1011,245,Baoan,Longhua
-2023-04-25,05:03:00,Nanshan,12,24.844097701302125,Company N,MultiRotor,Autel Alpha,Inspection,SN1014,58,Baoan,Baoan
-2023-06-17,08:30:00,Baoan,22,28.93267213618802,Company Q,MultiRotor,Dragonfish,Logistics,SN1035,284,Longgang,Guangming
-2023-03-24,06:55:00,Baoan,23,19.21425693170543,Company I,FixedWing,M300,Surveying,SN1038,456,Nanshan,Pingshan
-2023-12-17,21:09:00,Luohu,103,23.59182491296736,Company T,FixedWing,M300,Personal,SN1000,400,Longgang,Longhua
-2023-04-07,23:48:00,Luohu,108,37.15169840937409,Company E,Helicopter,M300,Logistics,SN1045,177,Luohu,Dapeng
-2023-06-12,13:50:00,Futian,23,37.33512977268889,Company B,MultiRotor,Autel Alpha,Emergency,SN1043,292,Nanshan,Guangming
-2023-05-01,04:44:00,Yantian,65,10.549010047378,Company T,MultiRotor,Dragonfish,Personal,SN1042,160,Dapeng,Futian
-2023-09-14,10:31:00,Dapeng,108,3.1012048302638227,Company A,MultiRotor,Dragonfish,Inspection,SN1008,226,Pingshan,Luohu
-2023-02-21,20:01:00,Luohu,39,29.979413192731347,Company P,Helicopter,Autel Alpha,Emergency,SN1009,324,Guangming,Guangming
-2023-12-05,10:52:00,Futian,116,49.51428540927444,Company O,FixedWing,M300,Personal,SN1000,108,Longgang,Pingshan
-2023-05-27,05:44:00,Yantian,73,15.38213642815977,Company K,FixedWing,M300,Personal,SN1037,425,Dapeng,Luohu
-2023-07-22,02:11:00,Baoan,13,30.106066569318394,Company D,MultiRotor,Dragonfish,Surveying,SN1015,452,Longhua,Yantian
-2023-03-27,05:05:00,Dapeng,93,18.061142933925076,Company A,Helicopter,Dragonfish,Inspection,SN1003,196,Futian,Longhua
-2023-03-12,21:16:00,Dapeng,89,6.840051556247223,Company K,MultiRotor,Mavic 3,Surveying,SN1046,352,Longgang,Guangming
-2023-01-30,00:56:00,Dapeng,81,49.7593515655523,Company K,Helicopter,M300,Emergency,SN1034,79,Futian,Nanshan
-2023-12-05,10:45:00,Pingshan,103,19.25990389524035,Company H,Helicopter,P100,Logistics,SN1009,222,Nanshan,Longhua
-2023-02-18,08:40:00,Futian,8,45.87289248800002,Company C,Helicopter,Autel Alpha,Surveying,SN1047,481,Longhua,Yantian
-2023-11-22,02:30:00,Yantian,112,42.19748133186477,Company D,Helicopter,M300,Surveying,SN1015,474,Baoan,Longgang
-2023-09-17,15:59:00,Pingshan,6,16.64560667615022,Company N,Helicopter,Mavic 3,Logistics,SN1006,70,Baoan,Yantian
-2023-02-16,17:16:00,Dapeng,8,31.880983734859143,Company H,FixedWing,P100,Emergency,SN1033,342,Yantian,Longgang
-2023-01-27,02:05:00,Guangming,49,46.961662285239335,Company E,FixedWing,Mavic 3,Logistics,SN1024,93,Dapeng,Pingshan
-2023-11-10,11:09:00,Futian,40,46.798042114268995,Company R,MultiRotor,Dragonfish,Personal,SN1009,372,Longhua,Dapeng
-2023-09-18,03:17:00,Pingshan,77,15.07911431402015,Company T,MultiRotor,P100,Logistics,SN1016,440,Yantian,Baoan
-2023-02-14,08:53:00,Longhua,37,33.55025724512115,Company L,FixedWing,M300,Emergency,SN1047,353,Nanshan,Dapeng
-2023-11-09,17:57:00,Luohu,26,30.63500069262021,Company H,MultiRotor,Mavic 3,Logistics,SN1004,302,Nanshan,Luohu
-2023-04-27,15:55:00,Dapeng,102,13.910737662343793,Company B,FixedWing,Mavic 3,Emergency,SN1013,127,Pingshan,Longgang
-2023-10-17,15:56:00,Baoan,66,2.8432536671237507,Company T,Helicopter,Mavic 3,Emergency,SN1039,447,Baoan,Longhua
-2023-09-16,06:05:00,Dapeng,48,46.74669655652422,Company C,MultiRotor,Dragonfish,Emergency,SN1032,380,Guangming,Yantian
-2023-11-15,17:02:00,Baoan,37,10.617839933005495,Company R,Helicopter,Dragonfish,Inspection,SN1027,284,Luohu,Longhua
-2023-12-25,13:24:00,Yantian,118,9.89305505290039,Company M,Helicopter,Autel Alpha,Personal,SN1043,439,Baoan,Longhua
-2023-10-22,10:14:00,Nanshan,114,1.0108720965281268,Company L,Helicopter,Autel Alpha,Personal,SN1008,380,Dapeng,Pingshan
-2023-03-25,20:20:00,Guangming,19,4.6037376606736835,Company I,FixedWing,Mavic 3,Logistics,SN1048,416,Yantian,Dapeng
-2023-07-31,23:10:00,Longgang,43,18.597279023616462,Company S,FixedWing,Mavic 3,Surveying,SN1014,337,Pingshan,Luohu
-2023-09-03,03:25:00,Guangming,69,29.788346532860352,Company Q,MultiRotor,M300,Inspection,SN1031,100,Futian,Nanshan
-2023-11-28,17:49:00,Nanshan,58,27.458347856078177,Company R,FixedWing,Mavic 3,Surveying,SN1008,378,Nanshan,Futian
-2023-01-15,07:55:00,Longhua,118,14.898995793055242,Company D,FixedWing,P100,Personal,SN1004,441,Dapeng,Longgang
-2023-05-31,06:51:00,Yantian,55,20.953433308516576,Company B,MultiRotor,P100,Emergency,SN1024,102,Longhua,Yantian
-2023-05-29,20:31:00,Dapeng,18,40.94902765387385,Company K,MultiRotor,P100,Surveying,SN1042,107,Luohu,Yantian
-2023-12-06,07:32:00,Pingshan,99,19.48035397121986,Company B,Helicopter,M300,Personal,SN1010,102,Baoan,Longgang
-2023-01-23,20:19:00,Yantian,96,38.56277051224829,Company T,Helicopter,Dragonfish,Inspection,SN1003,415,Dapeng,Luohu
-2023-11-03,07:58:00,Guangming,90,15.61661105514385,Company D,Helicopter,Dragonfish,Emergency,SN1015,157,Yantian,Futian
-2023-12-08,16:10:00,Guangming,10,22.987927633188047,Company B,FixedWing,M300,Inspection,SN1041,159,Yantian,Pingshan
-2023-09-23,07:07:00,Baoan,92,25.755133463204277,Company A,MultiRotor,Mavic 3,Emergency,SN1036,366,Baoan,Baoan
-2023-12-06,09:14:00,Baoan,57,47.905140632076936,Company B,Helicopter,Autel Alpha,Logistics,SN1013,319,Futian,Longhua
-2023-03-18,06:29:00,Pingshan,57,21.061590731519747,Company A,FixedWing,Autel Alpha,Surveying,SN1015,314,Pingshan,Futian
-2023-01-07,08:26:00,Baoan,6,31.292389782174826,Company I,FixedWing,M300,Surveying,SN1024,169,Baoan,Baoan
-2023-07-18,17:08:00,Longhua,73,14.959216666037204,Company O,MultiRotor,Dragonfish,Logistics,SN1017,344,Longgang,Longgang
-2023-05-10,10:08:00,Yantian,33,19.423457000803307,Company M,MultiRotor,M300,Inspection,SN1011,65,Longhua,Luohu
-2023-02-06,07:00:00,Guangming,50,42.99957365928925,Company F,MultiRotor,Autel Alpha,Inspection,SN1036,156,Nanshan,Futian
-2023-12-24,05:16:00,Yantian,33,35.8498257144256,Company F,Helicopter,M300,Emergency,SN1019,204,Dapeng,Guangming
-2023-03-27,03:23:00,Guangming,83,40.8810392627176,Company A,FixedWing,Dragonfish,Inspection,SN1021,64,Guangming,Yantian
-2023-06-26,19:53:00,Futian,44,24.714652553606985,Company B,FixedWing,Autel Alpha,Personal,SN1022,183,Longhua,Dapeng
-2023-04-11,03:56:00,Longgang,99,22.180389763816763,Company P,FixedWing,Dragonfish,Logistics,SN1010,243,Guangming,Dapeng
-2023-07-16,06:35:00,Dapeng,91,30.75527868709291,Company L,FixedWing,Mavic 3,Surveying,SN1048,467,Baoan,Baoan
-2023-06-30,02:29:00,Futian,74,34.774279972917746,Company R,MultiRotor,Autel Alpha,Inspection,SN1000,368,Nanshan,Dapeng
-2023-12-14,04:55:00,Guangming,107,13.283780257157138,Company R,FixedWing,P100,Emergency,SN1047,335,Futian,Luohu
-2023-04-10,17:40:00,Pingshan,56,12.858414499205924,Company I,FixedWing,P100,Emergency,SN1043,176,Dapeng,Futian
-2023-05-31,03:10:00,Pingshan,112,18.32812564451826,Company L,MultiRotor,Autel Alpha,Emergency,SN1001,274,Futian,Luohu
-2023-10-13,00:37:00,Dapeng,116,49.09079911299659,Company T,Helicopter,M300,Inspection,SN1030,210,Yantian,Yantian
-2023-11-09,14:19:00,Pingshan,24,29.131361715905893,Company S,Helicopter,P100,Surveying,SN1038,426,Dapeng,Pingshan
-2023-08-05,14:11:00,Nanshan,47,41.533683893512844,Company F,Helicopter,Autel Alpha,Inspection,SN1024,213,Luohu,Baoan
-2023-08-28,16:25:00,Luohu,81,4.271636999346453,Company N,FixedWing,P100,Personal,SN1017,57,Longgang,Luohu
-2023-02-06,13:04:00,Luohu,14,5.430486055939632,Company R,MultiRotor,P100,Logistics,SN1016,323,Yantian,Baoan
-2023-12-20,03:25:00,Yantian,100,45.976604962860655,Company K,FixedWing,Dragonfish,Logistics,SN1018,467,Nanshan,Yantian
-2023-03-09,10:00:00,Longhua,6,24.02046436443682,Company D,MultiRotor,Dragonfish,Inspection,SN1018,279,Longhua,Pingshan
-2023-07-15,17:57:00,Dapeng,90,17.741712900623565,Company P,Helicopter,Mavic 3,Logistics,SN1041,432,Nanshan,Pingshan
-2023-02-09,09:47:00,Pingshan,12,43.18580867126955,Company J,Helicopter,M300,Surveying,SN1045,397,Longgang,Dapeng
-2023-10-05,07:53:00,Longgang,45,11.481018115823607,Company H,MultiRotor,P100,Personal,SN1039,170,Guangming,Guangming
-2023-03-10,09:30:00,Guangming,107,41.209296398536296,Company D,Helicopter,Mavic 3,Emergency,SN1022,57,Futian,Longhua
-2023-12-30,13:29:00,Longhua,47,25.022134058508296,Company B,MultiRotor,Mavic 3,Emergency,SN1027,425,Nanshan,Baoan
-2023-05-25,10:29:00,Yantian,82,21.401631940066483,Company L,Helicopter,Dragonfish,Logistics,SN1046,410,Longgang,Dapeng
-2023-10-03,10:20:00,Baoan,84,6.542878081930082,Company G,Helicopter,Autel Alpha,Inspection,SN1028,348,Guangming,Baoan
-2023-10-13,13:03:00,Longhua,17,48.64159709324055,Company H,FixedWing,Dragonfish,Surveying,SN1014,324,Futian,Pingshan
-2023-12-15,08:28:00,Nanshan,7,32.57033732210073,Company T,FixedWing,Mavic 3,Logistics,SN1027,138,Baoan,Guangming
-2023-09-24,22:35:00,Pingshan,22,33.00391589061868,Company E,Helicopter,P100,Emergency,SN1027,226,Longgang,Pingshan
-2023-12-06,08:56:00,Nanshan,37,41.673641245354666,Company K,Helicopter,Mavic 3,Inspection,SN1023,76,Baoan,Yantian
-2023-07-26,06:55:00,Dapeng,23,10.297909656994946,Company R,FixedWing,M300,Inspection,SN1027,157,Nanshan,Luohu
-2023-02-20,11:19:00,Yantian,31,35.65955345417664,Company O,Helicopter,P100,Logistics,SN1022,256,Futian,Longhua
-2023-01-23,01:42:00,Baoan,119,31.981421268389504,Company C,FixedWing,Autel Alpha,Personal,SN1042,377,Longhua,Baoan
-2023-08-04,20:31:00,Luohu,62,25.503652800539403,Company M,Helicopter,Mavic 3,Personal,SN1026,456,Yantian,Longhua
-2023-09-24,02:39:00,Guangming,53,15.92317930331334,Company J,FixedWing,P100,Emergency,SN1025,435,Dapeng,Dapeng
-2023-10-05,14:08:00,Longhua,84,32.587269320643465,Company A,MultiRotor,Dragonfish,Logistics,SN1001,83,Longhua,Dapeng
-2023-09-30,22:22:00,Longhua,118,43.98404366064025,Company Q,FixedWing,Mavic 3,Surveying,SN1001,425,Nanshan,Futian
-2023-06-13,09:38:00,Luohu,61,29.573530121548785,Company S,Helicopter,Dragonfish,Inspection,SN1040,81,Nanshan,Longhua
-2023-09-08,17:06:00,Longgang,67,19.284839792100534,Company Q,FixedWing,Dragonfish,Personal,SN1045,376,Nanshan,Longgang
-2023-04-26,06:06:00,Yantian,13,43.57473303360598,Company J,Helicopter,Dragonfish,Logistics,SN1044,271,Futian,Baoan
-2023-06-12,16:26:00,Guangming,93,36.85274381428254,Company H,MultiRotor,Autel Alpha,Personal,SN1032,61,Pingshan,Dapeng
-2023-06-10,20:09:00,Luohu,69,49.46967915191348,Company S,FixedWing,Mavic 3,Inspection,SN1031,335,Yantian,Longhua
-2023-04-22,22:48:00,Pingshan,15,33.240666647176276,Company T,Helicopter,Dragonfish,Surveying,SN1006,88,Futian,Guangming
-2023-08-13,13:33:00,Nanshan,31,20.81078160712586,Company N,MultiRotor,Mavic 3,Surveying,SN1015,436,Dapeng,Dapeng
-2023-12-25,11:16:00,Yantian,87,3.0204994305843123,Company K,FixedWing,Dragonfish,Logistics,SN1030,221,Luohu,Yantian
-2023-01-02,00:35:00,Guangming,47,39.95706391849608,Company O,MultiRotor,Mavic 3,Surveying,SN1031,132,Futian,Futian
-2023-09-17,10:16:00,Guangming,44,40.3757316746632,Company M,Helicopter,Dragonfish,Inspection,SN1049,419,Guangming,Baoan
-2023-12-17,01:48:00,Nanshan,64,40.89614827959621,Company N,Helicopter,M300,Personal,SN1025,93,Luohu,Pingshan
-2023-11-09,11:43:00,Longhua,68,37.21322823933461,Company F,MultiRotor,P100,Inspection,SN1022,389,Longhua,Dapeng
-2023-01-07,10:20:00,Luohu,115,42.75916298655258,Company C,FixedWing,M300,Logistics,SN1014,199,Dapeng,Pingshan
-2023-01-06,21:27:00,Longhua,97,25.23736368256718,Company R,Helicopter,P100,Emergency,SN1025,351,Longhua,Pingshan
-2023-09-04,13:58:00,Guangming,18,7.123463867480346,Company F,FixedWing,Dragonfish,Surveying,SN1005,165,Futian,Baoan
-2023-11-30,20:23:00,Yantian,33,23.20202504732592,Company T,FixedWing,P100,Logistics,SN1033,81,Longhua,Longgang
-2023-12-06,10:16:00,Guangming,107,1.6355977494338316,Company A,MultiRotor,P100,Inspection,SN1032,148,Nanshan,Longgang
-2023-04-21,14:56:00,Longgang,6,39.59801985216124,Company N,Helicopter,Mavic 3,Logistics,SN1004,454,Nanshan,Pingshan
-2023-07-09,05:51:00,Yantian,43,8.821776698655052,Company S,Helicopter,P100,Logistics,SN1002,148,Luohu,Yantian
-2023-05-05,07:03:00,Yantian,102,3.5453055565591365,Company F,FixedWing,Dragonfish,Personal,SN1022,487,Futian,Futian
-2023-08-12,19:52:00,Guangming,33,32.56315368501673,Company P,MultiRotor,Dragonfish,Emergency,SN1025,452,Yantian,Longhua
-2023-11-29,17:13:00,Nanshan,68,27.88971972014746,Company K,FixedWing,M300,Logistics,SN1038,449,Dapeng,Baoan
-2023-02-05,06:36:00,Longgang,11,42.150757601246006,Company K,MultiRotor,Mavic 3,Logistics,SN1031,386,Pingshan,Longgang
-2023-08-26,00:46:00,Longgang,108,45.98954794075737,Company P,Helicopter,Autel Alpha,Surveying,SN1017,286,Futian,Longhua
-2023-01-25,18:53:00,Longgang,33,22.868787610406635,Company S,Helicopter,M300,Inspection,SN1041,74,Baoan,Longhua
-2023-02-11,00:22:00,Pingshan,15,48.49812529368954,Company A,FixedWing,P100,Personal,SN1003,266,Guangming,Pingshan
-2023-12-16,13:27:00,Longgang,52,31.24192516539567,Company P,FixedWing,Dragonfish,Logistics,SN1012,157,Dapeng,Pingshan
-2023-01-24,13:00:00,Futian,107,9.72709036912255,Company C,Helicopter,M300,Personal,SN1036,399,Yantian,Futian
-2023-03-04,21:18:00,Yantian,53,38.15893572897198,Company Q,FixedWing,Mavic 3,Inspection,SN1040,481,Dapeng,Yantian
-2023-11-10,19:28:00,Dapeng,57,45.64706556000651,Company P,Helicopter,Autel Alpha,Surveying,SN1011,403,Dapeng,Pingshan
-2023-04-11,08:18:00,Yantian,94,29.125907338124723,Company A,MultiRotor,Autel Alpha,Inspection,SN1008,416,Longhua,Yantian
-2023-09-05,02:55:00,Luohu,57,9.409333790974992,Company J,Helicopter,P100,Personal,SN1015,67,Pingshan,Baoan
-2023-11-19,23:31:00,Yantian,37,35.13715661510263,Company H,FixedWing,Mavic 3,Personal,SN1039,292,Baoan,Nanshan
-2023-05-13,13:39:00,Yantian,40,45.82329281234583,Company I,Helicopter,Autel Alpha,Surveying,SN1022,447,Nanshan,Guangming
-2023-01-23,20:02:00,Futian,23,9.17678951620567,Company B,FixedWing,Mavic 3,Emergency,SN1030,477,Luohu,Luohu
-2023-06-18,13:33:00,Yantian,32,34.8777550702365,Company F,FixedWing,Mavic 3,Logistics,SN1048,413,Pingshan,Longgang
-2023-04-04,00:26:00,Baoan,106,49.60932765319974,Company A,Helicopter,Mavic 3,Surveying,SN1036,105,Nanshan,Yantian
-2023-12-22,20:20:00,Pingshan,93,37.212088715593964,Company I,MultiRotor,P100,Personal,SN1006,113,Luohu,Baoan
-2023-10-24,06:41:00,Longhua,52,44.83944034384615,Company B,FixedWing,P100,Inspection,SN1007,406,Pingshan,Longgang
-2023-02-24,15:03:00,Luohu,61,9.769683527798804,Company N,MultiRotor,Mavic 3,Personal,SN1030,190,Pingshan,Futian
-2023-10-23,12:34:00,Guangming,61,28.393911620623403,Company R,Helicopter,P100,Emergency,SN1041,367,Dapeng,Futian
-2023-06-07,08:18:00,Yantian,16,14.656800875796494,Company E,MultiRotor,Autel Alpha,Personal,SN1036,86,Futian,Pingshan
-2023-04-16,08:31:00,Guangming,21,11.959567721586424,Company P,FixedWing,M300,Personal,SN1001,439,Baoan,Longgang
-2023-09-28,00:08:00,Dapeng,50,45.75689335279712,Company L,MultiRotor,Dragonfish,Surveying,SN1028,483,Yantian,Longgang
-2023-11-14,19:59:00,Dapeng,78,3.1725630942636434,Company B,MultiRotor,P100,Emergency,SN1024,114,Dapeng,Pingshan
-2023-09-03,22:19:00,Baoan,60,14.489471672745212,Company P,MultiRotor,Autel Alpha,Surveying,SN1006,485,Longhua,Guangming
-2023-04-10,09:59:00,Luohu,77,5.185878300195508,Company J,MultiRotor,Dragonfish,Surveying,SN1026,222,Pingshan,Baoan
-2023-04-25,03:30:00,Yantian,89,42.51863326484284,Company I,Helicopter,Autel Alpha,Personal,SN1045,124,Yantian,Longgang
-2023-12-12,00:52:00,Futian,107,20.183157076630796,Company D,Helicopter,Autel Alpha,Emergency,SN1042,481,Longgang,Longhua
-2023-11-19,00:53:00,Yantian,26,8.448706206235963,Company P,MultiRotor,P100,Personal,SN1008,368,Longhua,Longhua
-2023-03-04,12:39:00,Pingshan,80,31.30723572960932,Company T,Helicopter,Mavic 3,Emergency,SN1006,306,Yantian,Futian
-2023-12-12,23:26:00,Nanshan,22,35.23267016858782,Company A,Helicopter,Autel Alpha,Emergency,SN1021,218,Longhua,Baoan
-2023-06-22,17:54:00,Longhua,68,46.94386889327936,Company S,MultiRotor,Dragonfish,Personal,SN1022,193,Longgang,Longgang
-2023-04-19,04:39:00,Guangming,110,15.720975614458519,Company C,MultiRotor,Autel Alpha,Emergency,SN1001,453,Yantian,Luohu
-2023-07-07,08:21:00,Pingshan,59,20.692317633388985,Company S,FixedWing,Mavic 3,Inspection,SN1045,310,Luohu,Nanshan
-2023-04-30,13:12:00,Baoan,47,20.384934136044173,Company C,MultiRotor,Autel Alpha,Emergency,SN1026,303,Pingshan,Dapeng
-2023-09-17,05:53:00,Baoan,100,38.54902456385198,Company J,Helicopter,M300,Logistics,SN1043,201,Longhua,Pingshan
-2023-04-06,16:06:00,Guangming,51,22.623624925958165,Company N,FixedWing,Dragonfish,Surveying,SN1019,429,Baoan,Guangming
-2023-04-27,04:10:00,Pingshan,43,49.77466950573564,Company P,Helicopter,Dragonfish,Personal,SN1009,169,Dapeng,Dapeng
-2023-02-05,12:07:00,Luohu,67,40.47025684842651,Company B,FixedWing,Autel Alpha,Logistics,SN1009,120,Longgang,Baoan
-2023-05-17,21:38:00,Yantian,58,23.323882991300128,Company L,MultiRotor,Autel Alpha,Personal,SN1014,367,Longhua,Futian
-2023-01-07,08:34:00,Longgang,29,14.137139983665072,Company I,MultiRotor,Dragonfish,Inspection,SN1049,104,Baoan,Futian
-2023-11-09,03:56:00,Baoan,22,4.9999540348740235,Company F,Helicopter,Autel Alpha,Personal,SN1008,446,Futian,Dapeng
-2023-06-08,10:59:00,Guangming,14,27.03676255566539,Company D,Helicopter,P100,Surveying,SN1021,345,Longgang,Nanshan
-2023-01-05,22:41:00,Pingshan,56,29.987961498719258,Company K,FixedWing,M300,Personal,SN1031,410,Longhua,Futian
-2023-04-14,12:03:00,Nanshan,53,34.764072758103914,Company F,FixedWing,Dragonfish,Logistics,SN1032,167,Pingshan,Baoan
-2023-07-15,10:37:00,Nanshan,72,21.647816551547873,Company L,FixedWing,Dragonfish,Logistics,SN1022,350,Dapeng,Yantian
-2023-11-14,04:20:00,Dapeng,26,20.247203717787464,Company C,MultiRotor,Mavic 3,Inspection,SN1016,421,Dapeng,Pingshan
-2023-05-27,14:45:00,Longhua,33,45.32278052090028,Company J,MultiRotor,P100,Personal,SN1007,209,Luohu,Longgang
-2023-07-15,23:46:00,Baoan,72,12.93060876306349,Company S,FixedWing,P100,Inspection,SN1032,292,Baoan,Yantian
-2023-02-26,19:31:00,Nanshan,15,44.9419815442006,Company D,FixedWing,P100,Surveying,SN1032,239,Longgang,Pingshan
-2023-02-02,09:18:00,Longhua,101,6.10922134471435,Company K,FixedWing,Mavic 3,Surveying,SN1037,295,Luohu,Nanshan
-2023-02-19,04:24:00,Dapeng,77,23.655801119459195,Company T,FixedWing,Autel Alpha,Emergency,SN1009,368,Guangming,Longhua
-2023-09-25,23:51:00,Luohu,76,9.619244509454944,Company D,FixedWing,M300,Personal,SN1033,259,Longhua,Pingshan
-2023-05-31,21:53:00,Pingshan,66,16.574927519585607,Company R,FixedWing,Autel Alpha,Surveying,SN1036,379,Pingshan,Guangming
-2023-11-25,23:24:00,Futian,87,42.1891847374727,Company S,FixedWing,Autel Alpha,Personal,SN1004,101,Guangming,Longhua
-2023-08-25,06:34:00,Futian,16,27.18269339532764,Company S,FixedWing,Autel Alpha,Inspection,SN1026,389,Yantian,Nanshan
-2023-11-01,03:20:00,Pingshan,83,17.043655360491954,Company G,FixedWing,Autel Alpha,Inspection,SN1017,386,Longhua,Pingshan
-2023-04-02,14:43:00,Longgang,31,43.49577943131399,Company Q,FixedWing,P100,Surveying,SN1034,391,Nanshan,Pingshan
-2023-06-29,04:15:00,Dapeng,70,38.74197529862025,Company C,MultiRotor,Mavic 3,Emergency,SN1045,436,Baoan,Futian
-2023-05-14,17:23:00,Yantian,81,27.11363085338494,Company B,FixedWing,P100,Emergency,SN1024,126,Longgang,Guangming
-2023-05-10,19:23:00,Futian,85,36.19643228451714,Company P,FixedWing,P100,Inspection,SN1008,85,Guangming,Guangming
-2023-06-27,07:13:00,Futian,83,24.636372803275286,Company D,Helicopter,P100,Inspection,SN1028,484,Dapeng,Dapeng
-2023-06-03,17:18:00,Dapeng,96,31.850861470766233,Company G,MultiRotor,Mavic 3,Surveying,SN1047,294,Pingshan,Longgang
-2023-12-02,13:17:00,Baoan,108,1.7543731819514456,Company G,Helicopter,Autel Alpha,Personal,SN1048,367,Nanshan,Baoan
-2023-08-19,15:53:00,Luohu,87,5.043227454853193,Company B,FixedWing,Mavic 3,Logistics,SN1018,290,Longgang,Yantian
-2023-01-30,07:45:00,Futian,84,30.507865359685646,Company L,FixedWing,Mavic 3,Inspection,SN1048,340,Dapeng,Nanshan
-2023-05-01,18:24:00,Luohu,65,23.471774287253005,Company E,MultiRotor,P100,Logistics,SN1035,347,Longgang,Futian
-2023-05-15,16:47:00,Futian,63,15.074395483230676,Company O,FixedWing,P100,Inspection,SN1020,228,Guangming,Dapeng
-2023-04-09,00:14:00,Longhua,24,30.957134384611777,Company A,MultiRotor,M300,Inspection,SN1017,171,Longhua,Yantian
-2023-12-14,11:30:00,Luohu,42,30.470123236903206,Company Q,Helicopter,Autel Alpha,Personal,SN1047,409,Nanshan,Longgang
-2023-08-06,22:34:00,Dapeng,43,45.38608735345749,Company M,Helicopter,Autel Alpha,Emergency,SN1049,379,Dapeng,Longhua
-2023-02-21,19:44:00,Luohu,68,9.536195790501777,Company G,Helicopter,P100,Personal,SN1006,192,Longhua,Longgang
-2023-03-11,08:06:00,Baoan,60,38.7845327821024,Company B,MultiRotor,Dragonfish,Surveying,SN1043,154,Pingshan,Longgang
-2023-08-12,10:42:00,Yantian,55,2.793856896152729,Company G,Helicopter,Autel Alpha,Logistics,SN1021,348,Futian,Dapeng
-2023-02-19,05:41:00,Longhua,29,14.209916353929144,Company L,Helicopter,Autel Alpha,Personal,SN1014,446,Baoan,Yantian
-2023-01-08,02:21:00,Futian,109,15.520341730539895,Company I,FixedWing,P100,Emergency,SN1020,408,Dapeng,Guangming
-2023-09-30,04:35:00,Luohu,118,14.774995253334023,Company D,Helicopter,Mavic 3,Emergency,SN1010,429,Longgang,Baoan
-2023-06-09,07:43:00,Futian,69,24.695912856685133,Company E,Helicopter,Autel Alpha,Surveying,SN1003,107,Pingshan,Luohu
-2023-05-09,09:31:00,Dapeng,96,24.398289909147653,Company O,MultiRotor,Mavic 3,Surveying,SN1024,371,Pingshan,Futian
-2023-08-02,13:58:00,Baoan,92,19.057634675936814,Company S,MultiRotor,Dragonfish,Logistics,SN1020,478,Dapeng,Longgang
-2023-08-25,05:42:00,Guangming,69,36.57317212206529,Company N,Helicopter,Dragonfish,Personal,SN1025,392,Nanshan,Yantian
-2023-02-19,10:17:00,Dapeng,43,20.8346587319363,Company N,FixedWing,P100,Logistics,SN1007,493,Baoan,Yantian
-2023-03-26,18:05:00,Baoan,30,17.30783059420128,Company K,MultiRotor,P100,Emergency,SN1047,280,Nanshan,Longgang
-2023-06-09,11:41:00,Futian,52,24.971767857825135,Company S,MultiRotor,Autel Alpha,Surveying,SN1034,287,Yantian,Dapeng
-2023-11-01,03:14:00,Pingshan,80,2.7678924882320413,Company S,FixedWing,P100,Surveying,SN1046,135,Luohu,Longgang
-2023-11-16,06:26:00,Nanshan,89,37.44532187092449,Company K,MultiRotor,Autel Alpha,Emergency,SN1022,364,Pingshan,Yantian
-2023-05-10,06:25:00,Futian,55,7.81215181305193,Company M,MultiRotor,Dragonfish,Inspection,SN1020,495,Nanshan,Nanshan
-2023-06-29,09:39:00,Baoan,106,12.696114437004205,Company N,FixedWing,M300,Surveying,SN1016,242,Baoan,Pingshan
-2023-03-25,05:06:00,Dapeng,105,26.15430132439744,Company R,Helicopter,M300,Logistics,SN1013,471,Yantian,Longgang
-2023-03-30,09:47:00,Dapeng,79,8.822178402561024,Company E,Helicopter,Dragonfish,Emergency,SN1011,135,Yantian,Baoan
-2023-08-01,10:12:00,Baoan,72,48.271269683850285,Company L,Helicopter,Mavic 3,Emergency,SN1018,317,Yantian,Longhua
-2023-04-09,02:34:00,Pingshan,26,27.552072322674377,Company J,Helicopter,Autel Alpha,Logistics,SN1022,161,Baoan,Futian
-2023-11-17,14:58:00,Longgang,45,11.294757078004109,Company O,MultiRotor,P100,Surveying,SN1035,195,Nanshan,Longhua
-2023-01-14,11:48:00,Luohu,8,46.278268737221794,Company P,FixedWing,Dragonfish,Surveying,SN1002,153,Luohu,Guangming
-2023-06-20,18:00:00,Longgang,56,39.87835708791376,Company T,Helicopter,Mavic 3,Logistics,SN1038,70,Guangming,Dapeng
-2023-08-16,19:13:00,Longgang,119,15.400079169397834,Company E,MultiRotor,Mavic 3,Personal,SN1042,135,Guangming,Longhua
-2023-01-04,19:23:00,Longgang,99,35.93167881417774,Company R,MultiRotor,Mavic 3,Inspection,SN1027,453,Guangming,Yantian
-2023-12-01,20:53:00,Dapeng,69,19.619454116373785,Company L,FixedWing,Dragonfish,Surveying,SN1007,431,Nanshan,Pingshan
-2023-10-31,01:59:00,Futian,43,42.18883253005297,Company F,MultiRotor,P100,Emergency,SN1022,215,Baoan,Yantian
-2023-10-15,07:17:00,Nanshan,17,23.98945362957399,Company D,FixedWing,Mavic 3,Logistics,SN1024,427,Pingshan,Yantian
-2023-12-05,11:27:00,Longgang,30,40.93312784813257,Company S,FixedWing,M300,Inspection,SN1046,117,Longgang,Longgang
-2023-10-27,21:46:00,Futian,91,9.602417716334806,Company R,Helicopter,M300,Surveying,SN1010,413,Futian,Futian
-2023-05-26,07:50:00,Nanshan,34,37.67849745381061,Company Q,Helicopter,Dragonfish,Inspection,SN1007,145,Dapeng,Yantian
-2023-08-27,10:14:00,Futian,109,36.923899674339985,Company F,FixedWing,P100,Surveying,SN1045,79,Pingshan,Longhua
-2023-04-06,23:18:00,Yantian,50,32.96848932101503,Company I,Helicopter,Dragonfish,Personal,SN1000,204,Futian,Longhua
-2023-04-08,10:55:00,Guangming,18,9.628816897475991,Company J,Helicopter,Autel Alpha,Emergency,SN1039,149,Longhua,Guangming
-2023-01-25,02:49:00,Longhua,12,43.477147259791224,Company S,FixedWing,P100,Surveying,SN1042,178,Guangming,Futian
-2023-04-02,21:46:00,Yantian,97,27.115970865170596,Company O,MultiRotor,Mavic 3,Personal,SN1015,68,Luohu,Yantian
-2023-11-19,00:11:00,Pingshan,97,10.779095845457913,Company B,MultiRotor,P100,Personal,SN1024,79,Nanshan,Dapeng
-2023-08-17,00:40:00,Baoan,36,40.79326330816517,Company I,MultiRotor,Dragonfish,Emergency,SN1037,189,Futian,Futian
-2023-08-15,07:25:00,Futian,99,37.64766616063299,Company E,Helicopter,P100,Surveying,SN1048,311,Longhua,Dapeng
-2023-09-04,07:34:00,Yantian,19,11.017113054926888,Company Q,Helicopter,Mavic 3,Surveying,SN1037,266,Guangming,Nanshan
-2023-02-25,08:52:00,Baoan,82,6.956647969519419,Company F,FixedWing,M300,Personal,SN1034,270,Pingshan,Yantian
-2023-07-06,01:02:00,Longhua,36,25.619203767355874,Company Q,MultiRotor,P100,Inspection,SN1035,252,Longgang,Guangming
-2023-01-20,11:38:00,Guangming,58,1.6850137742837523,Company F,MultiRotor,Dragonfish,Emergency,SN1006,264,Dapeng,Pingshan
-2023-03-08,09:59:00,Nanshan,116,45.60123249832052,Company N,Helicopter,M300,Logistics,SN1042,247,Luohu,Pingshan
-2023-04-01,05:04:00,Guangming,88,22.277333903960486,Company I,FixedWing,Autel Alpha,Surveying,SN1038,320,Pingshan,Yantian
-2023-02-16,00:43:00,Longgang,74,7.426309527735386,Company R,FixedWing,M300,Inspection,SN1029,138,Nanshan,Longgang
-2023-12-10,01:39:00,Dapeng,17,38.568869088346005,Company H,FixedWing,Dragonfish,Emergency,SN1023,213,Guangming,Longgang
-2023-10-19,19:25:00,Dapeng,36,49.22492892661264,Company D,Helicopter,P100,Surveying,SN1031,350,Luohu,Yantian
-2023-10-29,17:51:00,Baoan,54,7.3894472860626275,Company O,MultiRotor,Autel Alpha,Inspection,SN1037,385,Baoan,Yantian
-2023-11-07,11:15:00,Yantian,72,3.6587823573092333,Company M,MultiRotor,Mavic 3,Logistics,SN1034,211,Longhua,Luohu
-2023-07-19,00:52:00,Baoan,105,5.869361942814409,Company S,MultiRotor,Autel Alpha,Inspection,SN1017,249,Longhua,Baoan
-2023-03-07,06:33:00,Nanshan,7,44.944204951316316,Company T,FixedWing,P100,Emergency,SN1037,450,Nanshan,Longgang
-2023-05-02,04:54:00,Nanshan,71,43.41619658155565,Company H,FixedWing,M300,Emergency,SN1013,479,Longgang,Longhua
-2023-04-04,20:34:00,Longhua,106,44.26674623837998,Company P,Helicopter,Autel Alpha,Logistics,SN1002,74,Futian,Longgang
-2023-04-25,10:50:00,Futian,109,1.541005379704691,Company G,MultiRotor,Autel Alpha,Logistics,SN1041,160,Longhua,Dapeng
-2023-08-25,03:57:00,Nanshan,107,17.507155624644,Company F,MultiRotor,P100,Personal,SN1036,452,Baoan,Nanshan
-2023-02-02,22:24:00,Nanshan,34,25.7044253207781,Company T,MultiRotor,Dragonfish,Emergency,SN1043,236,Nanshan,Nanshan
-2023-08-21,09:22:00,Pingshan,40,35.78001577045699,Company N,FixedWing,Dragonfish,Personal,SN1038,96,Yantian,Longhua
-2023-09-05,01:02:00,Luohu,7,7.436243875385568,Company P,MultiRotor,M300,Personal,SN1048,282,Nanshan,Luohu
-2023-04-18,18:19:00,Luohu,40,23.197517818169,Company B,Helicopter,P100,Inspection,SN1004,81,Dapeng,Nanshan
-2023-08-24,03:26:00,Luohu,25,17.93016043502641,Company P,MultiRotor,Mavic 3,Personal,SN1040,113,Longgang,Nanshan
-2023-07-18,23:01:00,Baoan,47,13.52026198075326,Company R,FixedWing,Mavic 3,Inspection,SN1012,299,Yantian,Nanshan
-2023-07-13,10:07:00,Dapeng,115,40.731937651253205,Company N,MultiRotor,Autel Alpha,Surveying,SN1012,85,Futian,Nanshan
-2023-04-18,22:13:00,Luohu,117,28.754099292657955,Company Q,Helicopter,Autel Alpha,Emergency,SN1000,117,Baoan,Baoan
-2023-10-24,15:54:00,Futian,119,42.89109673661284,Company Q,Helicopter,Mavic 3,Emergency,SN1049,368,Guangming,Yantian
-2023-01-02,08:41:00,Luohu,11,22.633487680288777,Company R,Helicopter,Dragonfish,Inspection,SN1005,96,Nanshan,Guangming
-2023-05-09,23:54:00,Nanshan,16,13.808500654327597,Company T,FixedWing,Autel Alpha,Inspection,SN1034,247,Longgang,Longgang
-2023-06-03,05:36:00,Guangming,87,2.7779430722012006,Company M,MultiRotor,Mavic 3,Inspection,SN1049,222,Luohu,Pingshan
-2023-04-18,12:04:00,Baoan,20,36.619977236543015,Company R,MultiRotor,Mavic 3,Emergency,SN1005,123,Baoan,Guangming
-2023-11-28,12:03:00,Futian,14,22.682203648738316,Company T,Helicopter,P100,Emergency,SN1045,191,Dapeng,Guangming
-2023-03-19,13:48:00,Dapeng,99,29.858863617316654,Company C,MultiRotor,P100,Surveying,SN1024,375,Longgang,Futian
-2023-08-18,15:36:00,Guangming,103,38.81333580313081,Company C,FixedWing,P100,Logistics,SN1028,426,Longhua,Longgang
-2023-09-07,13:39:00,Futian,29,39.02352018284891,Company D,Helicopter,M300,Personal,SN1048,133,Longgang,Baoan
-2023-12-05,13:21:00,Yantian,97,32.1938012609771,Company K,MultiRotor,Mavic 3,Inspection,SN1043,270,Longgang,Longhua
-2023-01-31,02:39:00,Futian,45,8.490182662493416,Company J,MultiRotor,Autel Alpha,Surveying,SN1014,75,Luohu,Baoan
-2023-05-05,20:27:00,Dapeng,24,2.3948063163105338,Company L,FixedWing,M300,Logistics,SN1039,152,Yantian,Longgang
-2023-01-01,03:10:00,Baoan,20,49.40954565423807,Company C,Helicopter,M300,Personal,SN1016,371,Nanshan,Nanshan
-2023-10-16,16:48:00,Longgang,117,37.55410450681175,Company J,Helicopter,M300,Personal,SN1034,431,Futian,Luohu
-2023-08-07,22:29:00,Luohu,37,23.704214369579535,Company S,MultiRotor,Mavic 3,Emergency,SN1035,53,Longgang,Futian
-2023-04-03,19:56:00,Nanshan,31,5.889961762043355,Company J,FixedWing,P100,Logistics,SN1030,134,Longgang,Yantian
-2023-11-13,06:25:00,Pingshan,5,43.8779743117911,Company R,MultiRotor,Autel Alpha,Emergency,SN1038,266,Longhua,Pingshan
-2023-09-22,16:35:00,Nanshan,95,45.907217325952324,Company R,MultiRotor,M300,Personal,SN1015,141,Longhua,Pingshan
-2023-10-03,15:18:00,Baoan,19,41.04700821258196,Company Q,MultiRotor,Dragonfish,Logistics,SN1000,172,Luohu,Guangming
-2023-09-19,07:37:00,Longhua,26,22.64959529215303,Company E,MultiRotor,Dragonfish,Logistics,SN1029,256,Longgang,Yantian
-2023-12-12,05:40:00,Guangming,18,48.72630483542513,Company Q,Helicopter,Autel Alpha,Emergency,SN1024,86,Yantian,Dapeng
-2023-09-15,05:43:00,Nanshan,20,7.573262052290134,Company C,Helicopter,Dragonfish,Surveying,SN1043,93,Pingshan,Nanshan
-2023-12-30,20:45:00,Dapeng,107,38.315079479464224,Company I,Helicopter,Autel Alpha,Personal,SN1004,304,Guangming,Yantian
-2023-06-12,22:20:00,Futian,48,6.036172038811481,Company A,MultiRotor,Mavic 3,Logistics,SN1047,371,Nanshan,Guangming
-2023-08-06,05:47:00,Longhua,67,46.194590874091695,Company C,FixedWing,Autel Alpha,Surveying,SN1034,487,Longgang,Futian
-2023-02-12,22:24:00,Guangming,10,13.677628712631535,Company O,Helicopter,Mavic 3,Surveying,SN1001,68,Dapeng,Luohu
-2023-02-28,11:42:00,Luohu,35,42.3018569311071,Company I,MultiRotor,Dragonfish,Inspection,SN1047,164,Baoan,Baoan
-2023-02-27,04:37:00,Nanshan,6,3.176700786982931,Company E,Helicopter,Autel Alpha,Inspection,SN1009,367,Pingshan,Longgang
-2023-12-01,07:31:00,Guangming,64,36.0507205325108,Company I,Helicopter,P100,Surveying,SN1006,71,Luohu,Nanshan
-2023-05-10,09:32:00,Nanshan,108,17.046658575297673,Company S,FixedWing,M300,Emergency,SN1016,493,Longhua,Longhua
-2023-07-20,13:32:00,Nanshan,83,41.3714637375669,Company N,FixedWing,P100,Surveying,SN1011,300,Yantian,Luohu
-2023-09-18,10:09:00,Longhua,22,31.81535297129398,Company A,MultiRotor,Dragonfish,Surveying,SN1043,304,Baoan,Yantian
-2023-04-19,11:22:00,Yantian,86,5.035479824831919,Company S,FixedWing,Dragonfish,Inspection,SN1034,247,Nanshan,Baoan
-2023-04-06,18:55:00,Longhua,34,1.7345864520331378,Company J,FixedWing,P100,Surveying,SN1042,145,Longhua,Dapeng
-2023-02-06,02:07:00,Luohu,5,24.414787285949174,Company S,Helicopter,M300,Logistics,SN1028,456,Guangming,Futian
+date,time,region,duration,distance,entity_id,entity,user_type,aircraft_type,aircraft_model,purpose,sn,altitude,start_region,end_region,is_holiday,is_planned,is_effective
+2023-05-30,07:39:00,Baoan,12,25.63,ENT0027,Company [,未知用户,FixedWing,E200,Logistics,SN1095,467,Nanshan,Nanshan,False,True,True
+2023-08-10,06:53:00,Longgang,114,5.43,ENT0015,Company O,个人用户,Helicopter,V50,Personal,SN1039,217,Guangming,Guangming,False,True,True
+2023-07-31,01:32:00,Futian,92,26.8,ENT0007,Company G,个人用户,FixedWing,Mavic 3,Personal,SN1085,794,Futian,Futian,False,True,True
+2023-08-12,20:05:00,Luohu,76,43.11,ENT0005,Company E,企业用户,MultiRotor,Dragonfish,Emergency,SN1024,389,Luohu,Luohu,False,False,False
+2023-09-04,00:43:00,Guangming,23,34.4,ENT0013,Company M,企业用户,Helicopter,Mavic 3,Personal,SN1058,310,Baoan,Luohu,False,True,True
+2023-03-28,19:15:00,Yantian,74,16.52,ENT0010,Company J,个人用户,Helicopter,V50,Surveying,SN1072,144,Guangming,Guangming,False,True,True
+2023-07-10,05:30:00,Longhua,28,49.76,ENT0016,Company P,企业用户,MultiRotor,Dragonfish,Emergency,SN1049,536,Futian,Dapeng,False,True,True
+2023-09-20,23:34:00,Dapeng,71,7.75,ENT0006,Company F,企业用户,FixedWing,M300,Personal,SN1066,383,Yantian,Yantian,False,True,True
+2023-08-05,00:08:00,Baoan,54,23.57,ENT0013,Company M,企业用户,MultiRotor,E200,Inspection,SN1072,276,Nanshan,Luohu,False,True,True
+2023-10-29,11:32:00,Pingshan,114,32.05,ENT0016,Company P,企业用户,FixedWing,E200,Emergency,SN1047,339,Baoan,Baoan,False,True,True
+2023-09-26,17:32:00,Nanshan,75,53.38,ENT0028,Company \,企业用户,FixedWing,P100,Inspection,SN1011,659,Nanshan,Nanshan,False,True,True
+2023-03-31,06:23:00,Futian,72,22.18,ENT0013,Company M,企业用户,FixedWing,Dragonfish,Personal,SN1074,214,Pingshan,Longgang,False,True,True
+2023-04-07,07:42:00,Longhua,88,37.56,ENT0016,Company P,个人用户,FixedWing,E200,Inspection,SN1074,676,Yantian,Longgang,False,True,True
+2023-05-04,11:48:00,Longhua,9,34.32,ENT0027,Company [,企业用户,MultiRotor,E200,Logistics,SN1099,53,Dapeng,Dapeng,True,True,True
+2023-05-09,18:39:00,Dapeng,110,45.44,ENT0003,Company C,企业用户,Helicopter,Dragonfish,Emergency,SN1079,226,Dapeng,Dapeng,False,True,True
+2023-01-18,19:22:00,Nanshan,66,16.21,ENT0006,Company F,企业用户,MultiRotor,Dragonfish,Surveying,SN1043,177,Yantian,Yantian,True,True,True
+2023-11-13,07:43:00,Yantian,119,43.93,ENT0015,Company O,未知用户,FixedWing,M300,Inspection,SN1029,167,Longhua,Longhua,False,True,True
+2023-03-22,08:08:00,Luohu,17,15.82,ENT0011,Company K,个人用户,FixedWing,E200,Emergency,SN1007,624,Futian,Baoan,False,True,True
+2023-03-23,14:06:00,Luohu,36,41.49,ENT0009,Company I,企业用户,MultiRotor,Mavic 3,Personal,SN1069,158,Luohu,Luohu,True,True,True
+2023-11-24,09:51:00,Dapeng,52,37.08,ENT0027,Company [,企业用户,FixedWing,Autel Alpha,Emergency,SN1099,738,Dapeng,Dapeng,False,True,True
+2023-08-22,11:20:00,Nanshan,79,59.37,ENT0006,Company F,企业用户,Helicopter,Mavic 3,Emergency,SN1004,481,Baoan,Pingshan,False,True,True
+2023-11-22,08:35:00,Nanshan,68,17.05,ENT0008,Company H,企业用户,Helicopter,M300,Surveying,SN1003,492,Luohu,Luohu,False,True,True
+2023-02-26,18:07:00,Yantian,101,29.35,ENT0004,Company D,企业用户,Helicopter,Autel Alpha,Logistics,SN1015,488,Dapeng,Luohu,False,True,True
+2023-07-30,00:29:00,Yantian,51,57.4,ENT0023,Company W,个人用户,FixedWing,Dragonfish,Surveying,SN1005,756,Pingshan,Nanshan,False,True,True
+2023-08-01,00:52:00,Longgang,5,28.0,ENT0002,Company B,个人用户,FixedWing,P100,Surveying,SN1034,708,Guangming,Longhua,False,True,True
+2023-11-22,17:28:00,Luohu,51,50.54,ENT0010,Company J,企业用户,FixedWing,M300,Inspection,SN1062,420,Longgang,Longgang,False,True,True
+2023-05-21,02:22:00,Guangming,95,37.21,ENT0021,Company U,企业用户,MultiRotor,E200,Personal,SN1088,111,Longgang,Longgang,False,True,True
+2023-12-11,04:08:00,Dapeng,105,25.57,ENT0018,Company R,企业用户,Helicopter,P100,Surveying,SN1059,516,Pingshan,Pingshan,False,True,True
+2023-12-19,22:49:00,Dapeng,26,51.28,ENT0009,Company I,企业用户,MultiRotor,M300,Emergency,SN1001,660,Longhua,Longhua,False,True,False
+2023-02-20,13:21:00,Yantian,19,31.25,ENT0008,Company H,企业用户,FixedWing,E200,Surveying,SN1029,218,Baoan,Baoan,False,True,True
+2023-09-13,20:32:00,Yantian,13,25.07,ENT0013,Company M,企业用户,MultiRotor,P100,Inspection,SN1098,346,Dapeng,Dapeng,False,True,True
+2023-06-26,20:01:00,Guangming,10,34.59,ENT0015,Company O,个人用户,MultiRotor,P100,Emergency,SN1066,160,Luohu,Luohu,False,True,True
+2023-09-21,17:46:00,Luohu,32,11.95,ENT0020,Company T,个人用户,MultiRotor,M300,Personal,SN1042,553,Dapeng,Longgang,False,True,True
+2023-06-21,22:29:00,Pingshan,96,15.15,ENT0012,Company L,企业用户,Helicopter,Dragonfish,Personal,SN1022,488,Nanshan,Nanshan,False,True,True
+2023-04-05,11:01:00,Dapeng,33,27.97,ENT0027,Company [,个人用户,Helicopter,Dragonfish,Emergency,SN1090,320,Baoan,Baoan,False,True,True
+2023-09-25,14:07:00,Nanshan,28,49.97,ENT0027,Company [,企业用户,FixedWing,Autel Alpha,Inspection,SN1049,190,Nanshan,Nanshan,False,True,True
+2023-07-29,05:27:00,Dapeng,91,1.03,ENT0003,Company C,个人用户,Helicopter,M300,Inspection,SN1058,147,Pingshan,Pingshan,False,True,True
+2023-06-22,00:30:00,Nanshan,52,13.28,ENT0005,Company E,企业用户,FixedWing,P100,Inspection,SN1020,435,Longhua,Longhua,False,True,True
+2023-05-24,03:39:00,Luohu,16,37.73,ENT0021,Company U,企业用户,Helicopter,Dragonfish,Emergency,SN1031,52,Dapeng,Guangming,False,True,True
+2023-10-06,19:03:00,Longhua,15,4.89,ENT0021,Company U,企业用户,FixedWing,P100,Logistics,SN1056,767,Guangming,Yantian,False,True,True
+2023-10-23,07:20:00,Nanshan,78,43.76,ENT0002,Company B,企业用户,MultiRotor,P100,Inspection,SN1000,160,Longgang,Longgang,False,True,True
+2023-10-02,06:46:00,Longgang,57,18.38,ENT0007,Company G,未知用户,Helicopter,Autel Alpha,Logistics,SN1079,168,Futian,Nanshan,False,True,True
+2023-10-27,22:13:00,Longhua,47,42.2,ENT0017,Company Q,个人用户,MultiRotor,P100,Emergency,SN1088,58,Guangming,Yantian,False,True,True
+2023-05-22,05:48:00,Longgang,29,43.6,ENT0027,Company [,企业用户,FixedWing,M300,Emergency,SN1059,220,Futian,Futian,False,True,True
+2023-09-03,19:15:00,Yantian,92,18.46,ENT0005,Company E,企业用户,FixedWing,P100,Inspection,SN1026,701,Longhua,Yantian,False,True,True
+2023-08-14,00:40:00,Guangming,75,29.07,ENT0017,Company Q,企业用户,MultiRotor,E200,Surveying,SN1029,395,Nanshan,Nanshan,False,True,True
+2023-03-19,14:27:00,Nanshan,62,42.37,ENT0006,Company F,个人用户,Helicopter,P100,Inspection,SN1000,265,Longhua,Yantian,False,True,True
+2023-01-19,21:23:00,Dapeng,60,41.47,ENT0018,Company R,企业用户,FixedWing,P100,Logistics,SN1015,349,Longhua,Longhua,False,True,True
+2023-08-29,06:17:00,Nanshan,41,12.29,ENT0030,Company ^,企业用户,FixedWing,V50,Logistics,SN1033,462,Longgang,Longhua,False,True,True
+2023-07-15,20:53:00,Dapeng,81,43.68,ENT0026,Company Z,企业用户,MultiRotor,M300,Logistics,SN1056,729,Guangming,Guangming,False,True,True
+2023-10-29,04:57:00,Pingshan,67,15.91,ENT0021,Company U,个人用户,MultiRotor,Autel Alpha,Logistics,SN1053,524,Baoan,Baoan,False,True,True
+2023-04-06,22:53:00,Dapeng,73,11.63,ENT0021,Company U,个人用户,Helicopter,E200,Surveying,SN1038,571,Yantian,Futian,False,True,True
+2023-04-25,03:33:00,Dapeng,86,15.13,ENT0007,Company G,个人用户,Helicopter,Mavic 3,Emergency,SN1006,749,Yantian,Futian,False,True,False
+2023-11-12,02:27:00,Longgang,40,27.52,ENT0028,Company \,企业用户,FixedWing,Autel Alpha,Inspection,SN1049,117,Longhua,Baoan,False,True,True
+2023-09-11,13:51:00,Dapeng,40,40.25,ENT0019,Company S,企业用户,Helicopter,Mavic 3,Surveying,SN1065,179,Guangming,Guangming,False,True,True
+2023-09-22,14:13:00,Pingshan,6,3.73,ENT0016,Company P,企业用户,Helicopter,E200,Surveying,SN1075,196,Pingshan,Pingshan,False,True,True
+2023-04-07,09:51:00,Luohu,67,44.98,ENT0017,Company Q,未知用户,MultiRotor,Mavic 3,Logistics,SN1005,306,Futian,Futian,False,True,True
+2023-05-30,11:01:00,Nanshan,81,34.35,ENT0003,Company C,企业用户,MultiRotor,P100,Inspection,SN1099,59,Baoan,Baoan,False,True,True
+2023-01-07,13:25:00,Longhua,46,34.36,ENT0021,Company U,企业用户,MultiRotor,P100,Emergency,SN1064,750,Longgang,Longgang,True,True,True
+2023-12-19,22:05:00,Futian,102,6.57,ENT0029,Company ],未知用户,MultiRotor,P100,Inspection,SN1053,311,Nanshan,Nanshan,False,True,True
+2023-09-07,12:14:00,Longhua,73,11.47,ENT0019,Company S,企业用户,Helicopter,Autel Alpha,Personal,SN1037,232,Longgang,Luohu,False,True,True
+2023-07-06,22:25:00,Baoan,107,32.03,ENT0017,Company Q,企业用户,FixedWing,Mavic 3,Surveying,SN1065,109,Guangming,Guangming,False,True,True
+2023-09-02,16:18:00,Nanshan,77,17.51,ENT0024,Company X,个人用户,MultiRotor,Mavic 3,Logistics,SN1003,503,Nanshan,Nanshan,False,True,True
+2023-09-12,08:19:00,Yantian,55,2.75,ENT0026,Company Z,企业用户,FixedWing,V50,Personal,SN1089,282,Guangming,Pingshan,True,True,True
+2023-05-19,06:06:00,Longhua,101,41.14,ENT0026,Company Z,企业用户,MultiRotor,Mavic 3,Inspection,SN1035,328,Baoan,Baoan,False,True,True
+2023-08-15,17:15:00,Futian,31,16.46,ENT0002,Company B,企业用户,MultiRotor,Dragonfish,Inspection,SN1091,356,Longgang,Longgang,False,True,True
+2023-01-28,23:22:00,Luohu,30,3.27,ENT0009,Company I,企业用户,MultiRotor,Autel Alpha,Surveying,SN1058,325,Nanshan,Nanshan,True,True,True
+2023-12-13,04:39:00,Pingshan,29,20.33,ENT0021,Company U,个人用户,Helicopter,M300,Surveying,SN1096,630,Nanshan,Nanshan,False,True,True
+2023-05-25,20:09:00,Dapeng,66,6.83,ENT0015,Company O,企业用户,MultiRotor,E200,Personal,SN1074,598,Nanshan,Longgang,False,True,True
+2023-09-14,16:03:00,Nanshan,73,16.74,ENT0001,Company A,企业用户,Helicopter,M300,Personal,SN1049,454,Luohu,Longhua,False,True,True
+2023-11-08,18:16:00,Nanshan,96,12.29,ENT0002,Company B,企业用户,FixedWing,V50,Logistics,SN1022,59,Longhua,Longhua,True,True,True
+2023-08-07,01:03:00,Longgang,22,59.32,ENT0005,Company E,企业用户,FixedWing,P100,Emergency,SN1059,608,Pingshan,Guangming,False,True,True
+2023-09-02,09:32:00,Nanshan,6,31.65,ENT0030,Company ^,企业用户,FixedWing,Mavic 3,Inspection,SN1036,578,Nanshan,Nanshan,False,True,True
+2023-06-06,12:01:00,Futian,92,29.03,ENT0001,Company A,个人用户,FixedWing,Autel Alpha,Surveying,SN1060,422,Dapeng,Luohu,False,True,True
+2023-09-20,10:58:00,Longhua,94,43.92,ENT0022,Company V,企业用户,MultiRotor,Autel Alpha,Emergency,SN1086,676,Baoan,Baoan,True,True,True
+2023-01-30,06:34:00,Guangming,12,45.7,ENT0006,Company F,个人用户,Helicopter,E200,Logistics,SN1096,504,Longhua,Longhua,False,True,False
+2023-11-27,15:17:00,Luohu,24,34.8,ENT0019,Company S,企业用户,MultiRotor,Mavic 3,Surveying,SN1051,483,Dapeng,Dapeng,False,True,True
+2023-05-06,10:34:00,Dapeng,16,1.37,ENT0006,Company F,企业用户,MultiRotor,P100,Emergency,SN1094,445,Pingshan,Pingshan,False,True,True
+2023-02-23,19:14:00,Guangming,70,13.59,ENT0026,Company Z,个人用户,Helicopter,Dragonfish,Logistics,SN1075,670,Futian,Longgang,False,True,True
+2023-03-09,09:24:00,Yantian,17,17.79,ENT0013,Company M,企业用户,Helicopter,V50,Surveying,SN1024,696,Longgang,Longgang,False,True,True
+2023-12-13,04:14:00,Futian,30,39.46,ENT0002,Company B,未知用户,MultiRotor,Autel Alpha,Logistics,SN1040,386,Longhua,Yantian,False,True,True
+2023-01-09,09:58:00,Longgang,92,6.82,ENT0007,Company G,企业用户,Helicopter,P100,Surveying,SN1015,331,Guangming,Guangming,True,True,True
+2023-09-07,07:27:00,Pingshan,22,10.91,ENT0005,Company E,企业用户,MultiRotor,P100,Surveying,SN1055,445,Longgang,Longgang,False,True,True
+2023-03-21,19:47:00,Guangming,80,33.53,ENT0008,Company H,企业用户,Helicopter,Dragonfish,Inspection,SN1044,210,Guangming,Guangming,False,True,True
+2023-09-15,18:14:00,Luohu,5,1.77,ENT0020,Company T,个人用户,FixedWing,V50,Personal,SN1020,799,Baoan,Baoan,False,True,True
+2023-01-29,13:20:00,Longhua,15,58.56,ENT0022,Company V,企业用户,FixedWing,Autel Alpha,Personal,SN1000,226,Longhua,Longhua,False,True,True
+2023-08-30,19:03:00,Luohu,99,30.93,ENT0029,Company ],未知用户,MultiRotor,P100,Logistics,SN1077,421,Pingshan,Pingshan,False,True,True
+2023-07-03,03:48:00,Luohu,71,52.51,ENT0006,Company F,企业用户,FixedWing,Dragonfish,Emergency,SN1024,781,Nanshan,Nanshan,False,True,True
+2023-09-29,05:58:00,Yantian,93,20.99,ENT0014,Company N,未知用户,FixedWing,Dragonfish,Emergency,SN1064,258,Pingshan,Pingshan,False,True,True
+2023-05-15,23:11:00,Baoan,106,54.77,ENT0023,Company W,个人用户,MultiRotor,Dragonfish,Personal,SN1030,390,Pingshan,Pingshan,False,True,True
+2023-07-08,11:22:00,Luohu,117,56.59,ENT0019,Company S,企业用户,FixedWing,V50,Emergency,SN1066,119,Futian,Futian,False,True,True
+2023-08-15,18:25:00,Baoan,47,50.73,ENT0023,Company W,企业用户,Helicopter,Autel Alpha,Emergency,SN1025,603,Longhua,Guangming,False,True,True
+2023-03-29,14:37:00,Yantian,58,40.65,ENT0013,Company M,个人用户,MultiRotor,V50,Logistics,SN1056,573,Baoan,Luohu,False,True,True
+2023-03-17,13:45:00,Longhua,20,13.42,ENT0019,Company S,企业用户,Helicopter,Autel Alpha,Inspection,SN1068,236,Futian,Futian,False,True,True
+2023-12-01,06:12:00,Nanshan,79,33.74,ENT0027,Company [,企业用户,FixedWing,M300,Inspection,SN1045,452,Nanshan,Luohu,False,True,True
+2023-08-24,14:07:00,Longhua,41,50.95,ENT0020,Company T,企业用户,FixedWing,Autel Alpha,Logistics,SN1065,474,Guangming,Guangming,False,True,True
+2023-10-09,05:13:00,Baoan,39,42.86,ENT0019,Company S,企业用户,MultiRotor,Mavic 3,Personal,SN1017,423,Yantian,Dapeng,False,True,True
+2023-09-09,21:42:00,Longhua,63,37.93,ENT0030,Company ^,未知用户,FixedWing,Dragonfish,Inspection,SN1080,339,Dapeng,Dapeng,False,True,True
+2023-01-23,19:04:00,Longgang,82,16.1,ENT0012,Company L,个人用户,MultiRotor,Mavic 3,Personal,SN1076,403,Futian,Futian,False,True,True
+2023-09-26,06:23:00,Dapeng,94,6.28,ENT0007,Company G,企业用户,FixedWing,Dragonfish,Inspection,SN1008,784,Yantian,Yantian,False,True,True
+2023-08-15,13:39:00,Nanshan,87,41.49,ENT0007,Company G,未知用户,Helicopter,Autel Alpha,Personal,SN1049,780,Dapeng,Dapeng,False,True,True
+2023-03-09,07:08:00,Pingshan,63,54.02,ENT0006,Company F,个人用户,FixedWing,E200,Inspection,SN1045,776,Longgang,Longgang,False,True,True
+2023-11-29,15:02:00,Guangming,66,18.4,ENT0019,Company S,企业用户,FixedWing,Mavic 3,Emergency,SN1040,53,Yantian,Yantian,True,True,True
+2023-01-23,19:40:00,Luohu,113,59.83,ENT0012,Company L,企业用户,FixedWing,M300,Emergency,SN1028,360,Futian,Futian,False,True,False
+2023-04-11,14:49:00,Yantian,92,55.89,ENT0026,Company Z,企业用户,MultiRotor,Autel Alpha,Logistics,SN1054,413,Baoan,Guangming,False,True,True
+2023-01-09,02:54:00,Longhua,104,42.58,ENT0008,Company H,企业用户,MultiRotor,Dragonfish,Logistics,SN1002,512,Pingshan,Pingshan,False,True,True
+2023-07-05,14:09:00,Longhua,44,30.22,ENT0002,Company B,企业用户,Helicopter,E200,Emergency,SN1033,283,Longgang,Longgang,True,True,True
+2023-08-20,10:47:00,Yantian,84,17.5,ENT0005,Company E,企业用户,Helicopter,M300,Surveying,SN1012,127,Futian,Nanshan,False,True,True
+2023-02-03,04:42:00,Longhua,103,8.04,ENT0021,Company U,企业用户,FixedWing,V50,Surveying,SN1096,653,Pingshan,Nanshan,False,True,False
+2023-08-27,04:48:00,Dapeng,29,51.82,ENT0006,Company F,企业用户,Helicopter,P100,Inspection,SN1095,314,Longgang,Longgang,False,True,True
+2023-08-03,20:06:00,Dapeng,58,54.5,ENT0015,Company O,企业用户,MultiRotor,M300,Inspection,SN1048,290,Baoan,Baoan,False,True,True
+2023-02-28,14:54:00,Longhua,39,2.18,ENT0028,Company \,企业用户,MultiRotor,E200,Inspection,SN1055,468,Longgang,Longgang,False,True,True
+2023-03-19,16:25:00,Nanshan,118,56.35,ENT0030,Company ^,未知用户,Helicopter,Autel Alpha,Emergency,SN1082,192,Longhua,Longhua,False,True,True
+2023-07-19,20:53:00,Longhua,114,48.68,ENT0024,Company X,企业用户,Helicopter,M300,Personal,SN1014,775,Luohu,Guangming,True,True,True
+2023-02-16,16:56:00,Guangming,44,7.56,ENT0019,Company S,企业用户,MultiRotor,Mavic 3,Emergency,SN1068,601,Longgang,Longgang,False,True,True
+2023-02-13,18:45:00,Luohu,68,30.96,ENT0025,Company Y,企业用户,Helicopter,Autel Alpha,Logistics,SN1008,676,Pingshan,Pingshan,False,True,True
+2023-11-17,16:46:00,Baoan,58,38.13,ENT0016,Company P,企业用户,MultiRotor,E200,Personal,SN1015,583,Guangming,Nanshan,False,True,True
+2023-07-20,05:45:00,Luohu,85,38.04,ENT0009,Company I,个人用户,MultiRotor,P100,Personal,SN1025,341,Pingshan,Futian,False,True,True
+2023-12-28,17:34:00,Nanshan,19,29.43,ENT0030,Company ^,企业用户,FixedWing,Autel Alpha,Inspection,SN1021,564,Longhua,Longhua,False,True,True
+2023-09-17,16:57:00,Luohu,99,27.56,ENT0010,Company J,企业用户,MultiRotor,M300,Surveying,SN1060,194,Baoan,Longhua,True,True,True
+2023-10-21,13:12:00,Yantian,33,51.35,ENT0014,Company N,企业用户,MultiRotor,Autel Alpha,Surveying,SN1039,366,Yantian,Yantian,False,True,True
+2023-09-04,04:14:00,Guangming,22,33.82,ENT0006,Company F,企业用户,FixedWing,Dragonfish,Surveying,SN1099,665,Baoan,Baoan,False,True,True
+2023-10-13,18:23:00,Longgang,47,7.35,ENT0014,Company N,未知用户,MultiRotor,Mavic 3,Inspection,SN1043,67,Dapeng,Nanshan,False,True,True
+2023-10-27,05:24:00,Guangming,92,35.96,ENT0012,Company L,个人用户,FixedWing,Autel Alpha,Surveying,SN1098,200,Baoan,Baoan,False,True,True
+2023-09-29,18:52:00,Longgang,15,19.86,ENT0025,Company Y,企业用户,FixedWing,Mavic 3,Logistics,SN1016,538,Yantian,Yantian,False,True,True
+2023-10-29,11:21:00,Nanshan,41,54.47,ENT0025,Company Y,企业用户,Helicopter,P100,Logistics,SN1018,732,Guangming,Guangming,False,True,True
+2023-06-23,07:35:00,Nanshan,104,57.21,ENT0026,Company Z,未知用户,Helicopter,P100,Emergency,SN1032,593,Nanshan,Baoan,False,True,True
+2023-11-21,08:04:00,Longhua,94,2.03,ENT0021,Company U,企业用户,MultiRotor,Autel Alpha,Personal,SN1044,784,Longhua,Longhua,False,True,True
+2023-04-08,08:18:00,Baoan,27,9.56,ENT0017,Company Q,企业用户,Helicopter,Mavic 3,Personal,SN1061,567,Baoan,Baoan,True,True,True
+2023-03-27,02:23:00,Pingshan,22,16.26,ENT0015,Company O,企业用户,FixedWing,E200,Emergency,SN1044,103,Luohu,Luohu,False,True,True
+2023-04-26,19:32:00,Nanshan,80,55.39,ENT0014,Company N,企业用户,MultiRotor,P100,Surveying,SN1019,101,Longgang,Longgang,False,True,True
+2023-10-28,21:43:00,Longhua,88,20.92,ENT0016,Company P,企业用户,FixedWing,Mavic 3,Emergency,SN1018,713,Longhua,Guangming,False,True,True
+2023-06-14,00:00:00,Guangming,15,13.88,ENT0028,Company \,企业用户,FixedWing,E200,Emergency,SN1006,123,Dapeng,Dapeng,False,True,True
+2023-01-16,15:25:00,Pingshan,37,2.21,ENT0005,Company E,企业用户,MultiRotor,E200,Surveying,SN1067,556,Futian,Futian,False,False,False
+2023-09-26,19:08:00,Pingshan,100,55.78,ENT0004,Company D,企业用户,FixedWing,Mavic 3,Logistics,SN1082,786,Baoan,Baoan,True,True,True
+2023-09-25,19:58:00,Nanshan,96,58.58,ENT0014,Company N,个人用户,FixedWing,V50,Emergency,SN1047,660,Futian,Futian,False,True,True
+2023-05-09,22:09:00,Longgang,39,3.68,ENT0015,Company O,企业用户,FixedWing,V50,Personal,SN1094,461,Futian,Futian,False,True,True
+2023-10-26,01:14:00,Nanshan,93,14.31,ENT0012,Company L,未知用户,MultiRotor,Autel Alpha,Inspection,SN1064,238,Longgang,Longgang,False,True,True
+2023-09-21,12:15:00,Guangming,5,39.27,ENT0022,Company V,企业用户,MultiRotor,M300,Surveying,SN1038,457,Futian,Yantian,False,True,True
+2023-03-23,18:26:00,Luohu,96,2.69,ENT0030,Company ^,企业用户,Helicopter,Dragonfish,Emergency,SN1008,439,Futian,Futian,False,True,True
+2023-03-01,16:53:00,Luohu,20,21.43,ENT0012,Company L,个人用户,Helicopter,E200,Surveying,SN1057,245,Nanshan,Nanshan,False,True,True
+2023-07-22,13:32:00,Longgang,47,16.79,ENT0019,Company S,企业用户,FixedWing,V50,Logistics,SN1091,362,Baoan,Baoan,False,True,True
+2023-11-22,04:23:00,Guangming,64,47.43,ENT0029,Company ],企业用户,Helicopter,Autel Alpha,Emergency,SN1047,539,Dapeng,Dapeng,False,True,True
+2023-05-22,06:34:00,Yantian,117,48.68,ENT0018,Company R,企业用户,MultiRotor,Autel Alpha,Personal,SN1052,78,Futian,Yantian,False,True,True
+2023-11-01,11:56:00,Nanshan,29,55.69,ENT0009,Company I,企业用户,FixedWing,Autel Alpha,Personal,SN1026,209,Luohu,Luohu,False,True,True
+2023-03-09,22:19:00,Baoan,37,18.24,ENT0013,Company M,企业用户,FixedWing,P100,Personal,SN1065,359,Nanshan,Nanshan,False,True,False
+2023-10-06,14:21:00,Longhua,40,45.55,ENT0020,Company T,企业用户,MultiRotor,Dragonfish,Inspection,SN1033,565,Dapeng,Luohu,False,True,True
+2023-06-10,02:27:00,Pingshan,41,34.92,ENT0024,Company X,企业用户,FixedWing,Autel Alpha,Surveying,SN1063,148,Longhua,Longhua,False,True,True
+2023-11-01,14:35:00,Nanshan,8,16.61,ENT0008,Company H,企业用户,Helicopter,Autel Alpha,Surveying,SN1090,248,Guangming,Guangming,False,False,False
+2023-11-05,13:39:00,Baoan,52,36.44,ENT0003,Company C,未知用户,Helicopter,Mavic 3,Personal,SN1056,225,Pingshan,Pingshan,False,True,True
+2023-05-28,19:05:00,Dapeng,5,1.88,ENT0019,Company S,企业用户,Helicopter,Dragonfish,Logistics,SN1036,141,Nanshan,Nanshan,False,True,True
+2023-02-15,00:48:00,Futian,79,50.98,ENT0029,Company ],企业用户,FixedWing,V50,Personal,SN1058,691,Longgang,Longgang,False,True,True
+2023-04-02,05:01:00,Futian,94,1.37,ENT0015,Company O,个人用户,FixedWing,Mavic 3,Inspection,SN1092,211,Baoan,Baoan,True,True,True
+2023-09-21,00:39:00,Longhua,80,25.7,ENT0001,Company A,企业用户,Helicopter,E200,Emergency,SN1040,584,Futian,Futian,False,False,False
+2023-08-13,17:18:00,Baoan,100,13.59,ENT0010,Company J,企业用户,FixedWing,V50,Inspection,SN1074,755,Baoan,Baoan,False,True,True
+2023-07-15,02:21:00,Luohu,95,36.28,ENT0017,Company Q,个人用户,Helicopter,Autel Alpha,Inspection,SN1049,477,Dapeng,Dapeng,False,True,False
+2023-04-28,17:30:00,Dapeng,35,39.27,ENT0011,Company K,企业用户,FixedWing,Mavic 3,Logistics,SN1068,714,Futian,Nanshan,True,True,True
+2023-12-18,20:17:00,Guangming,43,52.22,ENT0009,Company I,企业用户,FixedWing,Mavic 3,Surveying,SN1034,217,Guangming,Luohu,False,True,False
+2023-03-18,00:39:00,Luohu,37,19.97,ENT0007,Company G,个人用户,Helicopter,M300,Logistics,SN1075,91,Yantian,Yantian,False,True,True
+2023-11-04,06:29:00,Guangming,49,15.89,ENT0002,Company B,企业用户,FixedWing,P100,Inspection,SN1055,188,Dapeng,Dapeng,False,True,True
+2023-04-06,21:11:00,Yantian,81,41.36,ENT0005,Company E,个人用户,FixedWing,V50,Emergency,SN1072,194,Luohu,Guangming,False,True,True
+2023-04-14,10:19:00,Longhua,30,50.45,ENT0021,Company U,企业用户,Helicopter,Dragonfish,Inspection,SN1050,386,Yantian,Pingshan,True,True,False
+2023-08-24,17:21:00,Futian,36,5.0,ENT0022,Company V,企业用户,Helicopter,Autel Alpha,Surveying,SN1010,590,Guangming,Guangming,False,True,True
+2023-04-24,21:18:00,Yantian,23,38.7,ENT0015,Company O,企业用户,Helicopter,E200,Emergency,SN1061,501,Dapeng,Guangming,False,True,True
+2023-05-28,17:38:00,Longgang,22,28.12,ENT0023,Company W,企业用户,FixedWing,Autel Alpha,Surveying,SN1086,558,Longgang,Longgang,False,True,True
+2023-01-06,01:28:00,Dapeng,86,43.72,ENT0023,Company W,企业用户,Helicopter,P100,Personal,SN1037,494,Yantian,Yantian,True,True,True
+2023-12-02,20:58:00,Yantian,71,21.89,ENT0003,Company C,企业用户,MultiRotor,P100,Surveying,SN1065,105,Yantian,Longgang,False,True,True
+2023-04-29,19:34:00,Longgang,53,29.41,ENT0023,Company W,企业用户,Helicopter,E200,Logistics,SN1021,285,Futian,Luohu,False,True,True
+2023-10-11,02:29:00,Dapeng,57,13.25,ENT0019,Company S,个人用户,FixedWing,P100,Emergency,SN1039,538,Guangming,Guangming,False,True,True
+2023-04-30,13:12:00,Longgang,28,46.11,ENT0007,Company G,企业用户,MultiRotor,M300,Surveying,SN1029,629,Yantian,Yantian,False,True,True
+2023-06-26,18:24:00,Dapeng,35,42.15,ENT0011,Company K,企业用户,Helicopter,P100,Personal,SN1024,491,Yantian,Longhua,False,True,True
+2023-09-12,01:11:00,Guangming,57,30.51,ENT0015,Company O,个人用户,MultiRotor,P100,Inspection,SN1099,350,Dapeng,Dapeng,True,True,True
+2023-08-24,14:58:00,Longhua,80,14.19,ENT0021,Company U,企业用户,MultiRotor,V50,Inspection,SN1072,427,Futian,Yantian,False,True,True
+2023-04-22,07:04:00,Nanshan,35,31.46,ENT0017,Company Q,个人用户,FixedWing,V50,Emergency,SN1012,344,Baoan,Baoan,False,True,True
+2023-04-04,11:51:00,Yantian,14,37.24,ENT0026,Company Z,企业用户,Helicopter,Autel Alpha,Emergency,SN1030,261,Dapeng,Pingshan,False,True,True
+2023-06-18,04:41:00,Pingshan,26,19.65,ENT0021,Company U,企业用户,MultiRotor,Autel Alpha,Surveying,SN1076,328,Pingshan,Pingshan,False,True,True
+2023-05-03,11:30:00,Pingshan,11,20.35,ENT0025,Company Y,企业用户,MultiRotor,Autel Alpha,Surveying,SN1027,304,Baoan,Baoan,False,True,True
+2023-09-19,10:42:00,Luohu,117,24.36,ENT0015,Company O,未知用户,Helicopter,Mavic 3,Inspection,SN1024,780,Baoan,Baoan,False,True,True
+2023-07-18,06:22:00,Guangming,115,21.33,ENT0014,Company N,企业用户,MultiRotor,V50,Inspection,SN1065,95,Pingshan,Pingshan,True,True,True
+2023-04-27,13:01:00,Futian,8,38.63,ENT0027,Company [,未知用户,Helicopter,M300,Surveying,SN1053,603,Yantian,Yantian,False,True,True
+2023-12-25,18:54:00,Yantian,29,31.7,ENT0016,Company P,企业用户,FixedWing,Autel Alpha,Surveying,SN1007,798,Pingshan,Pingshan,False,True,True
+2023-04-09,10:32:00,Luohu,109,19.2,ENT0009,Company I,个人用户,FixedWing,Autel Alpha,Logistics,SN1021,478,Dapeng,Dapeng,True,True,True
+2023-07-28,08:22:00,Luohu,70,55.72,ENT0010,Company J,个人用户,Helicopter,E200,Logistics,SN1010,584,Longhua,Longhua,False,True,True
+2023-11-17,11:19:00,Longgang,113,17.57,ENT0024,Company X,企业用户,FixedWing,Autel Alpha,Logistics,SN1099,440,Longgang,Longhua,False,True,True
+2023-10-11,21:05:00,Yantian,107,19.26,ENT0012,Company L,企业用户,MultiRotor,Autel Alpha,Inspection,SN1069,289,Baoan,Baoan,False,True,True
+2023-06-11,03:56:00,Longgang,17,25.05,ENT0026,Company Z,个人用户,FixedWing,E200,Personal,SN1013,353,Luohu,Luohu,False,True,True
+2023-03-22,23:40:00,Futian,76,6.59,ENT0011,Company K,未知用户,Helicopter,Dragonfish,Personal,SN1028,645,Futian,Futian,False,True,True
+2023-07-26,01:24:00,Longhua,84,30.81,ENT0010,Company J,企业用户,MultiRotor,M300,Surveying,SN1049,345,Nanshan,Luohu,False,True,True
+2023-03-31,19:33:00,Luohu,114,39.56,ENT0024,Company X,企业用户,MultiRotor,M300,Inspection,SN1070,241,Longgang,Longgang,False,True,True
+2023-03-25,23:10:00,Futian,14,45.52,ENT0004,Company D,个人用户,FixedWing,Autel Alpha,Inspection,SN1087,266,Nanshan,Pingshan,False,True,True
+2023-10-15,17:10:00,Nanshan,28,15.92,ENT0017,Company Q,企业用户,FixedWing,Autel Alpha,Inspection,SN1057,521,Yantian,Yantian,False,True,True
+2023-08-01,12:50:00,Longhua,93,51.34,ENT0020,Company T,企业用户,FixedWing,M300,Surveying,SN1005,743,Baoan,Nanshan,False,True,True
+2023-08-21,23:48:00,Luohu,102,42.04,ENT0026,Company Z,个人用户,Helicopter,E200,Logistics,SN1029,275,Pingshan,Pingshan,False,True,True
+2023-12-23,11:46:00,Dapeng,74,11.64,ENT0008,Company H,个人用户,MultiRotor,Mavic 3,Logistics,SN1064,201,Yantian,Guangming,False,True,True
+2023-12-07,17:50:00,Luohu,23,19.57,ENT0021,Company U,企业用户,MultiRotor,V50,Emergency,SN1021,211,Baoan,Baoan,False,True,True
+2023-09-05,12:34:00,Pingshan,95,8.3,ENT0026,Company Z,个人用户,Helicopter,Mavic 3,Emergency,SN1050,604,Yantian,Yantian,False,True,True
+2023-06-01,11:06:00,Baoan,7,57.44,ENT0029,Company ],企业用户,MultiRotor,P100,Personal,SN1043,115,Dapeng,Dapeng,False,True,True
+2023-11-12,18:22:00,Futian,52,54.66,ENT0008,Company H,企业用户,MultiRotor,M300,Inspection,SN1041,513,Yantian,Futian,False,True,True
+2023-04-30,14:13:00,Nanshan,108,33.59,ENT0015,Company O,未知用户,MultiRotor,Autel Alpha,Logistics,SN1083,748,Longgang,Longgang,False,True,True
+2023-04-07,02:23:00,Dapeng,51,30.5,ENT0003,Company C,个人用户,FixedWing,V50,Emergency,SN1003,265,Yantian,Yantian,False,True,True
+2023-08-04,07:17:00,Yantian,84,57.92,ENT0015,Company O,企业用户,MultiRotor,Dragonfish,Inspection,SN1075,307,Dapeng,Dapeng,False,True,False
+2023-08-21,10:35:00,Baoan,5,56.48,ENT0025,Company Y,企业用户,Helicopter,Mavic 3,Emergency,SN1048,219,Longhua,Longhua,False,True,True
+2023-07-23,08:32:00,Longhua,34,47.51,ENT0023,Company W,未知用户,MultiRotor,M300,Inspection,SN1062,98,Baoan,Longgang,False,True,True
+2023-03-15,16:40:00,Futian,113,2.5,ENT0013,Company M,企业用户,MultiRotor,Autel Alpha,Personal,SN1066,425,Longhua,Longhua,False,False,False
+2023-10-22,07:22:00,Longhua,55,33.02,ENT0026,Company Z,个人用户,MultiRotor,Autel Alpha,Logistics,SN1049,87,Dapeng,Dapeng,False,True,True
+2023-10-22,14:55:00,Dapeng,26,13.97,ENT0022,Company V,企业用户,Helicopter,Mavic 3,Logistics,SN1030,718,Longgang,Longgang,False,True,True
+2023-09-26,08:19:00,Dapeng,106,55.77,ENT0030,Company ^,企业用户,MultiRotor,Autel Alpha,Surveying,SN1013,63,Yantian,Yantian,False,True,False
+2023-06-07,16:26:00,Luohu,11,30.36,ENT0006,Company F,企业用户,FixedWing,E200,Surveying,SN1088,108,Yantian,Yantian,False,True,True
+2023-01-06,06:41:00,Longgang,72,19.99,ENT0017,Company Q,企业用户,FixedWing,E200,Personal,SN1071,54,Nanshan,Nanshan,False,True,True
+2023-08-25,10:25:00,Longgang,50,48.82,ENT0029,Company ],企业用户,MultiRotor,P100,Personal,SN1068,686,Yantian,Yantian,False,True,True
+2023-08-12,11:38:00,Dapeng,17,40.38,ENT0022,Company V,企业用户,MultiRotor,E200,Surveying,SN1038,745,Nanshan,Nanshan,False,True,True
+2023-08-28,20:42:00,Longhua,95,17.38,ENT0010,Company J,个人用户,MultiRotor,Mavic 3,Inspection,SN1063,346,Longgang,Longgang,False,True,True
+2023-03-15,08:47:00,Pingshan,70,51.61,ENT0015,Company O,企业用户,MultiRotor,Dragonfish,Surveying,SN1019,767,Longgang,Luohu,False,True,True
+2023-05-26,19:50:00,Pingshan,83,52.87,ENT0025,Company Y,企业用户,FixedWing,M300,Personal,SN1061,219,Longgang,Longgang,False,True,False
+2023-11-06,13:56:00,Longgang,69,15.41,ENT0014,Company N,个人用户,FixedWing,V50,Personal,SN1025,302,Nanshan,Nanshan,False,True,True
+2023-03-02,02:00:00,Futian,75,32.34,ENT0001,Company A,企业用户,FixedWing,V50,Logistics,SN1011,725,Pingshan,Pingshan,False,True,True
+2023-02-04,10:08:00,Longgang,96,1.51,ENT0012,Company L,个人用户,FixedWing,V50,Inspection,SN1068,550,Guangming,Guangming,False,True,True
+2023-06-10,19:00:00,Futian,78,7.4,ENT0013,Company M,企业用户,MultiRotor,V50,Personal,SN1062,548,Luohu,Luohu,False,True,True
+2023-08-26,17:47:00,Longhua,108,53.4,ENT0026,Company Z,未知用户,Helicopter,E200,Logistics,SN1015,233,Longgang,Longgang,False,True,False
+2023-10-04,15:56:00,Luohu,34,40.9,ENT0019,Company S,企业用户,MultiRotor,Autel Alpha,Surveying,SN1024,60,Pingshan,Pingshan,False,True,True
+2023-06-03,10:20:00,Yantian,36,46.87,ENT0012,Company L,企业用户,Helicopter,V50,Emergency,SN1001,544,Baoan,Baoan,False,True,True
+2023-11-10,09:00:00,Longhua,60,37.94,ENT0013,Company M,未知用户,FixedWing,P100,Emergency,SN1028,126,Baoan,Baoan,True,True,True
+2023-02-05,19:23:00,Baoan,19,20.73,ENT0017,Company Q,个人用户,FixedWing,V50,Personal,SN1038,789,Longgang,Longgang,False,True,True
+2023-05-15,14:41:00,Yantian,46,44.4,ENT0027,Company [,企业用户,Helicopter,P100,Logistics,SN1016,676,Guangming,Dapeng,False,True,True
+2023-09-12,07:24:00,Longgang,112,1.25,ENT0003,Company C,企业用户,Helicopter,Dragonfish,Personal,SN1045,708,Longhua,Longhua,True,False,False
+2023-09-09,19:11:00,Baoan,40,48.96,ENT0007,Company G,个人用户,Helicopter,P100,Surveying,SN1095,167,Luohu,Luohu,False,True,True
+2023-07-30,03:38:00,Nanshan,6,29.2,ENT0001,Company A,个人用户,Helicopter,Mavic 3,Logistics,SN1095,344,Dapeng,Dapeng,False,True,True
+2023-01-30,21:46:00,Yantian,101,38.93,ENT0023,Company W,企业用户,Helicopter,P100,Surveying,SN1034,679,Futian,Luohu,False,True,True
+2023-03-30,09:49:00,Yantian,77,10.59,ENT0009,Company I,企业用户,MultiRotor,V50,Personal,SN1008,420,Guangming,Guangming,False,True,True
+2023-03-12,14:43:00,Longgang,72,5.79,ENT0026,Company Z,个人用户,FixedWing,P100,Personal,SN1052,216,Yantian,Yantian,False,True,True
+2023-10-07,01:16:00,Guangming,50,56.56,ENT0006,Company F,企业用户,MultiRotor,V50,Logistics,SN1068,277,Yantian,Yantian,True,True,True
+2023-10-29,02:02:00,Guangming,62,52.22,ENT0013,Company M,企业用户,Helicopter,Dragonfish,Personal,SN1003,487,Longgang,Longgang,True,True,True
+2023-06-20,03:22:00,Pingshan,96,37.01,ENT0023,Company W,企业用户,Helicopter,Autel Alpha,Personal,SN1014,79,Futian,Futian,False,True,True
+2023-06-19,12:15:00,Longgang,104,23.99,ENT0010,Company J,个人用户,MultiRotor,Autel Alpha,Surveying,SN1011,197,Pingshan,Pingshan,False,True,True
+2023-03-13,20:05:00,Longgang,118,26.58,ENT0023,Company W,个人用户,MultiRotor,V50,Logistics,SN1099,323,Longhua,Futian,False,True,True
+2023-10-27,20:06:00,Futian,88,47.46,ENT0028,Company \,未知用户,MultiRotor,Mavic 3,Surveying,SN1015,640,Nanshan,Baoan,False,True,False
+2023-10-24,14:25:00,Longhua,55,25.58,ENT0029,Company ],个人用户,MultiRotor,M300,Personal,SN1041,203,Pingshan,Yantian,True,True,True
+2023-05-18,05:15:00,Longgang,97,43.22,ENT0026,Company Z,未知用户,MultiRotor,P100,Inspection,SN1083,371,Baoan,Futian,False,True,True
+2023-08-29,23:31:00,Pingshan,81,16.32,ENT0008,Company H,企业用户,MultiRotor,M300,Logistics,SN1022,526,Luohu,Nanshan,False,True,True
+2023-07-16,10:02:00,Yantian,49,3.49,ENT0029,Company ],个人用户,FixedWing,Mavic 3,Inspection,SN1032,696,Nanshan,Pingshan,False,True,True
+2023-04-18,22:36:00,Guangming,89,45.43,ENT0018,Company R,企业用户,MultiRotor,V50,Logistics,SN1037,438,Longhua,Longgang,False,True,True
+2023-08-11,10:50:00,Luohu,45,13.66,ENT0023,Company W,未知用户,MultiRotor,Mavic 3,Surveying,SN1096,266,Longhua,Longhua,False,True,True
+2023-06-24,10:49:00,Longgang,38,36.89,ENT0002,Company B,企业用户,FixedWing,Dragonfish,Emergency,SN1057,424,Dapeng,Dapeng,False,True,True
+2023-12-19,04:46:00,Baoan,13,12.39,ENT0001,Company A,企业用户,MultiRotor,V50,Logistics,SN1001,571,Longhua,Longhua,False,True,True
+2023-01-29,11:26:00,Luohu,85,27.21,ENT0002,Company B,企业用户,MultiRotor,Autel Alpha,Emergency,SN1053,356,Longgang,Longgang,False,True,False
+2023-03-26,05:48:00,Baoan,94,37.25,ENT0003,Company C,企业用户,MultiRotor,Dragonfish,Emergency,SN1015,481,Longgang,Longgang,False,True,True
+2023-02-26,23:08:00,Futian,65,33.45,ENT0029,Company ],个人用户,FixedWing,P100,Surveying,SN1090,469,Futian,Futian,False,True,True
+2023-08-14,21:12:00,Pingshan,87,16.02,ENT0020,Company T,企业用户,Helicopter,E200,Personal,SN1024,314,Nanshan,Nanshan,False,True,True
+2023-08-05,14:20:00,Luohu,86,20.51,ENT0010,Company J,个人用户,Helicopter,E200,Surveying,SN1074,59,Luohu,Luohu,False,True,False
+2023-12-16,18:47:00,Yantian,62,45.1,ENT0017,Company Q,个人用户,Helicopter,Dragonfish,Inspection,SN1086,476,Longgang,Longgang,False,True,True
+2023-06-12,03:01:00,Yantian,108,47.98,ENT0027,Company [,个人用户,FixedWing,Autel Alpha,Surveying,SN1091,463,Longgang,Longhua,False,False,False
+2023-08-21,18:40:00,Longgang,83,18.33,ENT0022,Company V,未知用户,FixedWing,Dragonfish,Emergency,SN1050,190,Longhua,Longhua,False,True,True
+2023-05-25,21:50:00,Longgang,82,19.64,ENT0004,Company D,企业用户,MultiRotor,Autel Alpha,Logistics,SN1004,293,Pingshan,Yantian,False,True,True
+2023-04-10,17:24:00,Futian,16,49.68,ENT0021,Company U,个人用户,MultiRotor,Autel Alpha,Surveying,SN1010,795,Baoan,Baoan,False,True,True
+2023-06-12,19:01:00,Luohu,54,33.72,ENT0030,Company ^,个人用户,Helicopter,Dragonfish,Logistics,SN1075,358,Futian,Futian,False,True,True
+2023-04-02,16:15:00,Guangming,71,11.95,ENT0001,Company A,企业用户,MultiRotor,M300,Inspection,SN1024,579,Longgang,Longgang,False,True,True
+2023-06-26,16:31:00,Guangming,46,21.5,ENT0005,Company E,企业用户,MultiRotor,E200,Personal,SN1051,365,Nanshan,Nanshan,False,True,True
+2023-03-23,03:41:00,Baoan,95,27.28,ENT0006,Company F,企业用户,FixedWing,M300,Emergency,SN1045,406,Yantian,Yantian,False,True,True
+2023-05-03,00:16:00,Luohu,15,27.55,ENT0004,Company D,企业用户,Helicopter,P100,Emergency,SN1020,232,Yantian,Yantian,False,True,True
+2023-04-29,02:28:00,Futian,59,24.54,ENT0027,Company [,个人用户,FixedWing,Autel Alpha,Personal,SN1069,318,Guangming,Guangming,False,True,True
+2023-12-12,02:50:00,Pingshan,101,19.07,ENT0018,Company R,企业用户,Helicopter,E200,Personal,SN1007,419,Dapeng,Baoan,False,True,True
+2023-10-20,18:16:00,Yantian,22,27.94,ENT0026,Company Z,未知用户,FixedWing,M300,Inspection,SN1073,512,Yantian,Nanshan,False,True,True
+2023-05-17,02:38:00,Dapeng,40,44.51,ENT0014,Company N,未知用户,MultiRotor,Dragonfish,Personal,SN1026,450,Nanshan,Guangming,False,True,True
+2023-12-26,20:35:00,Baoan,103,5.5,ENT0029,Company ],未知用户,FixedWing,E200,Emergency,SN1058,60,Nanshan,Nanshan,False,True,True
+2023-05-11,16:13:00,Pingshan,114,17.75,ENT0009,Company I,个人用户,FixedWing,Mavic 3,Surveying,SN1004,58,Yantian,Yantian,False,True,True
+2023-11-18,11:28:00,Longhua,87,59.46,ENT0025,Company Y,企业用户,Helicopter,Autel Alpha,Emergency,SN1084,189,Nanshan,Nanshan,False,True,True
+2023-01-08,10:06:00,Longgang,116,18.9,ENT0028,Company \,企业用户,Helicopter,E200,Emergency,SN1007,376,Nanshan,Nanshan,False,True,True
+2023-08-31,06:25:00,Longhua,22,41.1,ENT0016,Company P,企业用户,FixedWing,V50,Logistics,SN1027,701,Guangming,Guangming,True,True,True
+2023-12-26,12:26:00,Futian,88,20.01,ENT0002,Company B,个人用户,Helicopter,Mavic 3,Emergency,SN1057,685,Futian,Futian,True,True,True
+2023-01-03,08:00:00,Nanshan,6,30.38,ENT0010,Company J,企业用户,Helicopter,Autel Alpha,Emergency,SN1069,728,Nanshan,Nanshan,False,True,True
+2023-02-28,13:15:00,Luohu,57,7.39,ENT0003,Company C,企业用户,MultiRotor,M300,Surveying,SN1032,506,Nanshan,Nanshan,False,True,True
+2023-11-27,11:41:00,Baoan,96,28.55,ENT0016,Company P,个人用户,Helicopter,P100,Logistics,SN1016,416,Futian,Futian,False,True,True
+2023-11-08,08:32:00,Dapeng,24,59.55,ENT0009,Company I,企业用户,MultiRotor,P100,Inspection,SN1034,425,Longgang,Longgang,False,True,True
+2023-07-27,04:11:00,Dapeng,14,43.74,ENT0019,Company S,企业用户,MultiRotor,Mavic 3,Personal,SN1034,606,Nanshan,Longhua,False,True,True
+2023-06-11,07:45:00,Longhua,59,52.93,ENT0013,Company M,企业用户,Helicopter,V50,Logistics,SN1088,189,Pingshan,Nanshan,False,True,True
+2023-11-13,16:01:00,Baoan,21,22.65,ENT0019,Company S,个人用户,MultiRotor,P100,Personal,SN1069,798,Yantian,Yantian,False,True,True
+2023-12-26,02:10:00,Baoan,15,39.56,ENT0003,Company C,个人用户,FixedWing,E200,Surveying,SN1063,668,Luohu,Pingshan,False,True,True
+2023-02-27,15:36:00,Luohu,16,47.93,ENT0019,Company S,个人用户,Helicopter,Mavic 3,Logistics,SN1017,143,Longgang,Guangming,False,True,True
+2023-08-24,13:35:00,Dapeng,47,40.01,ENT0023,Company W,企业用户,MultiRotor,M300,Surveying,SN1055,149,Yantian,Yantian,False,True,True
+2023-04-04,09:27:00,Luohu,118,17.93,ENT0027,Company [,企业用户,Helicopter,Mavic 3,Logistics,SN1015,524,Futian,Futian,False,True,True
+2023-03-19,09:43:00,Futian,56,39.29,ENT0029,Company ],企业用户,MultiRotor,Autel Alpha,Inspection,SN1015,357,Guangming,Guangming,False,True,True
+2023-03-02,18:32:00,Futian,80,34.71,ENT0015,Company O,个人用户,Helicopter,M300,Emergency,SN1004,536,Yantian,Yantian,False,True,True
+2023-10-04,15:22:00,Longhua,9,24.34,ENT0009,Company I,个人用户,Helicopter,Dragonfish,Logistics,SN1093,170,Futian,Longgang,True,True,True
+2023-11-17,10:04:00,Dapeng,32,26.85,ENT0017,Company Q,个人用户,FixedWing,V50,Logistics,SN1075,303,Baoan,Baoan,False,True,True
+2023-11-27,18:14:00,Guangming,101,2.03,ENT0007,Company G,个人用户,Helicopter,P100,Personal,SN1029,435,Yantian,Yantian,False,True,True
+2023-04-20,00:14:00,Luohu,39,20.33,ENT0012,Company L,个人用户,FixedWing,Dragonfish,Inspection,SN1075,215,Longhua,Longhua,False,True,True
+2023-12-13,21:50:00,Dapeng,46,1.86,ENT0016,Company P,企业用户,MultiRotor,M300,Emergency,SN1091,681,Yantian,Yantian,False,False,False
+2023-12-09,23:51:00,Futian,9,59.3,ENT0013,Company M,企业用户,Helicopter,Dragonfish,Surveying,SN1032,619,Pingshan,Baoan,False,True,False
+2023-09-28,12:57:00,Longhua,78,54.77,ENT0007,Company G,企业用户,Helicopter,E200,Logistics,SN1038,201,Longgang,Longgang,False,False,False
+2023-02-05,13:59:00,Longhua,114,16.26,ENT0005,Company E,企业用户,Helicopter,Dragonfish,Personal,SN1051,432,Longgang,Longgang,False,True,True
+2023-02-03,05:26:00,Longgang,89,33.78,ENT0018,Company R,个人用户,MultiRotor,V50,Inspection,SN1050,738,Longgang,Longhua,False,True,True
+2023-02-23,00:15:00,Dapeng,7,34.77,ENT0015,Company O,企业用户,Helicopter,Dragonfish,Emergency,SN1057,222,Futian,Pingshan,False,True,True
+2023-03-24,00:51:00,Yantian,85,43.86,ENT0002,Company B,企业用户,FixedWing,V50,Personal,SN1070,291,Yantian,Yantian,False,True,True
+2023-02-05,17:29:00,Longhua,53,27.74,ENT0025,Company Y,个人用户,Helicopter,M300,Logistics,SN1026,211,Luohu,Nanshan,False,True,True
+2023-10-27,13:00:00,Luohu,85,14.41,ENT0017,Company Q,企业用户,Helicopter,M300,Logistics,SN1057,510,Baoan,Luohu,False,True,True
+2023-06-27,17:35:00,Futian,110,4.25,ENT0004,Company D,企业用户,FixedWing,P100,Inspection,SN1006,127,Luohu,Luohu,False,True,True
+2023-05-22,07:04:00,Nanshan,86,39.12,ENT0015,Company O,未知用户,MultiRotor,V50,Inspection,SN1010,108,Baoan,Baoan,False,True,True
+2023-04-11,07:07:00,Baoan,32,58.61,ENT0010,Company J,个人用户,Helicopter,P100,Emergency,SN1082,675,Guangming,Guangming,False,True,True
+2023-12-07,23:39:00,Pingshan,92,57.09,ENT0028,Company \,企业用户,MultiRotor,Mavic 3,Surveying,SN1010,346,Longgang,Longgang,False,True,False
+2023-06-12,11:14:00,Dapeng,20,7.26,ENT0030,Company ^,企业用户,MultiRotor,E200,Logistics,SN1041,316,Dapeng,Pingshan,False,True,True
+2023-01-22,13:22:00,Dapeng,65,46.44,ENT0003,Company C,未知用户,Helicopter,Dragonfish,Surveying,SN1094,166,Guangming,Guangming,False,True,True
+2023-10-15,15:22:00,Pingshan,32,1.7,ENT0003,Company C,个人用户,FixedWing,E200,Emergency,SN1084,708,Futian,Nanshan,False,True,True
+2023-02-26,05:08:00,Yantian,10,5.88,ENT0023,Company W,企业用户,MultiRotor,P100,Logistics,SN1019,230,Pingshan,Guangming,False,True,True
+2023-02-26,10:11:00,Futian,24,11.02,ENT0023,Company W,企业用户,FixedWing,Autel Alpha,Inspection,SN1077,450,Guangming,Guangming,False,True,True
+2023-11-16,16:38:00,Longgang,56,51.73,ENT0013,Company M,个人用户,Helicopter,Mavic 3,Logistics,SN1068,251,Futian,Futian,False,True,True
+2023-01-16,09:37:00,Futian,106,26.33,ENT0005,Company E,企业用户,FixedWing,Autel Alpha,Logistics,SN1082,536,Longgang,Longgang,False,True,True
+2023-12-24,05:59:00,Longgang,81,31.33,ENT0015,Company O,企业用户,FixedWing,Mavic 3,Emergency,SN1093,542,Luohu,Luohu,False,True,True
+2023-06-10,06:55:00,Nanshan,87,22.62,ENT0001,Company A,企业用户,Helicopter,E200,Inspection,SN1021,361,Longhua,Longhua,False,True,True
+2023-03-24,08:00:00,Dapeng,113,30.17,ENT0007,Company G,个人用户,Helicopter,Mavic 3,Inspection,SN1085,713,Baoan,Baoan,False,True,True
+2023-03-15,03:30:00,Longgang,40,56.2,ENT0001,Company A,未知用户,MultiRotor,Autel Alpha,Logistics,SN1065,390,Yantian,Guangming,False,True,True
+2023-12-26,12:11:00,Futian,12,8.77,ENT0009,Company I,未知用户,Helicopter,Mavic 3,Surveying,SN1038,82,Nanshan,Nanshan,False,True,True
+2023-10-25,19:30:00,Guangming,111,53.46,ENT0024,Company X,企业用户,MultiRotor,M300,Inspection,SN1080,209,Baoan,Baoan,False,True,True
+2023-07-11,02:33:00,Pingshan,63,2.66,ENT0010,Company J,企业用户,FixedWing,E200,Inspection,SN1065,109,Yantian,Pingshan,False,True,True
+2023-01-09,01:52:00,Luohu,77,16.58,ENT0012,Company L,企业用户,MultiRotor,P100,Surveying,SN1091,592,Luohu,Luohu,False,True,True
+2023-11-04,07:34:00,Baoan,65,36.99,ENT0026,Company Z,企业用户,FixedWing,M300,Surveying,SN1001,522,Yantian,Yantian,True,True,True
+2023-03-04,10:56:00,Dapeng,12,5.94,ENT0008,Company H,个人用户,Helicopter,Mavic 3,Inspection,SN1048,483,Futian,Futian,False,True,True
+2023-03-22,00:09:00,Yantian,32,46.54,ENT0029,Company ],企业用户,MultiRotor,Autel Alpha,Logistics,SN1082,794,Baoan,Baoan,False,True,True
+2023-12-25,02:54:00,Pingshan,99,37.35,ENT0019,Company S,企业用户,FixedWing,Dragonfish,Personal,SN1061,402,Guangming,Baoan,False,True,True
+2023-08-18,01:17:00,Pingshan,32,33.89,ENT0003,Company C,企业用户,FixedWing,M300,Surveying,SN1043,65,Longgang,Futian,False,True,True
+2023-07-16,00:55:00,Pingshan,11,1.14,ENT0020,Company T,个人用户,Helicopter,V50,Surveying,SN1036,790,Luohu,Luohu,False,True,True
+2023-03-03,04:20:00,Pingshan,58,57.1,ENT0002,Company B,企业用户,MultiRotor,Mavic 3,Surveying,SN1045,567,Guangming,Guangming,False,True,True
+2023-04-07,10:51:00,Dapeng,28,41.66,ENT0026,Company Z,个人用户,MultiRotor,M300,Personal,SN1012,563,Baoan,Baoan,False,True,True
+2023-01-01,00:48:00,Longgang,5,8.45,ENT0027,Company [,企业用户,FixedWing,Autel Alpha,Logistics,SN1015,51,Dapeng,Dapeng,False,True,True
+2023-08-02,13:52:00,Baoan,17,41.28,ENT0012,Company L,个人用户,Helicopter,V50,Personal,SN1030,694,Futian,Baoan,False,True,True
+2023-09-03,10:07:00,Longhua,76,2.98,ENT0029,Company ],个人用户,Helicopter,V50,Inspection,SN1018,616,Dapeng,Dapeng,False,True,True
+2023-01-26,03:43:00,Longhua,101,35.29,ENT0011,Company K,企业用户,MultiRotor,Autel Alpha,Emergency,SN1011,599,Guangming,Guangming,False,True,True
+2023-08-26,00:39:00,Nanshan,22,12.93,ENT0011,Company K,个人用户,FixedWing,Autel Alpha,Inspection,SN1073,624,Yantian,Yantian,False,True,True
+2023-10-26,12:45:00,Baoan,73,43.16,ENT0015,Company O,个人用户,Helicopter,P100,Logistics,SN1099,602,Guangming,Guangming,False,True,True
+2023-02-17,05:23:00,Luohu,108,24.77,ENT0018,Company R,未知用户,Helicopter,M300,Logistics,SN1062,541,Pingshan,Pingshan,False,True,True
+2023-06-26,20:07:00,Luohu,23,10.33,ENT0022,Company V,企业用户,FixedWing,Mavic 3,Inspection,SN1090,201,Longgang,Longgang,False,True,True
+2023-05-28,11:57:00,Baoan,28,49.59,ENT0010,Company J,未知用户,FixedWing,E200,Personal,SN1009,779,Longhua,Longhua,False,True,True
+2023-08-21,22:17:00,Longgang,108,30.36,ENT0013,Company M,企业用户,Helicopter,M300,Personal,SN1071,381,Dapeng,Dapeng,False,True,True
+2023-09-15,07:28:00,Longhua,49,37.58,ENT0004,Company D,未知用户,Helicopter,Autel Alpha,Emergency,SN1006,487,Futian,Futian,True,True,True
+2023-02-23,03:19:00,Longhua,93,57.23,ENT0030,Company ^,未知用户,MultiRotor,Mavic 3,Personal,SN1021,127,Longgang,Longgang,False,True,True
+2023-02-06,11:34:00,Luohu,46,43.49,ENT0015,Company O,企业用户,FixedWing,Mavic 3,Inspection,SN1051,433,Dapeng,Futian,True,True,True
+2023-07-15,17:43:00,Luohu,21,13.01,ENT0009,Company I,企业用户,FixedWing,V50,Inspection,SN1006,608,Yantian,Yantian,True,True,True
+2023-12-02,15:03:00,Futian,83,9.01,ENT0028,Company \,企业用户,Helicopter,V50,Inspection,SN1062,743,Longhua,Longhua,False,True,True
+2023-06-26,21:56:00,Futian,117,2.14,ENT0009,Company I,企业用户,FixedWing,Autel Alpha,Personal,SN1038,378,Guangming,Pingshan,False,True,True
+2023-01-08,19:29:00,Yantian,27,24.37,ENT0024,Company X,企业用户,MultiRotor,Dragonfish,Inspection,SN1008,138,Dapeng,Dapeng,False,True,True
+2023-07-20,19:09:00,Pingshan,95,39.65,ENT0005,Company E,个人用户,MultiRotor,Autel Alpha,Personal,SN1056,207,Guangming,Guangming,False,True,True
+2023-10-03,20:33:00,Nanshan,21,56.01,ENT0016,Company P,个人用户,FixedWing,Dragonfish,Surveying,SN1024,463,Pingshan,Pingshan,True,True,True
+2023-06-04,07:06:00,Yantian,117,7.28,ENT0027,Company [,企业用户,Helicopter,E200,Personal,SN1098,243,Nanshan,Dapeng,False,False,False
+2023-12-07,04:59:00,Guangming,20,35.91,ENT0025,Company Y,个人用户,Helicopter,P100,Personal,SN1041,229,Dapeng,Luohu,False,True,True
+2023-06-15,23:48:00,Futian,100,31.48,ENT0021,Company U,企业用户,MultiRotor,P100,Emergency,SN1002,676,Longhua,Longhua,True,True,True
+2023-09-04,23:36:00,Luohu,66,18.51,ENT0005,Company E,企业用户,FixedWing,V50,Surveying,SN1028,574,Guangming,Guangming,False,True,True
+2023-02-11,23:49:00,Luohu,38,45.05,ENT0009,Company I,未知用户,FixedWing,V50,Surveying,SN1032,793,Longhua,Longhua,False,True,True
+2023-11-30,19:48:00,Baoan,6,13.05,ENT0001,Company A,企业用户,Helicopter,E200,Emergency,SN1060,142,Nanshan,Nanshan,False,True,True
+2023-12-12,11:05:00,Longgang,73,31.29,ENT0016,Company P,企业用户,FixedWing,M300,Emergency,SN1073,525,Baoan,Longgang,True,True,True
+2023-03-16,17:31:00,Nanshan,10,18.01,ENT0013,Company M,个人用户,FixedWing,P100,Inspection,SN1049,215,Baoan,Baoan,True,False,False
+2023-01-19,21:58:00,Luohu,117,51.99,ENT0010,Company J,企业用户,Helicopter,E200,Surveying,SN1043,631,Pingshan,Pingshan,False,True,True
+2023-04-09,10:51:00,Yantian,73,56.83,ENT0016,Company P,企业用户,Helicopter,V50,Surveying,SN1057,744,Longhua,Longhua,False,True,True
+2023-08-23,08:55:00,Luohu,31,13.21,ENT0023,Company W,企业用户,Helicopter,P100,Inspection,SN1059,241,Dapeng,Dapeng,False,True,True
+2023-11-13,08:04:00,Longgang,58,45.22,ENT0010,Company J,个人用户,FixedWing,Dragonfish,Logistics,SN1037,470,Nanshan,Nanshan,False,True,True
+2023-09-03,21:54:00,Longhua,78,26.92,ENT0021,Company U,企业用户,FixedWing,V50,Inspection,SN1075,78,Baoan,Baoan,False,True,True
+2023-07-31,09:36:00,Baoan,95,16.01,ENT0017,Company Q,企业用户,Helicopter,P100,Surveying,SN1027,557,Guangming,Guangming,False,True,True
+2023-10-04,04:20:00,Longhua,67,26.34,ENT0016,Company P,企业用户,MultiRotor,V50,Emergency,SN1083,235,Longhua,Pingshan,False,True,True
+2023-09-12,12:47:00,Longhua,37,34.69,ENT0027,Company [,个人用户,Helicopter,Mavic 3,Inspection,SN1039,403,Futian,Futian,False,True,True
+2023-01-18,01:37:00,Pingshan,24,42.82,ENT0016,Company P,企业用户,MultiRotor,Autel Alpha,Surveying,SN1089,643,Longhua,Longhua,False,True,True
+2023-11-19,13:19:00,Pingshan,21,23.04,ENT0013,Company M,企业用户,MultiRotor,Dragonfish,Personal,SN1024,286,Luohu,Luohu,False,True,True
+2023-04-26,20:42:00,Nanshan,45,43.59,ENT0029,Company ],企业用户,Helicopter,Autel Alpha,Personal,SN1091,413,Dapeng,Dapeng,False,True,True
+2023-02-25,15:26:00,Baoan,73,33.4,ENT0014,Company N,个人用户,Helicopter,Mavic 3,Surveying,SN1003,342,Luohu,Luohu,True,True,True
+2023-05-26,22:06:00,Baoan,7,25.75,ENT0013,Company M,个人用户,Helicopter,M300,Inspection,SN1019,401,Dapeng,Dapeng,False,True,True
+2023-07-22,11:10:00,Baoan,109,18.44,ENT0009,Company I,个人用户,FixedWing,Autel Alpha,Emergency,SN1039,717,Luohu,Luohu,True,True,True
+2023-10-16,13:13:00,Baoan,72,32.81,ENT0027,Company [,未知用户,FixedWing,Mavic 3,Emergency,SN1095,173,Luohu,Luohu,False,True,True
+2023-11-05,13:24:00,Pingshan,76,40.24,ENT0030,Company ^,企业用户,Helicopter,P100,Inspection,SN1062,70,Nanshan,Nanshan,False,True,True
+2023-05-09,13:01:00,Nanshan,41,56.04,ENT0011,Company K,企业用户,Helicopter,Dragonfish,Logistics,SN1058,222,Guangming,Guangming,True,True,False
+2023-03-25,23:40:00,Luohu,81,31.43,ENT0009,Company I,企业用户,Helicopter,V50,Personal,SN1045,586,Longgang,Longgang,False,True,True
+2023-04-14,03:50:00,Yantian,64,8.89,ENT0015,Company O,企业用户,MultiRotor,Autel Alpha,Logistics,SN1081,353,Baoan,Baoan,False,True,True
+2023-01-12,21:42:00,Guangming,82,31.01,ENT0001,Company A,企业用户,Helicopter,V50,Inspection,SN1011,668,Luohu,Luohu,False,True,True
+2023-05-28,11:04:00,Baoan,57,52.48,ENT0009,Company I,企业用户,Helicopter,E200,Personal,SN1003,368,Futian,Futian,False,True,True
+2023-09-12,17:50:00,Yantian,75,13.37,ENT0005,Company E,企业用户,MultiRotor,Autel Alpha,Surveying,SN1066,444,Pingshan,Pingshan,False,True,True
+2023-12-22,20:15:00,Longhua,21,41.73,ENT0005,Company E,个人用户,Helicopter,Mavic 3,Personal,SN1091,445,Luohu,Luohu,False,True,True
+2023-11-17,20:21:00,Yantian,34,43.44,ENT0015,Company O,个人用户,Helicopter,E200,Inspection,SN1030,285,Yantian,Pingshan,False,True,True
+2023-12-05,18:41:00,Guangming,53,26.26,ENT0010,Company J,个人用户,MultiRotor,P100,Personal,SN1055,744,Pingshan,Nanshan,False,True,True
+2023-09-20,00:56:00,Pingshan,63,43.6,ENT0017,Company Q,企业用户,Helicopter,M300,Personal,SN1041,137,Futian,Futian,False,True,True
+2023-02-24,22:49:00,Guangming,93,33.6,ENT0028,Company \,企业用户,MultiRotor,Autel Alpha,Emergency,SN1099,733,Pingshan,Pingshan,False,True,True
+2023-10-19,11:58:00,Dapeng,87,8.71,ENT0022,Company V,企业用户,FixedWing,P100,Inspection,SN1073,627,Guangming,Guangming,False,True,True
+2023-10-15,11:09:00,Guangming,89,5.48,ENT0009,Company I,个人用户,FixedWing,E200,Personal,SN1028,626,Dapeng,Longhua,False,True,True
+2023-12-10,20:39:00,Luohu,8,17.16,ENT0008,Company H,企业用户,FixedWing,Dragonfish,Personal,SN1092,737,Luohu,Baoan,False,True,True
+2023-02-10,14:45:00,Pingshan,59,58.16,ENT0030,Company ^,企业用户,MultiRotor,Autel Alpha,Inspection,SN1008,248,Longgang,Longgang,True,True,True
+2023-05-23,15:51:00,Luohu,59,5.44,ENT0012,Company L,企业用户,FixedWing,P100,Emergency,SN1021,198,Luohu,Longhua,False,True,True
+2023-06-05,19:24:00,Futian,68,53.97,ENT0001,Company A,个人用户,MultiRotor,E200,Inspection,SN1014,144,Longhua,Longhua,False,True,True
+2023-09-29,05:44:00,Longgang,32,25.46,ENT0024,Company X,企业用户,FixedWing,E200,Emergency,SN1084,464,Longgang,Longgang,True,True,True
+2023-08-19,22:34:00,Pingshan,78,50.5,ENT0029,Company ],企业用户,Helicopter,M300,Emergency,SN1041,167,Dapeng,Dapeng,False,True,True
+2023-11-12,14:00:00,Futian,78,59.67,ENT0021,Company U,企业用户,FixedWing,P100,Inspection,SN1017,466,Luohu,Luohu,False,True,True
+2023-12-17,23:09:00,Nanshan,22,19.2,ENT0002,Company B,企业用户,Helicopter,Mavic 3,Inspection,SN1064,357,Dapeng,Dapeng,False,True,True
+2023-11-11,21:44:00,Baoan,6,18.76,ENT0025,Company Y,个人用户,Helicopter,M300,Surveying,SN1051,770,Futian,Futian,False,True,True
+2023-06-23,21:58:00,Luohu,9,38.07,ENT0007,Company G,企业用户,MultiRotor,M300,Personal,SN1012,492,Guangming,Guangming,False,True,True
+2023-08-14,17:54:00,Dapeng,37,24.84,ENT0025,Company Y,个人用户,MultiRotor,Autel Alpha,Surveying,SN1081,216,Longhua,Longgang,True,True,True
+2023-09-26,22:00:00,Baoan,77,37.89,ENT0006,Company F,个人用户,FixedWing,E200,Surveying,SN1036,262,Longhua,Longhua,False,True,True
+2023-01-02,02:56:00,Guangming,107,30.98,ENT0004,Company D,企业用户,Helicopter,Dragonfish,Emergency,SN1051,138,Futian,Pingshan,False,True,True
+2023-08-03,00:49:00,Guangming,67,5.91,ENT0023,Company W,企业用户,MultiRotor,E200,Personal,SN1094,239,Longgang,Longgang,False,True,True
+2023-12-21,14:04:00,Nanshan,96,1.12,ENT0030,Company ^,企业用户,MultiRotor,E200,Emergency,SN1088,246,Pingshan,Pingshan,False,True,True
+2023-03-06,00:18:00,Guangming,91,4.23,ENT0025,Company Y,企业用户,MultiRotor,P100,Inspection,SN1060,659,Nanshan,Dapeng,False,True,True
+2023-11-15,11:13:00,Luohu,111,13.62,ENT0011,Company K,个人用户,MultiRotor,M300,Emergency,SN1062,154,Pingshan,Pingshan,False,True,True
+2023-07-29,22:30:00,Nanshan,15,31.48,ENT0026,Company Z,未知用户,MultiRotor,E200,Surveying,SN1037,582,Baoan,Guangming,False,True,True
+2023-03-20,11:14:00,Pingshan,10,15.62,ENT0001,Company A,个人用户,Helicopter,Dragonfish,Emergency,SN1061,704,Dapeng,Dapeng,False,True,True
+2023-02-16,12:11:00,Guangming,82,20.67,ENT0019,Company S,企业用户,MultiRotor,Mavic 3,Logistics,SN1010,778,Yantian,Yantian,False,True,True
+2023-12-18,23:21:00,Dapeng,37,10.21,ENT0017,Company Q,企业用户,MultiRotor,Mavic 3,Personal,SN1094,380,Dapeng,Dapeng,False,True,True
+2023-12-16,18:59:00,Futian,39,27.16,ENT0026,Company Z,企业用户,Helicopter,M300,Inspection,SN1094,173,Futian,Futian,False,True,True
+2023-12-11,19:57:00,Yantian,49,4.73,ENT0027,Company [,未知用户,MultiRotor,Dragonfish,Emergency,SN1029,312,Nanshan,Nanshan,True,True,True
+2023-09-26,09:01:00,Longgang,67,22.14,ENT0015,Company O,企业用户,Helicopter,Mavic 3,Logistics,SN1042,317,Longhua,Longhua,False,True,True
+2023-10-17,13:31:00,Dapeng,112,11.23,ENT0023,Company W,企业用户,Helicopter,P100,Surveying,SN1025,80,Luohu,Luohu,True,True,True
+2023-12-28,11:37:00,Dapeng,80,26.55,ENT0012,Company L,个人用户,MultiRotor,Mavic 3,Surveying,SN1039,72,Baoan,Baoan,False,True,True
+2023-06-20,03:12:00,Baoan,92,23.29,ENT0014,Company N,个人用户,MultiRotor,M300,Personal,SN1009,239,Nanshan,Longhua,False,True,True
+2023-08-14,03:53:00,Baoan,111,17.76,ENT0006,Company F,企业用户,MultiRotor,Mavic 3,Logistics,SN1084,395,Futian,Futian,True,True,True
+2023-01-09,08:29:00,Longgang,60,16.71,ENT0010,Company J,企业用户,FixedWing,Mavic 3,Logistics,SN1037,441,Yantian,Yantian,False,True,True
+2023-03-08,18:41:00,Luohu,95,7.26,ENT0019,Company S,未知用户,MultiRotor,V50,Personal,SN1036,278,Longgang,Pingshan,False,True,True
+2023-04-05,19:32:00,Dapeng,89,30.17,ENT0011,Company K,个人用户,Helicopter,P100,Emergency,SN1068,700,Yantian,Luohu,False,True,True
+2023-04-20,02:26:00,Guangming,13,23.6,ENT0027,Company [,企业用户,FixedWing,M300,Surveying,SN1086,616,Baoan,Baoan,False,True,True
+2023-06-01,18:55:00,Luohu,87,40.8,ENT0006,Company F,企业用户,Helicopter,Autel Alpha,Personal,SN1040,268,Longhua,Longhua,False,True,True
+2023-11-25,09:39:00,Dapeng,27,4.76,ENT0005,Company E,企业用户,Helicopter,P100,Personal,SN1015,528,Longhua,Longhua,False,True,True
+2023-01-09,14:41:00,Baoan,66,29.84,ENT0028,Company \,企业用户,MultiRotor,Autel Alpha,Surveying,SN1006,66,Longhua,Longhua,False,True,True
+2023-09-24,00:08:00,Longhua,59,13.17,ENT0014,Company N,个人用户,MultiRotor,E200,Surveying,SN1059,207,Baoan,Baoan,False,True,True
+2023-05-21,02:03:00,Longgang,41,54.25,ENT0012,Company L,企业用户,Helicopter,M300,Surveying,SN1000,460,Futian,Futian,False,True,True
+2023-07-03,21:20:00,Futian,24,3.47,ENT0013,Company M,企业用户,FixedWing,Autel Alpha,Surveying,SN1036,692,Futian,Futian,True,True,True
+2023-06-30,09:15:00,Luohu,101,27.52,ENT0001,Company A,未知用户,MultiRotor,Mavic 3,Emergency,SN1018,606,Yantian,Yantian,False,False,False
+2023-07-07,06:54:00,Guangming,94,40.91,ENT0003,Company C,个人用户,Helicopter,V50,Personal,SN1004,594,Nanshan,Nanshan,False,True,True
+2023-11-01,03:58:00,Yantian,80,50.61,ENT0029,Company ],个人用户,MultiRotor,Dragonfish,Personal,SN1031,481,Guangming,Guangming,False,True,True
+2023-06-24,04:41:00,Longgang,34,29.44,ENT0030,Company ^,企业用户,FixedWing,M300,Logistics,SN1023,467,Luohu,Luohu,False,True,True
+2023-10-17,22:53:00,Dapeng,7,44.51,ENT0018,Company R,未知用户,Helicopter,M300,Emergency,SN1013,588,Dapeng,Pingshan,True,True,True
+2023-11-19,15:03:00,Luohu,109,16.53,ENT0008,Company H,企业用户,FixedWing,V50,Inspection,SN1091,748,Nanshan,Yantian,False,True,True
+2023-04-02,16:50:00,Longhua,40,25.48,ENT0003,Company C,个人用户,Helicopter,E200,Surveying,SN1003,89,Luohu,Luohu,False,True,True
+2023-05-18,23:05:00,Longhua,84,19.4,ENT0026,Company Z,企业用户,Helicopter,E200,Logistics,SN1062,241,Pingshan,Pingshan,False,True,True
+2023-09-19,21:05:00,Yantian,85,41.21,ENT0014,Company N,企业用户,MultiRotor,M300,Inspection,SN1065,668,Longhua,Longhua,False,True,True
+2023-07-16,09:41:00,Pingshan,13,36.6,ENT0025,Company Y,企业用户,Helicopter,E200,Surveying,SN1044,209,Nanshan,Nanshan,False,True,True
+2023-10-09,21:31:00,Baoan,8,59.37,ENT0018,Company R,个人用户,Helicopter,P100,Surveying,SN1017,780,Longhua,Longhua,False,True,True
+2023-06-16,19:15:00,Longhua,87,9.99,ENT0006,Company F,未知用户,MultiRotor,Autel Alpha,Inspection,SN1083,747,Nanshan,Nanshan,True,True,False
+2023-05-28,13:28:00,Longhua,15,58.48,ENT0010,Company J,个人用户,FixedWing,V50,Surveying,SN1036,233,Pingshan,Dapeng,False,True,True
+2023-01-30,14:11:00,Yantian,42,8.47,ENT0020,Company T,企业用户,FixedWing,Autel Alpha,Logistics,SN1089,525,Baoan,Baoan,False,True,True
+2023-04-24,04:17:00,Nanshan,48,16.09,ENT0029,Company ],未知用户,FixedWing,Dragonfish,Logistics,SN1009,607,Futian,Longgang,True,True,True
+2023-04-29,13:34:00,Pingshan,51,29.07,ENT0004,Company D,企业用户,Helicopter,Autel Alpha,Logistics,SN1025,776,Nanshan,Nanshan,False,True,True
+2023-11-26,22:43:00,Guangming,21,15.22,ENT0017,Company Q,个人用户,FixedWing,E200,Logistics,SN1005,682,Pingshan,Pingshan,False,True,True
+2023-05-01,10:07:00,Dapeng,57,35.77,ENT0016,Company P,个人用户,Helicopter,E200,Surveying,SN1060,396,Yantian,Yantian,False,True,True
+2023-01-07,17:32:00,Guangming,69,55.9,ENT0009,Company I,企业用户,Helicopter,P100,Inspection,SN1083,789,Futian,Futian,False,True,True
+2023-09-26,23:03:00,Dapeng,111,47.3,ENT0016,Company P,企业用户,Helicopter,E200,Surveying,SN1090,715,Longgang,Longgang,False,True,True
+2023-08-06,18:17:00,Dapeng,7,11.11,ENT0029,Company ],个人用户,FixedWing,Mavic 3,Logistics,SN1062,418,Dapeng,Guangming,False,True,True
+2023-06-01,00:18:00,Baoan,23,36.29,ENT0005,Company E,个人用户,MultiRotor,Autel Alpha,Personal,SN1000,158,Longgang,Longgang,False,True,True
+2023-08-25,11:34:00,Longhua,59,3.98,ENT0015,Company O,个人用户,FixedWing,Autel Alpha,Logistics,SN1052,190,Longhua,Longgang,False,True,True
+2023-05-04,09:50:00,Pingshan,90,13.25,ENT0013,Company M,企业用户,Helicopter,Mavic 3,Surveying,SN1039,614,Dapeng,Dapeng,False,True,True
+2023-12-20,10:41:00,Longhua,114,44.96,ENT0023,Company W,企业用户,Helicopter,Autel Alpha,Personal,SN1079,477,Dapeng,Dapeng,False,True,True
+2023-06-23,19:11:00,Guangming,59,51.79,ENT0020,Company T,个人用户,FixedWing,Dragonfish,Surveying,SN1043,81,Dapeng,Dapeng,False,True,True
+2023-01-08,11:53:00,Futian,83,18.74,ENT0012,Company L,企业用户,FixedWing,Mavic 3,Logistics,SN1084,94,Longgang,Longgang,False,False,False
+2023-10-06,05:41:00,Guangming,46,25.32,ENT0011,Company K,个人用户,Helicopter,V50,Surveying,SN1027,266,Dapeng,Dapeng,False,True,True
+2023-06-11,00:24:00,Nanshan,73,46.01,ENT0006,Company F,企业用户,FixedWing,M300,Emergency,SN1097,318,Baoan,Baoan,False,True,True
+2023-03-04,15:21:00,Longhua,107,37.23,ENT0005,Company E,企业用户,Helicopter,V50,Surveying,SN1080,779,Pingshan,Pingshan,False,True,True
+2023-10-14,04:22:00,Longhua,76,58.24,ENT0025,Company Y,未知用户,Helicopter,Autel Alpha,Personal,SN1084,289,Pingshan,Baoan,True,True,False
+2023-05-07,09:05:00,Longgang,85,3.98,ENT0018,Company R,个人用户,Helicopter,M300,Inspection,SN1019,512,Pingshan,Baoan,False,True,True
+2023-06-25,05:58:00,Dapeng,40,59.48,ENT0002,Company B,个人用户,MultiRotor,Autel Alpha,Personal,SN1038,703,Longhua,Nanshan,False,True,True
+2023-08-29,15:20:00,Dapeng,40,58.64,ENT0028,Company \,个人用户,FixedWing,Mavic 3,Inspection,SN1055,583,Dapeng,Dapeng,False,True,True
+2023-11-29,19:39:00,Futian,96,44.29,ENT0017,Company Q,个人用户,MultiRotor,V50,Personal,SN1095,398,Baoan,Baoan,False,True,True
+2023-04-14,11:41:00,Dapeng,111,23.15,ENT0007,Company G,企业用户,MultiRotor,Mavic 3,Logistics,SN1045,450,Yantian,Yantian,False,True,True
+2023-03-30,14:44:00,Longhua,95,32.07,ENT0007,Company G,个人用户,FixedWing,V50,Surveying,SN1049,560,Nanshan,Luohu,False,True,True
+2023-05-24,05:20:00,Baoan,85,38.76,ENT0020,Company T,个人用户,Helicopter,V50,Inspection,SN1079,288,Longgang,Longgang,False,True,True
+2023-11-01,16:24:00,Longgang,69,58.2,ENT0020,Company T,未知用户,FixedWing,P100,Personal,SN1050,303,Futian,Dapeng,False,True,True
+2023-09-24,18:04:00,Longhua,51,27.36,ENT0004,Company D,未知用户,FixedWing,E200,Logistics,SN1071,339,Longgang,Luohu,False,True,True
+2023-10-26,11:34:00,Longgang,97,7.38,ENT0005,Company E,企业用户,MultiRotor,E200,Inspection,SN1005,679,Luohu,Luohu,False,True,True
+2023-05-24,17:32:00,Luohu,75,22.15,ENT0008,Company H,个人用户,Helicopter,E200,Inspection,SN1012,638,Nanshan,Nanshan,False,True,True
+2023-08-11,05:04:00,Yantian,36,9.3,ENT0028,Company \,个人用户,FixedWing,M300,Surveying,SN1090,709,Dapeng,Baoan,False,True,True
+2023-09-18,14:10:00,Yantian,96,11.31,ENT0019,Company S,企业用户,FixedWing,P100,Emergency,SN1078,537,Luohu,Luohu,False,True,True
+2023-01-30,03:59:00,Pingshan,48,24.56,ENT0028,Company \,企业用户,MultiRotor,M300,Logistics,SN1025,309,Luohu,Luohu,False,True,True
+2023-09-15,07:34:00,Baoan,58,5.61,ENT0026,Company Z,企业用户,FixedWing,E200,Emergency,SN1061,244,Pingshan,Pingshan,False,True,True
+2023-06-11,22:10:00,Futian,11,22.78,ENT0028,Company \,未知用户,FixedWing,P100,Surveying,SN1079,475,Futian,Futian,False,True,True
+2023-09-18,01:39:00,Yantian,10,38.88,ENT0017,Company Q,企业用户,FixedWing,V50,Personal,SN1089,374,Pingshan,Pingshan,False,True,True
+2023-12-22,20:44:00,Nanshan,100,37.72,ENT0021,Company U,企业用户,Helicopter,V50,Inspection,SN1034,526,Yantian,Yantian,False,True,True
+2023-11-08,23:58:00,Nanshan,106,53.91,ENT0007,Company G,企业用户,MultiRotor,P100,Emergency,SN1055,713,Longhua,Futian,False,True,True
+2023-08-20,02:35:00,Baoan,46,50.04,ENT0002,Company B,企业用户,MultiRotor,Mavic 3,Surveying,SN1052,473,Luohu,Luohu,False,True,True
+2023-06-20,11:16:00,Pingshan,79,1.52,ENT0023,Company W,企业用户,MultiRotor,Dragonfish,Surveying,SN1031,713,Luohu,Luohu,False,True,True
+2023-01-16,16:10:00,Luohu,8,50.92,ENT0025,Company Y,企业用户,FixedWing,Autel Alpha,Emergency,SN1049,114,Longhua,Baoan,False,True,False
+2023-08-02,02:30:00,Yantian,56,33.43,ENT0021,Company U,企业用户,MultiRotor,P100,Personal,SN1012,317,Dapeng,Longgang,False,True,True
+2023-03-05,03:30:00,Longgang,63,37.35,ENT0004,Company D,企业用户,MultiRotor,M300,Logistics,SN1051,702,Luohu,Nanshan,True,True,False
+2023-08-27,06:23:00,Longgang,83,37.61,ENT0018,Company R,企业用户,MultiRotor,Autel Alpha,Logistics,SN1081,597,Baoan,Baoan,False,True,True
+2023-06-06,18:59:00,Yantian,6,6.0,ENT0024,Company X,企业用户,MultiRotor,Autel Alpha,Emergency,SN1062,410,Luohu,Luohu,True,True,True
+2023-02-01,04:02:00,Luohu,116,25.67,ENT0021,Company U,未知用户,FixedWing,M300,Inspection,SN1052,56,Longhua,Longgang,False,True,True
+2023-07-28,07:38:00,Nanshan,74,50.17,ENT0003,Company C,企业用户,MultiRotor,Dragonfish,Surveying,SN1084,505,Luohu,Luohu,False,True,True
+2023-04-16,23:16:00,Luohu,39,31.11,ENT0008,Company H,企业用户,FixedWing,E200,Inspection,SN1086,528,Pingshan,Dapeng,False,True,True
+2023-11-17,17:59:00,Yantian,9,10.17,ENT0030,Company ^,未知用户,FixedWing,Autel Alpha,Logistics,SN1036,98,Yantian,Baoan,False,True,True
+2023-08-31,00:44:00,Nanshan,43,52.77,ENT0029,Company ],个人用户,MultiRotor,P100,Personal,SN1017,381,Yantian,Yantian,False,True,True
+2023-07-07,16:55:00,Longhua,80,22.46,ENT0021,Company U,企业用户,MultiRotor,V50,Personal,SN1006,341,Guangming,Guangming,False,True,True
+2023-06-19,23:54:00,Dapeng,72,37.86,ENT0016,Company P,个人用户,FixedWing,V50,Emergency,SN1009,454,Dapeng,Longhua,False,True,True
+2023-02-06,17:16:00,Guangming,69,40.27,ENT0027,Company [,企业用户,FixedWing,Mavic 3,Surveying,SN1044,371,Guangming,Guangming,False,True,True
+2023-05-16,01:25:00,Pingshan,35,49.83,ENT0002,Company B,企业用户,Helicopter,E200,Personal,SN1088,628,Guangming,Guangming,True,True,True
+2023-12-08,00:28:00,Luohu,86,24.6,ENT0002,Company B,企业用户,Helicopter,Mavic 3,Logistics,SN1005,541,Guangming,Guangming,False,True,True
+2023-01-14,10:54:00,Nanshan,42,15.91,ENT0023,Company W,个人用户,FixedWing,Autel Alpha,Surveying,SN1078,532,Luohu,Luohu,False,True,True
+2023-03-01,00:17:00,Pingshan,106,20.44,ENT0025,Company Y,企业用户,Helicopter,Autel Alpha,Personal,SN1014,519,Longgang,Longgang,False,True,True
+2023-02-15,02:07:00,Longhua,79,51.2,ENT0026,Company Z,企业用户,FixedWing,V50,Personal,SN1087,464,Yantian,Yantian,False,True,True
+2023-09-22,07:26:00,Dapeng,33,23.92,ENT0012,Company L,企业用户,FixedWing,E200,Inspection,SN1049,261,Nanshan,Yantian,False,True,False
+2023-02-27,00:28:00,Guangming,7,37.57,ENT0014,Company N,企业用户,FixedWing,Mavic 3,Logistics,SN1026,466,Futian,Pingshan,False,True,True
+2023-11-30,12:10:00,Guangming,16,14.68,ENT0020,Company T,企业用户,FixedWing,E200,Personal,SN1059,123,Pingshan,Pingshan,False,True,True
+2023-11-29,14:33:00,Nanshan,102,53.21,ENT0011,Company K,企业用户,Helicopter,P100,Surveying,SN1017,601,Pingshan,Futian,False,True,True
+2023-01-18,05:28:00,Baoan,102,3.43,ENT0012,Company L,个人用户,MultiRotor,Dragonfish,Emergency,SN1031,212,Dapeng,Nanshan,False,True,True
+2023-10-12,13:34:00,Baoan,51,29.63,ENT0012,Company L,个人用户,Helicopter,Autel Alpha,Inspection,SN1084,766,Dapeng,Dapeng,True,True,True
+2023-10-14,19:15:00,Baoan,115,6.69,ENT0008,Company H,个人用户,Helicopter,P100,Inspection,SN1099,471,Yantian,Yantian,False,True,True
+2023-01-08,17:03:00,Baoan,12,35.04,ENT0017,Company Q,企业用户,FixedWing,Mavic 3,Inspection,SN1015,549,Longgang,Longgang,False,True,True
+2023-09-08,14:59:00,Dapeng,94,12.32,ENT0026,Company Z,未知用户,FixedWing,Dragonfish,Logistics,SN1016,442,Dapeng,Dapeng,False,True,True
+2023-08-22,21:09:00,Longgang,102,55.26,ENT0028,Company \,个人用户,FixedWing,M300,Surveying,SN1033,315,Luohu,Nanshan,False,True,True
+2023-06-15,14:41:00,Baoan,88,45.43,ENT0022,Company V,企业用户,MultiRotor,E200,Inspection,SN1009,177,Pingshan,Pingshan,False,True,False
+2023-01-15,05:06:00,Longhua,34,24.74,ENT0012,Company L,企业用户,MultiRotor,E200,Personal,SN1005,241,Baoan,Luohu,False,True,True
+2023-01-29,03:26:00,Guangming,116,56.24,ENT0023,Company W,企业用户,FixedWing,Dragonfish,Personal,SN1006,482,Nanshan,Nanshan,True,True,True
+2023-12-30,18:17:00,Pingshan,39,59.57,ENT0022,Company V,未知用户,Helicopter,Dragonfish,Emergency,SN1066,384,Baoan,Baoan,False,True,True

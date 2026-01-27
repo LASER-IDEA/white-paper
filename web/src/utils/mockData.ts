@@ -10,18 +10,18 @@ export const getScaleGrowthData = (): MetricData[] => [
   {
     id: '01',
     title: '低空交通流量指数',
-    subtitle: '日均飞行架次趋势',
+    subtitle: '月均架次指数趋势',
     dimension: Dimension.ScaleGrowth,
-    value: 12450,
-    unit: '架次/日',
+    value: 112.4,
+    unit: '指数',
     trend: 0.12,
-    definition: '衡量每日/每月总飞行架次的波动与增长情况，基于基准线（设为100）。',
+    definition: '以基期月均架次为100，衡量当期月均架次的相对规模。',
     insight: '交通量呈现持续上升趋势，在年中物流节期间达到峰值。周末物流航班减少，但旅游观光航班增加。',
     suggestion: '建议扩建基础设施容量，以应对第四季度的预期高峰负荷。',
     chartType: 'Area',
-    chartData: Array.from({ length: 30 }, (_, i) => ({
-      date: `2023-09-${i + 1}`,
-      value: 1000 + randomInt(-200, 500) + (i * 50),
+    chartData: months.map((m, i) => ({
+      date: `2023-${String(i + 1).padStart(2, '0')}`,
+      value: 95 + i * 2 + randomInt(-3, 4),
     })),
     keyMetrics: [
       { label: '年度累计架次', value: '120万' },
@@ -34,10 +34,10 @@ export const getScaleGrowthData = (): MetricData[] => [
     title: '运行强度指数',
     subtitle: '飞行时长与里程关联度',
     dimension: Dimension.ScaleGrowth,
-    value: 85.4,
-    unit: '点',
+    value: 108.6,
+    unit: '指数',
     trend: 0.08,
-    definition: '加权计算总飞行时长和里程，以代表实际工作量，过滤无效飞行。',
+    definition: '加权计算单位时间飞行时长与里程，相对基期归一化为指数。',
     insight: '里程增长快于时长，表明新型无人机机型的飞行速度和效率更高。',
     suggestion: '鼓励长距离物流航线，进一步提升该指数。',
     chartType: 'DualLine',
@@ -54,7 +54,7 @@ export const getScaleGrowthData = (): MetricData[] => [
   },
   {
     id: '03',
-    title: '活跃机队规模指数',
+    title: '活跃运力规模指数',
     subtitle: '活跃航空器分类统计',
     dimension: Dimension.ScaleGrowth,
     value: 3240,
@@ -76,16 +76,38 @@ export const getScaleGrowthData = (): MetricData[] => [
       { label: '其他', value: '4%' },
     ]
   },
+  {
+    id: '04',
+    title: '增长动能指数',
+    subtitle: '月度增长率趋势',
+    dimension: Dimension.ScaleGrowth,
+    value: 6.8,
+    unit: '%',
+    trend: 0.03,
+    definition: '月度总架次的环比/同比增速，反映规模扩张速度与趋势强度。',
+    insight: '二季度增速显著提升，物流与测绘需求拉动明显。',
+    suggestion: '保持运力投放节奏，避免在淡季出现运力冗余。',
+    chartType: 'Area',
+    chartData: months.map((m, i) => ({
+      date: `2023-${String(i + 1).padStart(2, '0')}`,
+      value: randomInt(-5, 18),
+    })),
+    keyMetrics: [
+      { label: '最新环比', value: '+6.8%' },
+      { label: '峰值增速', value: '+18%' },
+      { label: '低谷增速', value: '-3%' },
+    ]
+  },
 ];
 
 // 2. Structure & Entity
 export const getStructureEntityData = (): MetricData[] => [
   {
-    id: '04',
+    id: '05',
     title: '市场集中度指数 (CR50)',
     subtitle: '前50强企业市场份额',
     dimension: Dimension.StructureEntity,
-    value: 'CR10=62%',
+    value: 'CR50=68%',
     unit: '',
     trend: -0.05,
     definition: '前10名或前50名企业贡献的总飞行量百分比。',
@@ -106,14 +128,14 @@ export const getStructureEntityData = (): MetricData[] => [
     ]
   },
   {
-    id: '05',
+    id: '06',
     title: '商业成熟度指数',
     subtitle: '用户类型分布',
     dimension: Dimension.StructureEntity,
     value: 72,
-    unit: '/100',
+    unit: '%',
     trend: 0.1,
-    definition: '企业与个人飞行架次的比率。较高值表示“生产工具”用途多于“玩具”用途。',
+    definition: '企业用户飞行架次占总飞行架次的比例。',
     insight: '企业用途已超过70%，标志着商业生态系统的成熟。政府用途保持稳定。',
     suggestion: '简化商业主体的空域审批流程，以保持这一势头。',
     chartType: 'Rose',
@@ -130,8 +152,8 @@ export const getStructureEntityData = (): MetricData[] => [
     ]
   },
   {
-    id: '06',
-    title: '机队多样性指数',
+    id: '07',
+    title: '机型生态多元指数',
     subtitle: '航空器型号分布',
     dimension: Dimension.StructureEntity,
     value: 0.85,
@@ -160,14 +182,14 @@ export const getStructureEntityData = (): MetricData[] => [
 // 3. Time & Space
 export const getTimeSpaceData = (): MetricData[] => [
   {
-    id: '07',
+    id: '08',
     title: '区域平衡指数',
     subtitle: '地理飞行密度平衡',
     dimension: Dimension.TimeSpace,
-    value: 0.45,
-    unit: '变异系数',
+    value: 0.68,
+    unit: '均衡度',
     trend: 0.0,
-    definition: '不同行政区无人机飞行密度的分布情况。反映城市空中交通的地域特征。',
+    definition: '1 - 区域飞行架次占比的基尼系数，越高越均衡。',
     insight: '南山区和宝安区飞行密度最高，主要集中在高新科技园区和物流枢纽。盐田区密度最低。',
     suggestion: '加大盐田区等外围地区的无人机基础设施建设，提升区域平衡性。',
     chartType: 'Map',
@@ -186,11 +208,11 @@ export const getTimeSpaceData = (): MetricData[] => [
     ]
   },
   {
-    id: '08',
+    id: '09',
     title: '全天候运行指数',
     subtitle: '24小时飞行分布',
     dimension: Dimension.TimeSpace,
-    value: 8.5,
+    value: 2.85,
     unit: '熵值',
     trend: 0.12,
     definition: '基于24小时分布的信息熵。数值越高意味着昼夜均有飞行。',
@@ -208,11 +230,11 @@ export const getTimeSpaceData = (): MetricData[] => [
     ]
   },
   {
-    id: '09',
+    id: '10',
     title: '季节稳定性指数',
     subtitle: '月度飞行波动性',
     dimension: Dimension.TimeSpace,
-    value: 0.88,
+    value: 0.92,
     unit: '稳定性',
     trend: 0.03,
     definition: '1 - 月度飞行数据的变异系数。衡量对天气/季节干扰的抵抗力。',
@@ -231,12 +253,51 @@ export const getTimeSpaceData = (): MetricData[] => [
       { label: '天气影响', value: '低' },
     ]
   },
+  {
+    id: '11',
+    title: '网络化枢纽指数',
+    subtitle: '起降点连接度与流量',
+    dimension: Dimension.TimeSpace,
+    value: 82,
+    unit: '枢纽度',
+    trend: 0.06,
+    definition: '基于起降点航线网络的连接度与流量加权得分。',
+    insight: '宝安区与南山区形成双核心枢纽，承担超过45%的跨区流量。',
+    suggestion: '优先在宝安与南山布局起降点与维护设施。',
+    chartType: 'Graph',
+    chartData: {
+      categories: [
+        { name: '核心枢纽' },
+        { name: '次级枢纽' },
+        { name: '一般枢纽' },
+      ],
+      nodes: [
+        { name: '宝安区', value: 88, symbolSize: 46, category: 0 },
+        { name: '南山区', value: 76, symbolSize: 40, category: 0 },
+        { name: '福田区', value: 62, symbolSize: 34, category: 1 },
+        { name: '龙岗区', value: 54, symbolSize: 30, category: 1 },
+        { name: '罗湖区', value: 38, symbolSize: 24, category: 2 },
+      ],
+      links: [
+        { source: '宝安区', target: '南山区', value: 45 },
+        { source: '南山区', target: '福田区', value: 28 },
+        { source: '宝安区', target: '龙岗区', value: 22 },
+        { source: '福田区', target: '罗湖区', value: 16 },
+        { source: '龙岗区', target: '罗湖区', value: 12 },
+      ]
+    },
+    keyMetrics: [
+      { label: '核心枢纽', value: '宝安区' },
+      { label: '次级枢纽', value: '南山区' },
+      { label: '枢纽数', value: '5' },
+    ]
+  },
 ];
 
 // 4. Efficiency & Quality
 export const getEfficiencyQualityData = (): MetricData[] => [
   {
-    id: '10',
+    id: '12',
     title: '单机效率指数',
     subtitle: '活跃航空器人均架次',
     dimension: Dimension.EfficiencyQuality,
@@ -255,7 +316,7 @@ export const getEfficiencyQualityData = (): MetricData[] => [
     ]
   },
   {
-    id: '11',
+    id: '13',
     title: '长航时任务指数',
     subtitle: '高价值任务比例',
     dimension: Dimension.EfficiencyQuality,
@@ -279,7 +340,7 @@ export const getEfficiencyQualityData = (): MetricData[] => [
     ]
   },
   {
-    id: '12',
+    id: '14',
     title: '广域覆盖指数',
     subtitle: '飞行航程分布',
     dimension: Dimension.EfficiencyQuality,
@@ -302,12 +363,72 @@ export const getEfficiencyQualityData = (): MetricData[] => [
       { label: '最大航程', value: '45km' },
     ]
   },
+  {
+    id: '15',
+    title: '任务完成质量指数',
+    subtitle: '有效飞行完成率',
+    dimension: Dimension.EfficiencyQuality,
+    value: 92.3,
+    unit: '%',
+    trend: 0.04,
+    definition: '实际完成的有效飞行架次与计划报备架次的比率。',
+    insight: '质量指数处于高位，说明飞行计划执行稳定。',
+    suggestion: '持续优化航线调度与异常预警，降低计划偏差。',
+    chartType: 'ControlChart',
+    chartData: {
+      latestTqi: 92.3,
+      // 航迹偏离度控制图数据（24小时）
+      trajData: [
+        { time: '00:00', deviation: 0.08, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '02:00', deviation: -0.05, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '04:00', deviation: 0.12, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '06:00', deviation: 0.15, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '08:00', deviation: 0.22, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '10:00', deviation: 0.18, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '12:00', deviation: 0.28, mean: 0.0, ucl: 0.25, lcl: -0.25 }, // 超限点
+        { time: '14:00', deviation: 0.20, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '16:00', deviation: 0.10, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '18:00', deviation: 0.05, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '20:00', deviation: -0.03, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+        { time: '22:00', deviation: 0.02, mean: 0.0, ucl: 0.25, lcl: -0.25 },
+      ],
+      // TQI 历史趋势（30天）
+      tqiHistory: [
+        { time: '01-01', tqi: 88.5, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-05', tqi: 89.2, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-08', tqi: 91.0, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-12', tqi: 90.5, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-15', tqi: 92.3, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-18', tqi: 93.1, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-22', tqi: 91.8, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-25', tqi: 92.5, mean: 90, ucl: 98, lcl: 75 },
+        { time: '01-27', tqi: 92.3, mean: 90, ucl: 98, lcl: 75 },
+      ],
+      // 计划 vs 实际（30天）
+      planActual: [
+        { time: '01-01', actual: 445, planned: 500 },
+        { time: '01-05', actual: 468, planned: 520 },
+        { time: '01-08', actual: 520, planned: 560 },
+        { time: '01-12', actual: 485, planned: 530 },
+        { time: '01-15', actual: 540, planned: 580 },
+        { time: '01-18', actual: 565, planned: 600 },
+        { time: '01-22', actual: 498, planned: 540 },
+        { time: '01-25', actual: 525, planned: 560 },
+        { time: '01-27', actual: 510, planned: 550 },
+      ]
+    },
+    keyMetrics: [
+      { label: '完成率', value: '92.3%' },
+      { label: '偏差率', value: '7.7%' },
+      { label: '稳定性', value: '高' },
+    ]
+  },
 ];
 
 // 5. Innovation & Integration
 export const getInnovationData = (): MetricData[] => [
   {
-    id: '13',
+    id: '16',
     title: '城市微循环指数',
     subtitle: '跨区连通性',
     dimension: Dimension.InnovationIntegration,
@@ -330,7 +451,7 @@ export const getInnovationData = (): MetricData[] => [
     ]
   },
   {
-    id: '14',
+    id: '17',
     title: '立体空域效率',
     subtitle: '垂直空域利用率',
     dimension: Dimension.InnovationIntegration,
@@ -353,8 +474,8 @@ export const getInnovationData = (): MetricData[] => [
     ]
   },
   {
-    id: '15',
-    title: '生产/消费属性',
+    id: '18',
+    title: '低空经济“生产/消费”属性指数',
     subtitle: '工作日与周末活动对比',
     dimension: Dimension.InnovationIntegration,
     value: 1.4,
@@ -385,7 +506,7 @@ export const getInnovationData = (): MetricData[] => [
     ]
   },
   {
-    id: '16',
+    id: '19',
     title: '低空夜间经济指数',
     subtitle: '夜间飞行占比',
     dimension: Dimension.InnovationIntegration,
@@ -408,7 +529,7 @@ export const getInnovationData = (): MetricData[] => [
     ]
   },
   {
-    id: '17',
+    id: '20',
     title: '龙头主体影响力指数',
     subtitle: '头部企业技术领导力',
     dimension: Dimension.InnovationIntegration,
@@ -433,7 +554,7 @@ export const getInnovationData = (): MetricData[] => [
     ]
   },
   {
-    id: '18',
+    id: '21',
     title: '低空综合繁荣度',
     subtitle: 'LA-PI (综合指数)',
     dimension: Dimension.InnovationIntegration,
