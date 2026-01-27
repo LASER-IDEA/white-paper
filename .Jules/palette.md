@@ -27,3 +27,7 @@
 ## 2025-05-26 - Actionable Empty States
 **Learning:** Empty states that only say "No data" are dead ends for users, creating frustration.
 **Action:** Transform empty states into navigational opportunities by providing a clear explanation and a primary action to recover (e.g., "Clear filters" or "View all"), using illustrations to reduce visual friction.
+
+## 2025-05-30 - Interactive Heatmap Accessibility
+**Learning:** Visualization elements like calendar heatmaps are often implemented as static divs, making their rich data (tooltips) inaccessible to keyboard and screen reader users.
+**Action:** Convert interactive data cells to semantic `button` elements (or use `tabindex="0"` with `role="gridcell"`), ensuring `onFocus` behavior mirrors `onHover` to provide equal access to data details.

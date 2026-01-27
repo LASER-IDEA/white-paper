@@ -775,15 +775,22 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
                   {Array.from({length: startDay}).map((_, i) => <div key={`empty-${i}`} />)}
                   {/* Days */}
                   {mDays.map((d, i) => (
-                    <div
+                    <button
                       key={i}
-                      className="rounded-[1px] cursor-pointer hover:ring-1 hover:ring-slate-400 transition-all"
+                      type="button"
+                      aria-label={`${d.date}, ${d.value}架次`}
+                      className="rounded-[1px] cursor-pointer hover:ring-1 hover:ring-slate-400 transition-all w-full h-full block focus:outline-none focus:ring-2 focus:ring-[#002FA7] focus:z-10"
                       style={{ backgroundColor: getHeatColor(d.value) }}
                       onMouseEnter={(e) => {
                          const rect = e.currentTarget.getBoundingClientRect();
                          setHoveredDay({ ...d, x: rect.left, y: rect.top });
                       }}
                       onMouseLeave={() => setHoveredDay(null)}
+                      onFocus={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        setHoveredDay({ ...d, x: rect.left, y: rect.top });
+                      }}
+                      onBlur={() => setHoveredDay(null)}
                     />
                   ))}
                </div>
