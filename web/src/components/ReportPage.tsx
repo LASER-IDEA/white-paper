@@ -34,7 +34,7 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
 
       {/* 2. Main Chart Area (Middle 45%) */}
       <div className="h-[45%] w-full bg-slate-50 rounded-xl p-4 mb-6 border border-slate-100 relative print:bg-white print:border-slate-200">
-         <ChartRenderer type={data.chartType} data={data.chartData} definition={data.definition} />
+         <ChartRenderer type={data.chartType} data={data.chartData} definition={data.definition} title={data.title} />
       </div>
 
       {/* 3. Key Metrics Cards (Middle-Bottom 15%) */}
