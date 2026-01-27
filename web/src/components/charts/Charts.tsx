@@ -97,13 +97,13 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
     if (!data || data.length === 0) {
       return [];
     }
-    const total = data.reduce((acc, cur) => acc + (cur.volume || 0), 0);
+    const total = data.reduce((acc, cur) => acc + (cur.volume ?? 0), 0);
     if (total === 0) {
       return data;
     }
     let cumulative = 0;
     return data.map(d => {
-      cumulative += (d.volume || 0);
+      cumulative += (d.volume ?? 0);
       return { ...d, cumulative: Math.round((cumulative / total) * 100) };
     });
   }, [data]);

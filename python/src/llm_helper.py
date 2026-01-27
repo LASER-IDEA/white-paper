@@ -3,7 +3,7 @@ import json
 import re
 import streamlit as st
 import pandas as pd
-from typing import Tuple, Optional, Any, Dict, Union
+from typing import Tuple, Optional, Union, Dict, List
 
 # Load environment variables from .env file
 try:
@@ -18,18 +18,21 @@ try:
 except ImportError:
     OpenAI = None
 
-def summarize_data(data: Union[Dict, pd.DataFrame, Any]) -> str:
+# Type alias for data that can be summarized
+DataType = Union[Dict, pd.DataFrame]
+
+def summarize_data(data: DataType) -> str:
     """
     Creates a summary of the data structure (keys, types, sample values)
     to be efficient for the LLM prompt.
     
     Args:
-        data: The data to summarize (can be dict, DataFrame, or other types)
+        data: The data to summarize (dict or DataFrame)
         
     Returns:
         String summary of the data structure
     """
-    summary = []
+    summary: List[str] = []
 
     if isinstance(data, dict):
         summary.append("Data is a dictionary with the following keys:")
@@ -98,7 +101,7 @@ def determine_task_complexity(query: str) -> bool:
 
 def get_llm_response(
     query: str, 
-    data_context: Union[Dict, pd.DataFrame], 
+    data_context: DataType, 
     api_key: Optional[str] = None, 
     base_url: Optional[str] = None, 
     model: Optional[str] = None

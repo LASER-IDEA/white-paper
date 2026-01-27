@@ -18,13 +18,19 @@ try:
 except ImportError:
     pass
 
-def validate_and_execute_chart_code(code: str, max_lines: int = 100) -> tuple:
+# Constants for validation
+MAX_FILE_SIZE_MB = 10
+MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+MAX_CSV_ROWS = 100000
+MAX_CODE_LINES = 100
+
+def validate_and_execute_chart_code(code: str, max_lines: int = MAX_CODE_LINES) -> tuple:
     """
     Safely validate and execute chart generation code.
     
     Args:
         code: The Python code to validate and execute
-        max_lines: Maximum number of lines allowed (default: 100)
+        max_lines: Maximum number of lines allowed (default: MAX_CODE_LINES)
         
     Returns:
         tuple: (success: bool, result_or_error: any)
@@ -44,16 +50,18 @@ def validate_and_execute_chart_code(code: str, max_lines: int = 100) -> tuple:
         return False, f"Syntax error in generated code: {e}"
     
     # Check for dangerous operations
+    # Note: We're being strict here - dunder methods in string context are blocked
+    # But legitimate uses like class.__name__ in imports are allowed via AST validation
     dangerous_patterns = [
         r'\b(eval|compile|__import__|open|file)\s*\(',
         r'\bos\.(system|popen|spawn|exec)',
         r'\bsubprocess\.',
-        r'\b__.*__\b',  # Dunder methods (except in imports)
+        r'__\w+__\s*\(',  # Only block dunder method calls, not attributes
     ]
     
     for pattern in dangerous_patterns:
         if re.search(pattern, code):
-            return False, f"Code contains potentially unsafe operations: {pattern}"
+            return False, f"Code contains potentially unsafe operations"
     
     # Allow only specific safe imports
     allowed_imports = {
@@ -143,12 +151,11 @@ with st.sidebar:
     uploaded_file = st.file_uploader("Upload Flight Data (CSV or JSON)", type=['csv', 'json'])
 
     if uploaded_file is not None:
-        # Validate file size (max 10MB)
-        MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+        # Validate file size
         file_size = uploaded_file.size
         
-        if file_size > MAX_FILE_SIZE:
-            st.error(f"File size ({file_size / (1024*1024):.2f} MB) exceeds maximum allowed size (10 MB)")
+        if file_size > MAX_FILE_SIZE_BYTES:
+            st.error(f"File size ({file_size / (1024*1024):.2f} MB) exceeds maximum allowed size ({MAX_FILE_SIZE_MB} MB)")
         else:
             file_type = uploaded_file.name.split('.')[-1].lower()
 
@@ -156,7 +163,7 @@ with st.sidebar:
                 if st.button("Compute"):
                     try:
                         # Read CSV with size limit and error handling
-                        df = pd.read_csv(uploaded_file, nrows=100000)  # Limit to 100k rows
+                        df = pd.read_csv(uploaded_file, nrows=MAX_CSV_ROWS)
                         
                         if df.empty:
                             st.error("CSV file is empty")

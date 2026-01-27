@@ -2,6 +2,7 @@ const { chromium } = require('playwright');
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
+const { spawnSync } = require('child_process');
 
 async function generatePDFs() {
   const app = express();
@@ -9,7 +10,6 @@ async function generatePDFs() {
 
   // Temporarily rebuild the web app with base path '/' for local PDF generation
   console.log('Building web app for PDF generation...');
-  const { execSync } = require('child_process');
   const originalDir = process.cwd();
   process.chdir(path.join(__dirname, '../web'));
 
@@ -29,9 +29,6 @@ async function generatePDFs() {
 
     // Clean and build with temporary config
     try {
-      // Use spawn for safer command execution
-      const { spawnSync } = require('child_process');
-      
       // Clean dist directory
       const rmResult = spawnSync('rm', ['-rf', 'dist'], { stdio: 'inherit' });
       if (rmResult.error) {
@@ -72,7 +69,6 @@ async function generatePDFs() {
 
   try {
     console.log('Installing Playwright browsers...');
-    const { spawnSync } = require('child_process');
     const installResult = spawnSync('npx', ['playwright', 'install', 'chromium'], { stdio: 'inherit' });
     if (installResult.error) {
       throw installResult.error;
