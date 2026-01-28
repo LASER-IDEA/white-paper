@@ -388,7 +388,7 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
                 return `
                   <div style="font-weight: bold; color: #002FA7; margin-bottom: 6px; font-size: 14px;">${params.name}</div>
                   <div style="color: #64748b; margin-bottom: 4px;">飞行密度指数: <span style="color: #002FA7; font-weight: bold; font-size: 16px;">${params.value}</span></div>
-                  <div style="color: #64748b; font-size: 12px; padding: 4px 8px; background: ${params.value > 60 ? '#dcfce7' : params.value > 30 ? '#fef3c7' : '#fee2e2'}; border-radius: 4px; display: inline-block;">${params.value > 60 ? '🟢 高密度飞行区' : params.value > 30 ? '🟡 中等密度飞行区' : '🔴 低密度飞行区'}</div>
+                  <div style="color: #64748b; font-size: 12px; padding: 4px 8px; background: ${params.value > 60 ? '#dcfce7' : params.value > 30 ? '#fef3c7' : '#fee2e2'}; border-radius: 4px; display: inline-block;">${params.value > 60 ? '● 高密度飞行区' : params.value > 30 ? '● 中等密度飞行区' : '● 低密度飞行区'}</div>
                 `;
               } else if (params.componentType === 'series' && params.seriesType === 'pie') {
                 return `
@@ -513,7 +513,7 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
                 fontSize: 12,
                 fontWeight: 'bold',
                 formatter: '{b}',
-                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 padding: [4, 8],
                 borderRadius: 4
               },
@@ -1028,7 +1028,7 @@ export const NetworkGraph = ({ data }: { data: any }) => {
         style={{ minHeight: '450px' }}
       />
       <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
-        💡 拖拽节点 | 滚轮缩放 | 点击高亮邻接节点
+        ⓘ 拖拽节点 | 滚轮缩放 | 点击高亮邻接节点
       </div>
     </div>
   );
@@ -1463,7 +1463,7 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         style={{ minHeight: '550px' }}
       />
       <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
-        💡 拖拽缩放时间轴 | 悬停查看详情
+        ⓘ 拖拽缩放时间轴 | 悬停查看详情
       </div>
     </div>
   );
@@ -1873,7 +1873,7 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 
       {/* Info */}
       <div className="absolute top-3 right-3 text-xs text-slate-600 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm font-medium">
-        🎯 等级评估仪表盘
+        ⓘ 等级评估仪表盘
       </div>
     </div>
   );
