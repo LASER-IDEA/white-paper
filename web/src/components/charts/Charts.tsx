@@ -319,9 +319,10 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
         };
 
         const option = {
+          backgroundColor: 'transparent',
           title: {
             text: '深圳无人机飞行密度分布图',
-            subtext: '基于区域飞行频率与枢纽分布数据\n深圳坐标系：WGS84 | 数据更新：2024年',
+            subtext: '基于区域飞行频率与枢纽分布数据 | 拖拽缩放查看详情\n深圳坐标系：WGS84 | 数据更新：2024年',
             left: 'center',
             top: 20,
             textStyle: {
@@ -343,44 +344,61 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
             center: [114.1, 22.5], // Shenzhen center coordinates
             itemStyle: {
               areaColor: '#f8fafc',
-              borderColor: '#e2e8f0',
-              borderWidth: 1.5
+              borderColor: '#cbd5e1',
+              borderWidth: 2,
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.1)',
+              shadowOffsetX: 2,
+              shadowOffsetY: 2
             },
             emphasis: {
               label: {
                 show: false
               },
               itemStyle: {
-                areaColor: '#e0f2fe'
+                areaColor: '#dbeafe',
+                borderColor: '#002FA7',
+                borderWidth: 2.5,
+                shadowBlur: 15,
+                shadowColor: 'rgba(0, 47, 167, 0.3)'
               }
             },
             label: {
               show: false
+            },
+            scaleLimit: {
+              min: 0.8,
+              max: 5
             }
           },
           tooltip: {
             trigger: 'item',
+            backgroundColor: 'rgba(255, 255, 255, 0.98)',
+            borderColor: '#e2e8f0',
+            borderWidth: 1,
+            borderRadius: 8,
+            padding: 12,
+            textStyle: {
+              color: '#374151'
+            },
+            shadowBlur: 15,
+            shadowColor: 'rgba(0, 0, 0, 0.15)',
             formatter: (params: any) => {
               if (params.componentType === 'series' && params.seriesType === 'map') {
                 return `
-                  <div style="font-weight: bold; color: #002FA7;">${params.name}</div>
-                  <div style="color: #64748b;">飞行密度指数: <span style="color: #002FA7; font-weight: bold;">${params.value}</span></div>
-                  <div style="color: #64748b; font-size: 12px;">${params.value > 60 ? '高密度飞行区' : params.value > 30 ? '中等密度飞行区' : '低密度飞行区'}</div>
+                  <div style="font-weight: bold; color: #002FA7; margin-bottom: 6px; font-size: 14px;">${params.name}</div>
+                  <div style="color: #64748b; margin-bottom: 4px;">飞行密度指数: <span style="color: #002FA7; font-weight: bold; font-size: 16px;">${params.value}</span></div>
+                  <div style="color: #64748b; font-size: 12px; padding: 4px 8px; background: ${params.value > 60 ? '#dcfce7' : params.value > 30 ? '#fef3c7' : '#fee2e2'}; border-radius: 4px; display: inline-block;">${params.value > 60 ? '● 高密度飞行区' : params.value > 30 ? '● 中等密度飞行区' : '● 低密度飞行区'}</div>
                 `;
               } else if (params.componentType === 'series' && params.seriesType === 'pie') {
                 return `
-                  <div style="font-weight: bold; color: #002FA7;">${params.seriesName}</div>
-                  <div>${params.marker}${params.name}: ${params.value}架次 (${params.percent}%)</div>
+                  <div style="font-weight: bold; color: #002FA7; margin-bottom: 4px;">${params.seriesName}</div>
+                  <div>${params.marker}${params.name}: <span style="font-weight: bold;">${params.value}</span>架次 (<span style="color: #002FA7; font-weight: bold;">${params.percent}%</span>)</div>
                 `;
               }
               return params.name;
             },
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            borderColor: '#e2e8f0',
-            borderWidth: 1,
-            textStyle: {
-              color: '#374151'
-            }
+            confine: true
           },
           toolbox: {
             show: true,
@@ -391,22 +409,31 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
               dataView: {
                 readOnly: false,
                 title: '数据视图',
-                lang: ['数据视图', '关闭', '刷新']
+                lang: ['数据视图', '关闭', '刷新'],
+                icon: 'path://M17.5,17.3H33 M17.5,17.3H33 M45.4,29.5h-28 M11.5,2v56H51V14.8L38.4,2H11.5z M38.4,2.2v12.7H51 M45.4,41.7h-28',
+                buttonColor: '#002FA7',
+                buttonTextColor: '#fff'
               },
               restore: {
-                title: '重置'
+                title: '重置视图',
+                icon: 'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z'
               },
               saveAsImage: {
                 title: '保存为图片',
-                pixelRatio: 2
+                pixelRatio: 2,
+                icon: 'path://M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+                backgroundColor: '#fff'
               }
             },
             iconStyle: {
-              borderColor: '#64748b'
+              borderColor: '#002FA7',
+              borderWidth: 2
             },
             emphasis: {
               iconStyle: {
-                borderColor: '#002FA7'
+                borderColor: '#0ea5e9',
+                shadowBlur: 10,
+                shadowColor: 'rgba(14, 165, 233, 0.5)'
               }
             }
           },
@@ -415,29 +442,41 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
             min: minValue,
             max: maxValue,
             text: ['高密度', '低密度'],
-            realtime: false,
+            realtime: true,
             calculable: true,
             inRange: {
               color: [
-                '#dbeafe', // Very light blue
-                '#bfdbfe', // Light blue
-                '#93c5fd', // Medium light blue
-                '#60a5fa', // Medium blue
-                '#3b82f6', // Blue
+                '#eff6ff', // Very light blue
+                '#dbeafe', // Light blue
+                '#bfdbfe', // Medium light blue
+                '#93c5fd', // Medium blue
+                '#60a5fa', // Blue
+                '#3b82f6', // Bright blue
                 '#2563eb', // Dark blue
                 '#1d4ed8', // Darker blue
-                '#1e40af'  // Very dark blue
-              ]
+                '#1e40af', // Very dark blue
+                '#002FA7'  // Brand blue
+              ],
+              symbolSize: [30, 100]
             },
             textStyle: {
-              color: '#64748b'
+              color: '#64748b',
+              fontSize: 12,
+              fontWeight: 'bold'
             },
             orient: 'horizontal',
             left: 'center',
-            bottom: 60,
-            itemWidth: 20,
-            itemHeight: 100,
-            precision: 0
+            bottom: 65,
+            itemWidth: 25,
+            itemHeight: 140,
+            precision: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#e2e8f0',
+            borderWidth: 1,
+            borderRadius: 8,
+            padding: 10,
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.1)'
           },
           legend: {
             data: ['物流配送', '应急救援', '城市巡航', '其他'],
@@ -446,9 +485,17 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
             top: 'center',
             textStyle: {
               color: '#64748b',
-              fontSize: 12
+              fontSize: 12,
+              fontWeight: 'bold'
             },
-            itemGap: 8
+            itemGap: 10,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#e2e8f0',
+            borderWidth: 1,
+            borderRadius: 8,
+            padding: 12,
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.1)'
           },
           series: [
             // Main choropleth map
@@ -463,24 +510,46 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
               label: {
                 show: true,
                 color: '#002FA7',
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 'bold',
-                formatter: '{b}'
+                formatter: '{b}',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: [4, 8],
+                borderRadius: 4
               },
               emphasis: {
                 label: {
                   color: '#ffffff',
-                  fontSize: 12
+                  fontSize: 14,
+                  backgroundColor: '#002FA7',
+                  padding: [6, 10],
+                  shadowBlur: 8,
+                  shadowColor: 'rgba(0, 0, 0, 0.3)'
                 },
                 itemStyle: {
                   areaColor: '#002FA7',
+                  borderColor: '#ffffff',
+                  borderWidth: 3,
+                  shadowBlur: 20,
+                  shadowColor: 'rgba(0, 47, 167, 0.5)'
+                }
+              },
+              select: {
+                label: {
+                  color: '#ffffff',
+                  backgroundColor: '#0ea5e9'
+                },
+                itemStyle: {
+                  areaColor: '#0ea5e9',
                   borderColor: '#ffffff',
                   borderWidth: 2
                 }
               },
               itemStyle: {
                 borderColor: '#ffffff',
-                borderWidth: 1.5
+                borderWidth: 2,
+                shadowBlur: 5,
+                shadowColor: 'rgba(0, 0, 0, 0.1)'
               },
               data: data.map(item => ({
                 name: item.name,
@@ -763,18 +832,27 @@ export const NetworkGraph = ({ data }: { data: any }) => {
     const graph = data || { nodes: [], links: [], categories: [] };
     const nodes = (graph.nodes || []).map((node: any) => ({
       ...node,
-      label: { show: (node.symbolSize || 0) > 30 }
+      label: { 
+        show: (node.symbolSize || 0) > 30,
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 12,
+        backgroundColor: 'rgba(0, 47, 167, 0.8)',
+        padding: [4, 8],
+        borderRadius: 4
+      }
     }));
 
     const option: echarts.EChartsOption = {
+      backgroundColor: 'transparent',
       title: {
         text: '网络化枢纽结构',
-        subtext: '基于起降点航线网络的连接度与流量',
+        subtext: '基于起降点航线网络的连接度与流量 | 拖拽节点查看详情',
         top: 20,
         left: 'center',
         textStyle: {
           color: '#002FA7',
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: 'bold'
         },
         subtextStyle: {
@@ -783,13 +861,29 @@ export const NetworkGraph = ({ data }: { data: any }) => {
         }
       },
       tooltip: {
+        trigger: 'item',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        textStyle: {
+          color: '#374151'
+        },
         formatter: (params: any) => {
           if (params.dataType === 'edge') {
-            return `${params.data.source} → ${params.data.target}<br/>流量: ${params.data.value}`;
+            return `
+              <div style="font-weight: bold; color: #002FA7; margin-bottom: 4px;">航线连接</div>
+              <div>${params.data.source} → ${params.data.target}</div>
+              <div style="color: #64748b; margin-top: 4px;">流量: <span style="color: #002FA7; font-weight: bold;">${params.data.value}</span></div>
+            `;
           } else {
-            return `${params.data.name}<br/>枢纽度: ${params.data.value}<br/>类别: ${params.data.category !== undefined ? graph.categories[params.data.category]?.name : ''}`;
+            return `
+              <div style="font-weight: bold; color: #002FA7; margin-bottom: 4px;">${params.data.name}</div>
+              <div style="color: #64748b;">枢纽度: <span style="color: #002FA7; font-weight: bold;">${params.data.value}</span></div>
+              <div style="color: #64748b;">类别: <span style="color: #002FA7;">${params.data.category !== undefined ? graph.categories[params.data.category]?.name : ''}</span></div>
+            `;
           }
-        }
+        },
+        confine: true
       },
       legend: [
         {
@@ -800,11 +894,17 @@ export const NetworkGraph = ({ data }: { data: any }) => {
           textStyle: {
             color: '#64748b',
             fontSize: 12
-          }
+          },
+          itemGap: 12,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e2e8f0',
+          borderWidth: 1,
+          borderRadius: 8,
+          padding: 12
         }
       ],
-      animationDuration: 1500,
-      animationEasingUpdate: 'quinticInOut' as any,
+      animationDuration: 2000,
+      animationEasingUpdate: 'cubicInOut' as any,
       series: [
         {
           name: 'Network Hub',
@@ -815,11 +915,17 @@ export const NetworkGraph = ({ data }: { data: any }) => {
           links: graph.links || [],
           categories: graph.categories || [],
           roam: true,
+          zoom: 1,
+          scaleLimit: {
+            min: 0.5,
+            max: 3
+          },
           force: {
-            repulsion: 200,
-            gravity: 0.1,
-            edgeLength: [100, 200],
-            layoutAnimation: true
+            repulsion: 250,
+            gravity: 0.08,
+            edgeLength: [120, 250],
+            layoutAnimation: true,
+            friction: 0.6
           },
           label: {
             show: true,
@@ -831,29 +937,68 @@ export const NetworkGraph = ({ data }: { data: any }) => {
           },
           itemStyle: {
             borderColor: '#fff',
-            borderWidth: 2,
-            shadowBlur: 10,
-            shadowColor: 'rgba(0, 0, 0, 0.3)'
+            borderWidth: 3,
+            shadowBlur: 15,
+            shadowColor: 'rgba(0, 47, 167, 0.4)'
           },
           lineStyle: {
             color: 'source',
             curveness: 0.3,
             width: 2,
-            opacity: 0.6
+            opacity: 0.5,
+            shadowBlur: 8,
+            shadowColor: 'rgba(0, 0, 0, 0.2)'
           },
           emphasis: {
             focus: 'adjacency',
+            scale: true,
             lineStyle: {
-              width: 5,
-              opacity: 0.9
+              width: 6,
+              opacity: 1,
+              shadowBlur: 12,
+              shadowColor: 'rgba(0, 47, 167, 0.6)'
             },
             itemStyle: {
-              borderWidth: 3,
-              shadowBlur: 20
+              borderWidth: 4,
+              shadowBlur: 25,
+              shadowColor: 'rgba(0, 47, 167, 0.6)'
+            },
+            label: {
+              show: true,
+              fontSize: 14,
+              fontWeight: 'bold'
+            }
+          },
+          select: {
+            itemStyle: {
+              borderColor: '#f59e0b',
+              borderWidth: 4
             }
           }
         }
-      ]
+      ],
+      toolbox: {
+        show: true,
+        feature: {
+          restore: {
+            title: '重置视图'
+          },
+          saveAsImage: {
+            title: '保存为图片',
+            pixelRatio: 2
+          }
+        },
+        right: 20,
+        top: 20,
+        iconStyle: {
+          borderColor: '#64748b'
+        },
+        emphasis: {
+          iconStyle: {
+            borderColor: '#002FA7'
+          }
+        }
+      }
     };
 
     chartInstance.current.setOption(option);
@@ -876,12 +1021,15 @@ export const NetworkGraph = ({ data }: { data: any }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative bg-white rounded-lg overflow-hidden">
+    <div className="w-full h-full relative bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-lg overflow-hidden border border-slate-200 shadow-sm">
       <div
         ref={chartRef}
         className="w-full h-full"
-        style={{ minHeight: '400px' }}
+        style={{ minHeight: '450px' }}
       />
+      <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+        ⓘ 拖拽节点 | 滚轮缩放 | 点击高亮邻接节点
+      </div>
     </div>
   );
 };
@@ -898,24 +1046,25 @@ export const QualityControlChart = ({ data }: { data: any }) => {
     const { latestTqi = 0, trajData = [], tqiHistory = [], planActual = [] } = data || {};
 
     const option: echarts.EChartsOption = {
+      backgroundColor: 'transparent',
       title: [
         {
           text: '航迹偏离度控制图',
           left: '6%',
           top: '2%',
-          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
         },
         {
           text: '任务完成质量指数',
           left: '60%',
           top: '2%',
-          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
         },
         {
-          text: 'TQI 历史趋势',
+          text: 'TQI 历史趋势与计划对比',
           left: '6%',
           top: '58%',
-          textStyle: { fontSize: 13, fontWeight: 'bold', color: '#002FA7' }
+          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
         }
       ],
       grid: [
@@ -925,12 +1074,27 @@ export const QualityControlChart = ({ data }: { data: any }) => {
       ],
       tooltip: {
         trigger: 'axis',
-        axisPointer: { type: 'line' },
+        axisPointer: { 
+          type: 'cross',
+          lineStyle: {
+            color: '#002FA7',
+            width: 1,
+            type: 'dashed'
+          },
+          crossStyle: {
+            color: '#002FA7',
+            width: 1,
+            type: 'dashed'
+          }
+        },
         textStyle: { fontSize: 11 },
-        padding: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#e5e7eb',
-        borderWidth: 1
+        padding: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.98)',
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        borderRadius: 6,
+        shadowBlur: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.1)'
       },
       xAxis: [
         {
@@ -955,9 +1119,9 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           gridIndex: 0,
           type: 'value',
           name: '偏离度',
-          nameTextStyle: { fontSize: 10, color: '#64748b' },
+          nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 'bold' },
           nameGap: 30,
-          axisLabel: { fontSize: 9, color: '#64748b' },
+          axisLabel: { fontSize: 10, color: '#64748b' },
           axisLine: { show: false },
           splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
         },
@@ -965,11 +1129,40 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           gridIndex: 2,
           type: 'value',
           name: 'TQI (%)',
-          nameTextStyle: { fontSize: 10, color: '#64748b' },
+          nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 'bold' },
           nameGap: 30,
-          axisLabel: { fontSize: 9, color: '#64748b' },
+          axisLabel: { fontSize: 10, color: '#64748b' },
           axisLine: { show: false },
           splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
+        }
+      ],
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: [1],
+          start: 0,
+          end: 100,
+          zoomOnMouseWheel: true,
+          moveOnMouseMove: true
+        },
+        {
+          type: 'slider',
+          xAxisIndex: [1],
+          start: 0,
+          end: 100,
+          height: 20,
+          bottom: 5,
+          borderColor: '#e2e8f0',
+          fillerColor: 'rgba(14, 165, 233, 0.2)',
+          handleStyle: {
+            color: '#002FA7',
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          textStyle: {
+            color: '#64748b',
+            fontSize: 10
+          }
         }
       ],
       series: [
@@ -980,46 +1173,51 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           xAxisIndex: 0,
           yAxisIndex: 0,
           data: trajData.map((d: any) => d.deviation),
-          smooth: false,
-          lineStyle: { width: 2, color: '#0ea5e9' },
+          smooth: true,
+          smoothMonotone: 'x',
+          lineStyle: { width: 3, color: '#0ea5e9', shadowBlur: 8, shadowColor: 'rgba(14, 165, 233, 0.3)' },
           itemStyle: {
             color: (params: any) => {
               const val = trajData[params.dataIndex]?.deviation || 0;
               const ucl = trajData[params.dataIndex]?.ucl || 0.25;
               const lcl = trajData[params.dataIndex]?.lcl || -0.25;
               return (val > ucl || val < lcl) ? '#ef4444' : '#0ea5e9';
-            }
+            },
+            borderWidth: 2,
+            borderColor: '#fff'
           },
+          symbolSize: 8,
+          showSymbol: true,
           markLine: {
             silent: true,
             symbol: 'none',
-            lineStyle: { type: 'dashed', width: 1.5 },
+            lineStyle: { type: 'dashed', width: 2 },
             data: [
               {
                 yAxis: trajData[0]?.ucl || 0.25,
                 name: 'UCL',
-                lineStyle: { color: '#ef4444', opacity: 0.7 },
-                label: { formatter: 'UCL', color: '#ef4444', fontSize: 9, distance: 5 }
+                lineStyle: { color: '#ef4444', opacity: 0.8 },
+                label: { formatter: 'UCL', color: '#ef4444', fontSize: 10, distance: 5, fontWeight: 'bold' }
               },
               {
                 yAxis: trajData[0]?.mean || 0,
                 name: 'Mean',
-                lineStyle: { color: '#10b981', opacity: 0.7 },
-                label: { formatter: 'Mean', color: '#10b981', fontSize: 9, distance: 5 }
+                lineStyle: { color: '#10b981', opacity: 0.8 },
+                label: { formatter: 'Mean', color: '#10b981', fontSize: 10, distance: 5, fontWeight: 'bold' }
               },
               {
                 yAxis: trajData[0]?.lcl || -0.25,
                 name: 'LCL',
-                lineStyle: { color: '#ef4444', opacity: 0.7 },
-                label: { formatter: 'LCL', color: '#ef4444', fontSize: 9, distance: 5 }
+                lineStyle: { color: '#ef4444', opacity: 0.8 },
+                label: { formatter: 'LCL', color: '#ef4444', fontSize: 10, distance: 5, fontWeight: 'bold' }
               }
             ]
           },
           markPoint: {
-            symbol: 'circle',
-            symbolSize: 12,
-            itemStyle: { color: '#ef4444', borderColor: '#fff', borderWidth: 2 },
-            label: { show: false },
+            symbol: 'pin',
+            symbolSize: 50,
+            itemStyle: { color: '#ef4444', borderColor: '#fff', borderWidth: 2, shadowBlur: 10, shadowColor: 'rgba(239, 68, 68, 0.5)' },
+            label: { show: true, color: '#fff', fontSize: 12, fontWeight: 'bold' },
             data: trajData.map((d: any, i: number) => {
               const isOutOfControl = d.deviation > (d.ucl || 0.25) || d.deviation < (d.lcl || -0.25);
               return isOutOfControl ? { coord: [i, d.deviation], value: '!' } : null;
@@ -1030,7 +1228,7 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         {
           type: 'gauge',
           center: ['77%', '27%'],
-          radius: '40%',
+          radius: '42%',
           min: 0,
           max: 100,
           startAngle: 225,
@@ -1038,38 +1236,65 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           splitNumber: 4,
           axisLine: {
             lineStyle: {
-              width: 18,
+              width: 22,
               color: [
                 [0.6, '#ef4444'],
                 [0.85, '#f59e0b'],
                 [1, '#10b981']
-              ]
+              ],
+              shadowBlur: 15,
+              shadowColor: 'rgba(0, 0, 0, 0.2)'
             }
           },
           pointer: {
-            width: 5,
-            length: '65%',
-            itemStyle: { color: '#002FA7' }
+            width: 6,
+            length: '70%',
+            itemStyle: { 
+              color: '#002FA7',
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 47, 167, 0.5)'
+            }
           },
-          axisTick: { show: false },
+          axisTick: { 
+            show: true,
+            splitNumber: 5,
+            lineStyle: {
+              color: '#fff',
+              width: 2
+            },
+            length: 8
+          },
           splitLine: {
-            length: 18,
-            lineStyle: { color: '#fff', width: 2 }
+            length: 22,
+            lineStyle: { color: '#fff', width: 3, shadowBlur: 5, shadowColor: 'rgba(0, 0, 0, 0.2)' }
           },
           axisLabel: {
-            distance: 25,
+            distance: 28,
             color: '#64748b',
-            fontSize: 10
+            fontSize: 11,
+            fontWeight: 'bold'
           },
           detail: {
             valueAnimation: true,
             formatter: '{value}%',
             color: '#002FA7',
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: 'bold',
-            offsetCenter: [0, '70%']
+            offsetCenter: [0, '70%'],
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            borderRadius: 8,
+            padding: [8, 12],
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.1)'
           },
-          data: [{ value: latestTqi, name: 'TQI' }]
+          data: [{ value: latestTqi, name: 'TQI' }],
+          title: {
+            show: true,
+            offsetCenter: [0, '45%'],
+            fontSize: 12,
+            color: '#64748b',
+            fontWeight: 'bold'
+          }
         },
         // 3. TQI 历史趋势
         {
@@ -1079,30 +1304,42 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           yAxisIndex: 1,
           data: tqiHistory.map((d: any) => d.tqi),
           smooth: true,
-          lineStyle: { width: 3, color: '#0ea5e9' },
+          lineStyle: { width: 3, color: '#0ea5e9', shadowBlur: 8, shadowColor: 'rgba(14, 165, 233, 0.3)' },
           areaStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: 'rgba(14, 165, 233, 0.3)' },
-              { offset: 1, color: 'rgba(14, 165, 233, 0)' }
-            ])
+              { offset: 0, color: 'rgba(14, 165, 233, 0.4)' },
+              { offset: 1, color: 'rgba(14, 165, 233, 0.05)' }
+            ]),
+            shadowBlur: 10,
+            shadowColor: 'rgba(14, 165, 233, 0.2)'
           },
-          itemStyle: { color: '#0ea5e9' },
+          itemStyle: { color: '#0ea5e9', borderWidth: 2, borderColor: '#fff' },
+          symbolSize: 8,
+          showSymbol: true,
+          emphasis: {
+            focus: 'series',
+            itemStyle: {
+              borderWidth: 3,
+              shadowBlur: 10,
+              shadowColor: 'rgba(14, 165, 233, 0.6)'
+            }
+          },
           markLine: {
             silent: true,
             symbol: 'none',
-            lineStyle: { type: 'dashed', width: 1.5 },
+            lineStyle: { type: 'dashed', width: 2 },
             data: [
               {
                 yAxis: tqiHistory[0]?.mean || 90,
                 name: 'Mean',
-                lineStyle: { color: '#10b981', opacity: 0.7 },
-                label: { formatter: 'Mean: {c}%', color: '#10b981', fontSize: 9, distance: 5 }
+                lineStyle: { color: '#10b981', opacity: 0.8 },
+                label: { formatter: 'Mean: {c}%', color: '#10b981', fontSize: 10, distance: 5, fontWeight: 'bold' }
               },
               {
                 yAxis: tqiHistory[0]?.ucl || 98,
                 name: 'UCL',
-                lineStyle: { color: '#f59e0b', opacity: 0.7 },
-                label: { formatter: 'UCL: {c}%', color: '#f59e0b', fontSize: 9, distance: 5 }
+                lineStyle: { color: '#f59e0b', opacity: 0.8 },
+                label: { formatter: 'UCL: {c}%', color: '#f59e0b', fontSize: 10, distance: 5, fontWeight: 'bold' }
               }
             ]
           }
@@ -1115,8 +1352,24 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           yAxisIndex: 1,
           data: planActual.map((d: any) => d.actual),
           barWidth: '30%',
-          itemStyle: { color: 'rgba(14, 165, 233, 0.6)' },
-          z: 1
+          itemStyle: { 
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(14, 165, 233, 0.8)' },
+              { offset: 1, color: 'rgba(14, 165, 233, 0.5)' }
+            ]),
+            borderRadius: [4, 4, 0, 0],
+            shadowBlur: 8,
+            shadowColor: 'rgba(14, 165, 233, 0.3)'
+          },
+          emphasis: {
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(14, 165, 233, 1)' },
+                { offset: 1, color: 'rgba(14, 165, 233, 0.7)' }
+              ])
+            }
+          },
+          z: 2
         },
         {
           name: '计划报备',
@@ -1125,15 +1378,61 @@ export const QualityControlChart = ({ data }: { data: any }) => {
           yAxisIndex: 1,
           data: planActual.map((d: any) => d.planned),
           barWidth: '30%',
-          itemStyle: { color: 'rgba(100, 116, 139, 0.3)' },
-          z: 0
+          itemStyle: { 
+            color: 'rgba(100, 116, 139, 0.25)',
+            borderColor: '#64748b',
+            borderWidth: 1,
+            borderType: 'dashed',
+            borderRadius: [4, 4, 0, 0]
+          },
+          emphasis: {
+            itemStyle: {
+              color: 'rgba(100, 116, 139, 0.35)'
+            }
+          },
+          z: 1
         }
       ],
       legend: {
         data: ['TQI', '实际完成', '计划报备'],
-        bottom: '1%',
+        bottom: '3%',
         left: 'center',
-        textStyle: { color: '#64748b', fontSize: 10 }
+        textStyle: { color: '#64748b', fontSize: 11 },
+        itemGap: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        borderRadius: 6,
+        padding: 10
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          dataZoom: {
+            title: {
+              zoom: '区域缩放',
+              back: '还原'
+            },
+            yAxisIndex: false
+          },
+          restore: {
+            title: '重置'
+          },
+          saveAsImage: {
+            title: '保存为图片',
+            pixelRatio: 2
+          }
+        },
+        right: 20,
+        top: '58%',
+        iconStyle: {
+          borderColor: '#64748b'
+        },
+        emphasis: {
+          iconStyle: {
+            borderColor: '#002FA7'
+          }
+        }
       }
     };
 
@@ -1157,12 +1456,15 @@ export const QualityControlChart = ({ data }: { data: any }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative bg-white rounded-lg overflow-hidden">
+    <div className="w-full h-full relative bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-lg overflow-hidden border border-slate-200 shadow-sm">
       <div
         ref={chartRef}
         className="w-full h-full"
         style={{ minHeight: '550px' }}
       />
+      <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+        ⓘ 拖拽缩放时间轴 | 悬停查看详情
+      </div>
     </div>
   );
 };
@@ -1335,7 +1637,31 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
     const val = data[0].value / 100; // Convert to 0-1 range for gauge
 
     const option = {
+      backgroundColor: 'transparent',
       series: [
+        // Background arc
+        {
+          type: 'gauge',
+          startAngle: 180,
+          endAngle: 0,
+          center: ['50%', '75%'],
+          radius: '95%',
+          min: 0,
+          max: 1,
+          splitNumber: 8,
+          axisLine: {
+            lineStyle: {
+              width: 2,
+              color: [[1, '#f1f5f9']]
+            }
+          },
+          pointer: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
+          axisLabel: { show: false },
+          detail: { show: false }
+        },
+        // Main gauge
         {
           type: 'gauge',
           startAngle: 180,
@@ -1347,42 +1673,55 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
           splitNumber: 8,
           axisLine: {
             lineStyle: {
-              width: 8,
+              width: 12,
               color: [
                 [0.25, '#FF6E76'],   // D级 - 红色
                 [0.5, '#FDDD60'],    // C级 - 黄色
                 [0.75, '#58D9F9'],   // B级 - 蓝色
                 [1, '#7CFFB2']       // A级 - 绿色
-              ]
+              ],
+              shadowBlur: 20,
+              shadowColor: 'rgba(0, 0, 0, 0.15)'
             }
           },
           pointer: {
-            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-            length: '12%',
-            width: 20,
-            offsetCenter: [0, '-60%'],
+            icon: 'path://M2.9,0.7L2.9,0.7c1.4,0,2.6,1.2,2.6,2.6v115c0,1.4-1.2,2.6-2.6,2.6l0,0c-1.4,0-2.6-1.2-2.6-2.6V3.3C0.3,1.9,1.4,0.7,2.9,0.7z',
+            length: '75%',
+            width: 8,
+            offsetCenter: [0, '-5%'],
             itemStyle: {
-              color: 'auto'
+              color: 'auto',
+              shadowBlur: 15,
+              shadowColor: 'rgba(0, 0, 0, 0.3)',
+              shadowOffsetX: 0,
+              shadowOffsetY: 3
             }
           },
           axisTick: {
-            length: 12,
+            length: 15,
             lineStyle: {
               color: 'auto',
-              width: 2
-            }
+              width: 2,
+              shadowBlur: 5,
+              shadowColor: 'rgba(0, 0, 0, 0.1)'
+            },
+            distance: -15
           },
           splitLine: {
-            length: 20,
+            length: 25,
             lineStyle: {
               color: 'auto',
-              width: 5
-            }
+              width: 5,
+              shadowBlur: 8,
+              shadowColor: 'rgba(0, 0, 0, 0.2)'
+            },
+            distance: -25
           },
           axisLabel: {
             color: '#464646',
-            fontSize: 14,
-            distance: -60,
+            fontSize: 16,
+            fontWeight: 'bold',
+            distance: -65,
             rotate: 'tangential',
             formatter: function (value: number) {
               if (value === 0.875) {
@@ -1398,14 +1737,14 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
             }
           },
           title: {
-            offsetCenter: [0, '-10%'],
-            fontSize: 16,
+            offsetCenter: [0, '-15%'],
+            fontSize: 18,
             color: '#002FA7',
             fontWeight: 'bold'
           },
           detail: {
-            fontSize: 30,
-            offsetCenter: [0, '-35%'],
+            fontSize: 36,
+            offsetCenter: [0, '-40%'],
             valueAnimation: true,
             formatter: function (value: number) {
               const score = Math.round(value * 100);
@@ -1416,9 +1755,14 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 
               return grade + '\n' + score;
             },
-            color: '#002FA7',
+            color: 'auto',
             fontWeight: 'bold',
-            lineHeight: 32
+            lineHeight: 40,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderRadius: 12,
+            padding: [12, 20],
+            shadowBlur: 15,
+            shadowColor: 'rgba(0, 0, 0, 0.15)'
           },
           data: [
             {
@@ -1426,8 +1770,43 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
               name: '综合指数等级'
             }
           ]
+        },
+        // Progress circle effect
+        {
+          type: 'gauge',
+          startAngle: 180,
+          endAngle: 0,
+          center: ['50%', '75%'],
+          radius: '72%',
+          min: 0,
+          max: 1,
+          splitNumber: 100,
+          axisLine: {
+            lineStyle: {
+              width: 4,
+              color: [
+                [val, {
+                  type: 'linear',
+                  x: 0, y: 0, x2: 1, y2: 0,
+                  colorStops: [
+                    { offset: 0, color: val >= 0.75 ? '#7CFFB2' : val >= 0.5 ? '#58D9F9' : val >= 0.25 ? '#FDDD60' : '#FF6E76' },
+                    { offset: 1, color: val >= 0.75 ? '#5de3a5' : val >= 0.5 ? '#3cc5f0' : val >= 0.25 ? '#f5c842' : '#ff5560' }
+                  ]
+                }],
+                [1, 'rgba(0, 0, 0, 0.05)']
+              ]
+            }
+          },
+          pointer: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
+          axisLabel: { show: false },
+          detail: { show: false }
         }
-      ]
+      ],
+      animation: true,
+      animationDuration: 2000,
+      animationEasing: 'elasticOut'
     };
 
     chartInstance.current.setOption(option);
@@ -1453,38 +1832,48 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+    <div className="w-full h-full relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-lg p-4 border border-slate-200 shadow-sm">
       <div
         ref={chartRef}
         className="w-full h-full"
         style={{ minHeight: '300px' }}
       />
 
-      {/* Grade Legend */}
+      {/* Enhanced Grade Legend */}
       <div className="absolute bottom-4 left-4 right-4">
-        <div className="flex justify-center space-x-6 text-sm">
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 rounded" style={{backgroundColor: '#FF6E76'}}></div>
-            <span className="text-slate-600">D级 (0-25)</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 rounded" style={{backgroundColor: '#FDDD60'}}></div>
-            <span className="text-slate-600">C级 (25-50)</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 rounded" style={{backgroundColor: '#58D9F9'}}></div>
-            <span className="text-slate-600">B级 (50-75)</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 rounded" style={{backgroundColor: '#7CFFB2'}}></div>
-            <span className="text-slate-600">A级 (75-100)</span>
+        <div className="bg-white/95 backdrop-blur rounded-lg p-3 border border-slate-200 shadow-sm">
+          <div className="flex justify-center flex-wrap gap-4 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 rounded-full shadow-md" style={{
+                background: 'linear-gradient(135deg, #FF6E76 0%, #ff5560 100%)'
+              }}></div>
+              <span className="text-slate-700 font-medium">D级 (0-25)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 rounded-full shadow-md" style={{
+                background: 'linear-gradient(135deg, #FDDD60 0%, #f5c842 100%)'
+              }}></div>
+              <span className="text-slate-700 font-medium">C级 (25-50)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 rounded-full shadow-md" style={{
+                background: 'linear-gradient(135deg, #58D9F9 0%, #3cc5f0 100%)'
+              }}></div>
+              <span className="text-slate-700 font-medium">B级 (50-75)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 rounded-full shadow-md" style={{
+                background: 'linear-gradient(135deg, #7CFFB2 0%, #5de3a5 100%)'
+              }}></div>
+              <span className="text-slate-700 font-medium">A级 (75-100)</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Info */}
-      <div className="absolute top-2 right-2 text-xs text-slate-500 bg-white/80 px-2 py-1 rounded">
-        等级评估仪表盘
+      <div className="absolute top-3 right-3 text-xs text-slate-600 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm font-medium">
+        ⓘ 等级评估仪表盘
       </div>
     </div>
   );
