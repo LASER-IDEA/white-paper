@@ -1,6 +1,7 @@
 import os
 import math
 import json
+from typing import List, Dict, Any, Optional
 from pyecharts import options as opts
 from pyecharts.charts import Line, Bar, Pie, Map, Radar, Gauge, Funnel, HeatMap, TreeMap, Graph, Polar, Boxplot, Calendar
 
@@ -22,19 +23,47 @@ CHART_CONFIG = {
     'split_line_color': '#e2e8f0'
 }
 
-def traffic_area_chart(data):
+# Accessibility improvements
+CHART_CONFIG_A11Y = {
+    **CHART_CONFIG,
+    'animation_duration': 800,  # Slightly faster for better UX
+    'animation_easing': 'cubicOut',  # Smoother easing function
+}
+
+def traffic_area_chart(data: List[Dict[str, Any]]) -> Line:
     """
-    Traffic Area Chart - Professional implementation inspired by Charts.tsx
+    Traffic Area Chart - Professional implementation with accessibility improvements
     Shows daily flight sorties with smooth area visualization
+    
+    Args:
+        data: List of dictionaries containing 'date' and 'value' keys
+        
+    Returns:
+        Line chart with area styling
     """
+    if not data:
+        # Return empty chart with message
+        c = Line()
+        c.set_global_opts(
+            title_opts=opts.TitleOpts(
+                title="每日飞行架次",
+                subtitle="暂无数据",
+                title_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['text_color'],
+                    font_size=CHART_CONFIG['title_font_size']
+                )
+            )
+        )
+        return c
+    
     x_data, y_data = zip(*[(d['date'], d['value']) for d in data])
 
     c = (
         Line()
-        .add_xaxis(x_data)
+        .add_xaxis(list(x_data))
         .add_yaxis(
             "架次",
-            y_data,
+            list(y_data),
             is_smooth=True,
             symbol="none",
             areastyle_opts=opts.AreaStyleOpts(

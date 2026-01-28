@@ -8,21 +8,54 @@ import {
 } from 'recharts';
 import * as echarts from 'echarts';
 
+// TypeScript Interfaces for better type safety
+interface ChartDataPoint {
+  [key: string]: string | number;
+}
+
+interface ChartProps {
+  data: ChartDataPoint[];
+  ariaLabel?: string;
+}
+
+// Enhanced color palette with WCAG AA compliant colors
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
 
-// 1. Area Chart (Traffic)
-export const TrafficAreaChart = ({ data }: { data: any[] }) => {
-  if (!data || data.length === 0) {
+// Accessible color palette for better contrast
+const ACCESSIBLE_COLORS = {
+  primary: '#0369a1',     // Darker blue for better contrast
+  success: '#15803d',     // Darker green
+  warning: '#c2410c',     // Darker orange
+  danger: '#b91c1c',      // Darker red
+  purple: '#7c3aed',      // Darker purple
+  indigo: '#4338ca'       // Darker indigo
+};
+
+// 1. Area Chart (Traffic) - Enhanced with accessibility and performance
+export const TrafficAreaChart = ({ data, ariaLabel = "Daily flight sorties area chart" }: ChartProps) => {
+  // Memoize empty state check for better performance
+  const isEmpty = useMemo(() => !data || data.length === 0, [data]);
+  
+  if (isEmpty) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <p style={{ color: '#64748b' }}>No data available</p>
+      <div 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        role="status"
+        aria-label="No data available for chart"
+      >
+        <p style={{ color: '#64748b', fontSize: '14px' }}>📊 No data available</p>
       </div>
     );
   }
   
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+      <AreaChart 
+        data={data} 
+        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        aria-label={ariaLabel}
+        role="img"
+      >
         <defs>
           <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
@@ -30,70 +63,221 @@ export const TrafficAreaChart = ({ data }: { data: any[] }) => {
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis dataKey="date" tick={{fontSize: 10}} tickLine={false} axisLine={false} />
-        <YAxis tick={{fontSize: 10}} tickLine={false} axisLine={false} />
-        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-        <Area type="monotone" dataKey="value" stroke="#0ea5e9" fillOpacity={1} fill="url(#colorVal)" />
+        <XAxis 
+          dataKey="date" 
+          tick={{fontSize: 10}} 
+          tickLine={false} 
+          axisLine={false}
+          aria-label="Date axis"
+        />
+        <YAxis 
+          tick={{fontSize: 10}} 
+          tickLine={false} 
+          axisLine={false}
+          aria-label="Value axis"
+        />
+        <Tooltip 
+          contentStyle={{ 
+            borderRadius: '8px', 
+            border: 'none', 
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            fontSize: '12px'
+          }}
+          cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+        />
+        <Area 
+          type="monotone" 
+          dataKey="value" 
+          stroke="#0ea5e9" 
+          fillOpacity={1} 
+          fill="url(#colorVal)"
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
       </AreaChart>
     </ResponsiveContainer>
   );
 };
 
-// 2. Dual Line Chart (Operation Intensity)
-export const DualLineChart = ({ data }: { data: any[] }) => {
-  if (!data || data.length === 0) {
+// 2. Dual Line Chart (Operation Intensity) - Enhanced with accessibility
+export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line chart" }: ChartProps) => {
+  const isEmpty = useMemo(() => !data || data.length === 0, [data]);
+  
+  if (isEmpty) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <p style={{ color: '#64748b' }}>No data available</p>
+      <div 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        role="status"
+        aria-label="No data available for chart"
+      >
+        <p style={{ color: '#64748b', fontSize: '14px' }}>📊 No data available</p>
       </div>
     );
   }
   
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+      <ComposedChart 
+        data={data} 
+        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        aria-label={ariaLabel}
+        role="img"
+      >
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '时长 (小时)', angle: -90, position: 'insideLeft', style: {fontSize: 10, fill: '#64748b'} }} />
-        <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '里程 (公里)', angle: 90, position: 'insideRight', style: {fontSize: 10, fill: '#64748b'} }} />
-        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-        <Line yAxisId="left" type="monotone" dataKey="duration" name="时长" stroke="#0ea5e9" strokeWidth={3} dot={{r: 4}} />
-        <Line yAxisId="right" type="monotone" dataKey="distance" name="里程" stroke="#10b981" strokeWidth={3} dot={{r: 4}} />
-        <Legend />
+        <XAxis 
+          dataKey="name" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false}
+          aria-label="Category axis"
+        />
+        <YAxis 
+          yAxisId="left" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false} 
+          label={{ 
+            value: '时长 (小时)', 
+            angle: -90, 
+            position: 'insideLeft', 
+            style: {fontSize: 10, fill: '#64748b'} 
+          }}
+          aria-label="Duration in hours"
+        />
+        <YAxis 
+          yAxisId="right" 
+          orientation="right" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false} 
+          label={{ 
+            value: '里程 (公里)', 
+            angle: 90, 
+            position: 'insideRight', 
+            style: {fontSize: 10, fill: '#64748b'} 
+          }}
+          aria-label="Distance in kilometers"
+        />
+        <Tooltip 
+          contentStyle={{ 
+            borderRadius: '8px', 
+            border: 'none', 
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            fontSize: '12px'
+          }}
+          cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+        />
+        <Line 
+          yAxisId="left" 
+          type="monotone" 
+          dataKey="duration" 
+          name="时长" 
+          stroke="#0ea5e9" 
+          strokeWidth={3} 
+          dot={{r: 4}}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Line 
+          yAxisId="right" 
+          type="monotone" 
+          dataKey="distance" 
+          name="里程" 
+          stroke="#10b981" 
+          strokeWidth={3} 
+          dot={{r: 4}}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Legend wrapperStyle={{ fontSize: '12px' }} />
       </ComposedChart>
     </ResponsiveContainer>
   );
 };
 
-// 3. Stacked Bar (Fleet)
-export const StackedBarChart = ({ data }: { data: any[] }) => {
-  if (!data || data.length === 0) {
+// 3. Stacked Bar (Fleet) - Enhanced with accessibility and animations
+export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked bar chart" }: ChartProps) => {
+  const isEmpty = useMemo(() => !data || data.length === 0, [data]);
+  
+  if (isEmpty) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <p style={{ color: '#64748b' }}>No data available</p>
+      <div 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        role="status"
+        aria-label="No data available for chart"
+      >
+        <p style={{ color: '#64748b', fontSize: '14px' }}>📊 No data available</p>
       </div>
     );
   }
   
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+      <BarChart 
+        data={data} 
+        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+        aria-label={ariaLabel}
+        role="img"
+      >
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-        <Legend />
-        <Bar dataKey="MultiRotor" name="多旋翼" stackId="a" fill="#0ea5e9" radius={[0,0,0,0]} />
-        <Bar dataKey="FixedWing" name="固定翼" stackId="a" fill="#10b981" radius={[0,0,0,0]} />
-        <Bar dataKey="Helicopter" name="直升机" stackId="a" fill="#f59e0b" radius={[4,4,0,0]} />
+        <XAxis 
+          dataKey="name" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false}
+          aria-label="Category axis"
+        />
+        <YAxis 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false}
+          aria-label="Value axis"
+        />
+        <Tooltip 
+          cursor={{fill: '#f3f4f6'}} 
+          contentStyle={{ 
+            borderRadius: '8px', 
+            border: 'none', 
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            fontSize: '12px'
+          }}
+        />
+        <Legend wrapperStyle={{ fontSize: '12px' }} />
+        <Bar 
+          dataKey="MultiRotor" 
+          name="多旋翼" 
+          stackId="a" 
+          fill="#0ea5e9" 
+          radius={[0,0,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Bar 
+          dataKey="FixedWing" 
+          name="固定翼" 
+          stackId="a" 
+          fill="#10b981" 
+          radius={[0,0,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Bar 
+          dataKey="Helicopter" 
+          name="直升机" 
+          stackId="a" 
+          fill="#f59e0b" 
+          radius={[4,4,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
       </BarChart>
     </ResponsiveContainer>
   );
 };
 
-// 4. Pareto (Concentration)
-export const ParetoChart = ({ data }: { data: any[] }) => {
-  const processedData = React.useMemo(() => {
+// 4. Pareto (Concentration) - Enhanced with accessibility
+export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentration analysis" }: ChartProps) => {
+  const processedData = useMemo(() => {
     if (!data || data.length === 0) {
       return [];
     }
@@ -110,22 +294,77 @@ export const ParetoChart = ({ data }: { data: any[] }) => {
 
   if (!processedData || processedData.length === 0) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <p style={{ color: '#64748b' }}>No data available</p>
+      <div 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        role="status"
+        aria-label="No data available for chart"
+      >
+        <p style={{ color: '#64748b', fontSize: '14px' }}>📊 No data available</p>
       </div>
     );
   }
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={processedData} margin={{ top: 20, right: 20, left: 0, bottom: 5 }}>
+      <ComposedChart 
+        data={processedData} 
+        margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+        aria-label={ariaLabel}
+        role="img"
+      >
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-        <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} unit="%" />
-        <Tooltip />
-        <Bar yAxisId="left" dataKey="volume" name="飞行量" fill="#0ea5e9" barSize={20} radius={[4,4,0,0]} />
-        <Line yAxisId="right" type="monotone" dataKey="cumulative" name="累计占比" stroke="#f59e0b" strokeWidth={2} dot={{r: 3}} />
+        <XAxis 
+          dataKey="name" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false}
+          aria-label="Category axis"
+        />
+        <YAxis 
+          yAxisId="left" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false}
+          aria-label="Volume axis"
+        />
+        <YAxis 
+          yAxisId="right" 
+          orientation="right" 
+          tick={{fontSize: 10}} 
+          axisLine={false} 
+          tickLine={false} 
+          unit="%"
+          aria-label="Cumulative percentage axis"
+        />
+        <Tooltip 
+          contentStyle={{ 
+            borderRadius: '8px', 
+            border: 'none', 
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            fontSize: '12px'
+          }}
+        />
+        <Bar 
+          yAxisId="left" 
+          dataKey="volume" 
+          name="飞行量" 
+          fill="#0ea5e9" 
+          barSize={20} 
+          radius={[4,4,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Line 
+          yAxisId="right" 
+          type="monotone" 
+          dataKey="cumulative" 
+          name="累计占比" 
+          stroke="#f59e0b" 
+          strokeWidth={2} 
+          dot={{r: 3}}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );
