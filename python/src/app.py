@@ -7,6 +7,9 @@ import data_processor
 import json
 import llm_helper
 import os
+import re
+import ast
+from pathlib import Path
 
 # Load environment variables
 try:
@@ -14,6 +17,98 @@ try:
     load_dotenv()
 except ImportError:
     pass
+
+# Constants for validation
+MAX_FILE_SIZE_MB = 10
+MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+MAX_CSV_ROWS = 100000
+MAX_CODE_LINES = 100
+
+def validate_and_execute_chart_code(code: str, max_lines: int = MAX_CODE_LINES) -> tuple:
+    """
+    Safely validate and execute chart generation code.
+    
+    Args:
+        code: The Python code to validate and execute
+        max_lines: Maximum number of lines allowed (default: MAX_CODE_LINES)
+        
+    Returns:
+        tuple: (success: bool, result_or_error: any)
+    """
+    if not code or not isinstance(code, str):
+        return False, "Invalid code provided"
+    
+    # Check code length
+    lines = code.strip().split('\n')
+    if len(lines) > max_lines:
+        return False, f"Code exceeds maximum allowed lines ({max_lines})"
+    
+    # Validate code structure using AST
+    try:
+        parsed = ast.parse(code)
+    except SyntaxError as e:
+        return False, f"Syntax error in generated code: {e}"
+    
+    # Check for dangerous operations
+    # Note: We're being strict here - dunder methods in string context are blocked
+    # But legitimate uses like class.__name__ in imports are allowed via AST validation
+    dangerous_patterns = [
+        r'\b(eval|compile|__import__|open|file)\s*\(',
+        r'\bos\.(system|popen|spawn|exec)',
+        r'\bsubprocess\.',
+        r'__\w+__\s*\(',  # Only block dunder method calls, not attributes
+    ]
+    
+    for pattern in dangerous_patterns:
+        if re.search(pattern, code):
+            return False, f"Code contains potentially unsafe operations"
+    
+    # Allow only specific safe imports
+    allowed_imports = {
+        'pyecharts', 'pyecharts.charts', 'pyecharts.options',
+        'pandas', 'numpy', 'datetime', 'math'
+    }
+    
+    for node in ast.walk(parsed):
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            if isinstance(node, ast.ImportFrom):
+                module = node.module
+                if module and not any(module.startswith(allowed) for allowed in allowed_imports):
+                    return False, f"Import not allowed: {module}"
+            elif isinstance(node, ast.Import):
+                for alias in node.names:
+                    if not any(alias.name.startswith(allowed) for allowed in allowed_imports):
+                        return False, f"Import not allowed: {alias.name}"
+    
+    # Execute in a restricted scope
+    try:
+        local_scope = {}
+        # Only provide access to safe modules
+        safe_globals = {
+            '__builtins__': {
+                'range': range,
+                'len': len,
+                'str': str,
+                'int': int,
+                'float': float,
+                'list': list,
+                'dict': dict,
+                'tuple': tuple,
+                'set': set,
+                'True': True,
+                'False': False,
+                'None': None,
+            }
+        }
+        exec(code, safe_globals, local_scope)
+        
+        if "chart" in local_scope:
+            return True, local_scope["chart"]
+        else:
+            return False, "Code executed but didn't create a 'chart' variable"
+            
+    except Exception as e:
+        return False, f"Execution error: {str(e)}"
 
 st.set_page_config(page_title="Low Altitude Economy Index", layout="wide")
 
@@ -32,42 +127,75 @@ if "messages" not in st.session_state:
 with st.sidebar:
     st.header("Data Upload")
 
-    # Download Sample Button
-    data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "sample_flight_data.csv")
-    with open(data_file_path, "rb") as f:
-        st.download_button(
-            label="Download Sample CSV",
-            data=f,
-            file_name="sample_flight_data.csv",
-            mime="text/csv"
-        )
+    # Download Sample Button with safer path handling
+    try:
+        base_path = Path(__file__).parent.parent
+        data_file_path = (base_path / "data" / "sample_flight_data.csv").resolve()
+        
+        # Ensure the path is within the expected directory
+        if not data_file_path.is_relative_to(base_path):
+            st.error("Invalid file path")
+        elif data_file_path.exists():
+            with open(data_file_path, "rb") as f:
+                st.download_button(
+                    label="Download Sample CSV",
+                    data=f,
+                    file_name="sample_flight_data.csv",
+                    mime="text/csv"
+                )
+        else:
+            st.warning("Sample data file not found")
+    except Exception as e:
+        st.error(f"Error loading sample file: {e}")
 
     uploaded_file = st.file_uploader("Upload Flight Data (CSV or JSON)", type=['csv', 'json'])
 
     if uploaded_file is not None:
-        file_type = uploaded_file.name.split('.')[-1].lower()
+        # Validate file size
+        file_size = uploaded_file.size
+        
+        if file_size > MAX_FILE_SIZE_BYTES:
+            st.error(f"File size ({file_size / (1024*1024):.2f} MB) exceeds maximum allowed size ({MAX_FILE_SIZE_MB} MB)")
+        else:
+            file_type = uploaded_file.name.split('.')[-1].lower()
 
-        if file_type == 'csv':
-            if st.button("Compute"):
-                try:
-                    df = pd.read_csv(uploaded_file)
-                    processed_data, ts_data = data_processor.process_csv(df)
-                    st.session_state.data = processed_data
-                    st.session_state.ts_data = ts_data
-                    st.success("Data computed successfully!")
-                except Exception as e:
-                    st.error(f"Error processing CSV: {e}")
+            if file_type == 'csv':
+                if st.button("Compute"):
+                    try:
+                        # Read CSV with size limit and error handling
+                        df = pd.read_csv(uploaded_file, nrows=MAX_CSV_ROWS)
+                        
+                        if df.empty:
+                            st.error("CSV file is empty")
+                        else:
+                            processed_data, ts_data = data_processor.process_csv(df)
+                            st.session_state.data = processed_data
+                            st.session_state.ts_data = ts_data
+                            st.success("Data computed successfully!")
+                    except pd.errors.ParserError as e:
+                        st.error(f"Invalid CSV format: {e}")
+                    except pd.errors.EmptyDataError:
+                        st.error("CSV file contains no data")
+                    except Exception as e:
+                        st.error(f"Error processing CSV: {e}")
 
-        elif file_type == 'json':
-            if st.button("View Dashboard"):
-                try:
-                    ts_data = json.load(uploaded_file)
-                    reconstructed_data = data_processor.reconstruct_streamlit_data(ts_data)
-                    st.session_state.data = reconstructed_data
-                    st.session_state.ts_data = ts_data
-                    st.success("Dashboard view loaded successfully!")
-                except Exception as e:
-                    st.error(f"Error loading JSON: {e}")
+            elif file_type == 'json':
+                if st.button("View Dashboard"):
+                    try:
+                        ts_data = json.load(uploaded_file)
+                        
+                        # Basic validation of JSON structure
+                        if not isinstance(ts_data, dict):
+                            st.error("Invalid JSON format: expected a JSON object")
+                        else:
+                            reconstructed_data = data_processor.reconstruct_streamlit_data(ts_data)
+                            st.session_state.data = reconstructed_data
+                            st.session_state.ts_data = ts_data
+                            st.success("Dashboard view loaded successfully!")
+                    except json.JSONDecodeError as e:
+                        st.error(f"Invalid JSON format: {e}")
+                    except Exception as e:
+                        st.error(f"Error loading JSON: {e}")
 
 
     if st.session_state.ts_data:
@@ -241,14 +369,12 @@ with tab2:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             if "chart_code" in message and message["chart_code"]:
-                try:
-                    # Execute the chart code to get the chart object
-                    local_scope = {}
-                    exec(message["chart_code"], globals(), local_scope)
-                    if "chart" in local_scope:
-                        st_pyecharts(local_scope["chart"], height="400px")
-                except Exception as e:
-                    st.error(f"Error rendering chart: {e}")
+                # Safely execute the chart code
+                success, result = validate_and_execute_chart_code(message["chart_code"])
+                if success:
+                    st_pyecharts(result, height="400px")
+                else:
+                    st.error(f"Error rendering chart: {result}")
 
     # Chat input
     if prompt := st.chat_input("What would you like to visualize? (e.g. 'Compare the growth rate of different aircraft types')"):
@@ -273,15 +399,12 @@ with tab2:
                 st.markdown(explanation)
 
                 if code:
-                    try:
-                        local_scope = {}
-                        exec(code, globals(), local_scope)
-                        if "chart" in local_scope:
-                            st_pyecharts(local_scope["chart"], height="400px")
-                        else:
-                            st.warning("The AI generated code but didn't assign the chart to a variable named 'chart'.")
-                    except Exception as e:
-                        st.error(f"Failed to render visualization. Error: {e}")
+                    # Safely execute the generated code
+                    success, result = validate_and_execute_chart_code(code)
+                    if success:
+                        st_pyecharts(result, height="400px")
+                    else:
+                        st.error(f"Failed to render visualization: {result}")
                         st.code(code, language="python")
 
         # Add assistant response to chat history

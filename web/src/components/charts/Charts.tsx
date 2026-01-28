@@ -11,66 +11,110 @@ import * as echarts from 'echarts';
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
 
 // 1. Area Chart (Traffic)
-export const TrafficAreaChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-      <defs>
-        <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
-          <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
-        </linearGradient>
-      </defs>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="date" tick={{fontSize: 10}} tickLine={false} axisLine={false} />
-      <YAxis tick={{fontSize: 10}} tickLine={false} axisLine={false} />
-      <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-      <Area type="monotone" dataKey="value" stroke="#0ea5e9" fillOpacity={1} fill="url(#colorVal)" />
-    </AreaChart>
-  </ResponsiveContainer>
-);
+export const TrafficAreaChart = ({ data }: { data: any[] }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <p style={{ color: '#64748b' }}>No data available</p>
+      </div>
+    );
+  }
+  
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+        <defs>
+          <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+        <XAxis dataKey="date" tick={{fontSize: 10}} tickLine={false} axisLine={false} />
+        <YAxis tick={{fontSize: 10}} tickLine={false} axisLine={false} />
+        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+        <Area type="monotone" dataKey="value" stroke="#0ea5e9" fillOpacity={1} fill="url(#colorVal)" />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
 
 // 2. Dual Line Chart (Operation Intensity)
-export const DualLineChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '时长 (小时)', angle: -90, position: 'insideLeft', style: {fontSize: 10, fill: '#64748b'} }} />
-      <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '里程 (公里)', angle: 90, position: 'insideRight', style: {fontSize: 10, fill: '#64748b'} }} />
-      <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-      <Line yAxisId="left" type="monotone" dataKey="duration" name="时长" stroke="#0ea5e9" strokeWidth={3} dot={{r: 4}} />
-      <Line yAxisId="right" type="monotone" dataKey="distance" name="里程" stroke="#10b981" strokeWidth={3} dot={{r: 4}} />
-      <Legend />
-    </ComposedChart>
-  </ResponsiveContainer>
-);
+export const DualLineChart = ({ data }: { data: any[] }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <p style={{ color: '#64748b' }}>No data available</p>
+      </div>
+    );
+  }
+  
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+        <YAxis yAxisId="left" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '时长 (小时)', angle: -90, position: 'insideLeft', style: {fontSize: 10, fill: '#64748b'} }} />
+        <YAxis yAxisId="right" orientation="right" tick={{fontSize: 10}} axisLine={false} tickLine={false} label={{ value: '里程 (公里)', angle: 90, position: 'insideRight', style: {fontSize: 10, fill: '#64748b'} }} />
+        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+        <Line yAxisId="left" type="monotone" dataKey="duration" name="时长" stroke="#0ea5e9" strokeWidth={3} dot={{r: 4}} />
+        <Line yAxisId="right" type="monotone" dataKey="distance" name="里程" stroke="#10b981" strokeWidth={3} dot={{r: 4}} />
+        <Legend />
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
+};
 
 // 3. Stacked Bar (Fleet)
-export const StackedBarChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-      <Legend />
-      <Bar dataKey="MultiRotor" name="多旋翼" stackId="a" fill="#0ea5e9" radius={[0,0,0,0]} />
-      <Bar dataKey="FixedWing" name="固定翼" stackId="a" fill="#10b981" radius={[0,0,0,0]} />
-      <Bar dataKey="Helicopter" name="直升机" stackId="a" fill="#f59e0b" radius={[4,4,0,0]} />
-    </BarChart>
-  </ResponsiveContainer>
-);
+export const StackedBarChart = ({ data }: { data: any[] }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <p style={{ color: '#64748b' }}>No data available</p>
+      </div>
+    );
+  }
+  
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+        <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+        <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+        <Legend />
+        <Bar dataKey="MultiRotor" name="多旋翼" stackId="a" fill="#0ea5e9" radius={[0,0,0,0]} />
+        <Bar dataKey="FixedWing" name="固定翼" stackId="a" fill="#10b981" radius={[0,0,0,0]} />
+        <Bar dataKey="Helicopter" name="直升机" stackId="a" fill="#f59e0b" radius={[4,4,0,0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
 
 // 4. Pareto (Concentration)
 export const ParetoChart = ({ data }: { data: any[] }) => {
   const processedData = React.useMemo(() => {
-    const total = data.reduce((acc, cur) => acc + cur.volume, 0);
+    if (!data || data.length === 0) {
+      return [];
+    }
+    const total = data.reduce((acc, cur) => acc + (cur.volume ?? 0), 0);
+    if (total === 0) {
+      return data;
+    }
     let cumulative = 0;
     return data.map(d => {
-      cumulative += d.volume;
+      cumulative += (d.volume ?? 0);
       return { ...d, cumulative: Math.round((cumulative / total) * 100) };
     });
   }, [data]);
+
+  if (!processedData || processedData.length === 0) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <p style={{ color: '#64748b' }}>No data available</p>
+      </div>
+    );
+  }
 
   return (
     <ResponsiveContainer width="100%" height="100%">

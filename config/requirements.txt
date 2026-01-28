@@ -1,5 +1,6 @@
 streamlit
 streamlit-echarts
+pyecharts
 pandas
 numpy
 scipy
