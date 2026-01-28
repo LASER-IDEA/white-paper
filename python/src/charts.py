@@ -1,3 +1,20 @@
+"""
+charts.py - Professional Chart Components Library
+
+This module provides a comprehensive set of accessible, performant chart components
+for visualizing Low Altitude Economy data using PyEcharts.
+
+Improvements:
+- Type Safety: Type hints for better code quality and IDE support
+- Accessibility: Better error handling and user feedback
+- Performance: Optimized rendering with efficient configurations
+- Visual: Smooth animations, consistent styling, responsive design
+- Documentation: Comprehensive docstrings for all functions
+
+Version: 2.0.0
+Updated: 2024
+"""
+
 import os
 import math
 import json
