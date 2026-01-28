@@ -12,7 +12,7 @@ Improvements:
 - Documentation: Comprehensive docstrings for all functions
 
 Version: 2.0.0
-Updated: 2024
+Updated: 2026
 """
 
 import os
@@ -33,18 +33,11 @@ CHART_CONFIG = {
     'grid_color': '#e2e8f0',
     'tooltip_bg': 'rgba(255, 255, 255, 0.95)',
     'tooltip_border': '#e2e8f0',
-    'animation_duration': 1000,
+    'animation_duration': 800,  # Optimized for better UX
     'font_size': 12,
     'title_font_size': 16,
     'axis_line_color': '#e2e8f0',
     'split_line_color': '#e2e8f0'
-}
-
-# Accessibility improvements
-CHART_CONFIG_A11Y = {
-    **CHART_CONFIG,
-    'animation_duration': 800,  # Slightly faster for better UX
-    'animation_easing': 'cubicOut',  # Smoother easing function
 }
 
 def traffic_area_chart(data: List[Dict[str, Any]]) -> Line:
@@ -77,10 +70,10 @@ def traffic_area_chart(data: List[Dict[str, Any]]) -> Line:
 
     c = (
         Line()
-        .add_xaxis(list(x_data))
+        .add_xaxis(x_data)
         .add_yaxis(
             "架次",
-            list(y_data),
+            y_data,
             is_smooth=True,
             symbol="none",
             areastyle_opts=opts.AreaStyleOpts(

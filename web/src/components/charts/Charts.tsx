@@ -5,14 +5,14 @@
  * for visualizing Low Altitude Economy data.
  * 
  * @improvements
- * - Accessibility: ARIA labels, semantic HTML, keyboard navigation support
+ * - Accessibility: Semantic HTML, better empty states, clear messaging
  * - Performance: Memoized computations, optimized re-renders
  * - Type Safety: TypeScript interfaces for better type checking
  * - Visual: Smooth animations, consistent styling, responsive design
  * - UX: Better empty states, loading indicators, error handling
  * 
  * @version 2.0.0
- * @updated 2024
+ * @updated 2026
  */
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
@@ -27,7 +27,7 @@ import * as echarts from 'echarts';
 
 // TypeScript Interfaces for better type safety
 interface ChartDataPoint {
-  [key: string]: string | number;
+  [key: string]: any;  // Flexible type to support various data structures
 }
 
 interface ChartProps {
@@ -35,18 +35,8 @@ interface ChartProps {
   ariaLabel?: string;
 }
 
-// Enhanced color palette with WCAG AA compliant colors
+// Enhanced color palette
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
-
-// Accessible color palette for better contrast
-const ACCESSIBLE_COLORS = {
-  primary: '#0369a1',     // Darker blue for better contrast
-  success: '#15803d',     // Darker green
-  warning: '#c2410c',     // Darker orange
-  danger: '#b91c1c',      // Darker red
-  purple: '#7c3aed',      // Darker purple
-  indigo: '#4338ca'       // Darker indigo
-};
 
 // 1. Area Chart (Traffic) - Enhanced with accessibility and performance
 export const TrafficAreaChart = ({ data, ariaLabel = "Daily flight sorties area chart" }: ChartProps) => {
@@ -66,53 +56,39 @@ export const TrafficAreaChart = ({ data, ariaLabel = "Daily flight sorties area 
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart 
-        data={data} 
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-        aria-label={ariaLabel}
-        role="img"
-      >
-        <defs>
-          <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
-            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
-          </linearGradient>
-        </defs>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis 
-          dataKey="date" 
-          tick={{fontSize: 10}} 
-          tickLine={false} 
-          axisLine={false}
-          aria-label="Date axis"
-        />
-        <YAxis 
-          tick={{fontSize: 10}} 
-          tickLine={false} 
-          axisLine={false}
-          aria-label="Value axis"
-        />
-        <Tooltip 
-          contentStyle={{ 
-            borderRadius: '8px', 
-            border: 'none', 
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-            fontSize: '12px'
-          }}
-          cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
-        />
-        <Area 
-          type="monotone" 
-          dataKey="value" 
-          stroke="#0ea5e9" 
-          fillOpacity={1} 
-          fill="url(#colorVal)"
-          animationDuration={800}
-          animationEasing="ease-in-out"
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div role="img" aria-label={ariaLabel}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+          <XAxis dataKey="date" tick={{fontSize: 10}} tickLine={false} axisLine={false} />
+          <YAxis tick={{fontSize: 10}} tickLine={false} axisLine={false} />
+          <Tooltip 
+            contentStyle={{ 
+              borderRadius: '8px', 
+              border: 'none', 
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+              fontSize: '12px'
+            }}
+            cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+          />
+          <Area 
+            type="monotone" 
+            dataKey="value" 
+            stroke="#0ea5e9" 
+            fillOpacity={1} 
+            fill="url(#colorVal)"
+            animationDuration={800}
+            animationEasing="ease-in-out"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
@@ -133,82 +109,71 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart 
-        data={data} 
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-        aria-label={ariaLabel}
-        role="img"
-      >
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-        <XAxis 
-          dataKey="name" 
-          tick={{fontSize: 10}} 
-          axisLine={false} 
-          tickLine={false}
-          aria-label="Category axis"
-        />
-        <YAxis 
-          yAxisId="left" 
-          tick={{fontSize: 10}} 
-          axisLine={false} 
-          tickLine={false} 
-          label={{ 
-            value: '时长 (小时)', 
-            angle: -90, 
-            position: 'insideLeft', 
-            style: {fontSize: 10, fill: '#64748b'} 
-          }}
-          aria-label="Duration in hours"
-        />
-        <YAxis 
-          yAxisId="right" 
-          orientation="right" 
-          tick={{fontSize: 10}} 
-          axisLine={false} 
-          tickLine={false} 
-          label={{ 
-            value: '里程 (公里)', 
-            angle: 90, 
-            position: 'insideRight', 
-            style: {fontSize: 10, fill: '#64748b'} 
-          }}
-          aria-label="Distance in kilometers"
-        />
-        <Tooltip 
-          contentStyle={{ 
-            borderRadius: '8px', 
-            border: 'none', 
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-            fontSize: '12px'
-          }}
-          cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
-        />
-        <Line 
-          yAxisId="left" 
-          type="monotone" 
-          dataKey="duration" 
-          name="时长" 
-          stroke="#0ea5e9" 
-          strokeWidth={3} 
-          dot={{r: 4}}
-          animationDuration={800}
-          animationEasing="ease-in-out"
-        />
-        <Line 
-          yAxisId="right" 
-          type="monotone" 
-          dataKey="distance" 
-          name="里程" 
-          stroke="#10b981" 
-          strokeWidth={3} 
-          dot={{r: 4}}
-          animationDuration={800}
-          animationEasing="ease-in-out"
-        />
-        <Legend wrapperStyle={{ fontSize: '12px' }} />
-      </ComposedChart>
-    </ResponsiveContainer>
+    <div role="img" aria-label={ariaLabel}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+          <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+          <YAxis 
+            yAxisId="left" 
+            tick={{fontSize: 10}} 
+            axisLine={false} 
+            tickLine={false} 
+            label={{ 
+              value: '时长 (小时)', 
+              angle: -90, 
+              position: 'insideLeft', 
+              style: {fontSize: 10, fill: '#64748b'} 
+            }}
+          />
+          <YAxis 
+            yAxisId="right" 
+            orientation="right" 
+            tick={{fontSize: 10}} 
+            axisLine={false} 
+            tickLine={false} 
+            label={{ 
+              value: '里程 (公里)', 
+              angle: 90, 
+              position: 'insideRight', 
+              style: {fontSize: 10, fill: '#64748b'} 
+            }}
+          />
+          <Tooltip 
+            contentStyle={{ 
+              borderRadius: '8px', 
+              border: 'none', 
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+              fontSize: '12px'
+            }}
+            cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+          />
+          <Line 
+            yAxisId="left" 
+            type="monotone" 
+            dataKey="duration" 
+            name="时长" 
+            stroke="#0ea5e9" 
+            strokeWidth={3} 
+            dot={{r: 4}}
+            animationDuration={800}
+            animationEasing="ease-in-out"
+          />
+          <Line 
+            yAxisId="right" 
+            type="monotone" 
+            dataKey="distance" 
+            name="里程" 
+            stroke="#10b981" 
+            strokeWidth={3} 
+            dot={{r: 4}}
+            animationDuration={800}
+            animationEasing="ease-in-out"
+          />
+          <Legend wrapperStyle={{ fontSize: '12px' }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
