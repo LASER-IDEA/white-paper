@@ -1883,7 +1883,11 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
 export const ChartRenderer = ({ type, data, definition, title }: { type: string, data: any, definition?: string, title?: string }) => {
     // Add a subtle info icon if definition is present
     const Container = ({ children }: { children: React.ReactNode }) => (
-      <div className="w-full h-full min-h-[280px] min-w-0 relative">
+      <div
+        className="w-full h-full min-h-[280px] min-w-0 relative"
+        role="figure"
+        aria-label={title ? `${title} 图表` : "数据图表"}
+      >
          {children}
          {definition && (
            <div className="absolute top-2 right-2 z-20 flex flex-col items-end group">
