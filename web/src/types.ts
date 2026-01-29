@@ -17,7 +17,7 @@ export interface MetricData {
   definition: string;
   insight: string;
   suggestion: string;
-  chartType: 'Area' | 'DualLine' | 'StackedBar' | 'Pareto' | 'Rose' | 'Treemap' | 'Map' | 'Polar' | 'BoxPlot' | 'Gauge' | 'Funnel' | 'Histogram' | 'Chord' | 'Calendar' | 'Wave' | 'Radar' | 'Dashboard' | 'Graph' | 'ControlChart';
+  chartType: 'Area' | 'DualLine' | 'StackedBar' | 'Pareto' | 'Rose' | 'Treemap' | 'Map' | 'Polar' | 'BoxPlot' | 'Gauge' | 'Funnel' | 'Histogram' | 'Chord' | 'GroupedBar' | 'Calendar' | 'Wave' | 'Radar' | 'Dashboard' | 'Graph' | 'ControlChart';
   chartData: any;
   keyMetrics: { label: string; value: string }[];
 }

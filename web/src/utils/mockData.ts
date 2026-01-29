@@ -461,7 +461,7 @@ export const getInnovationData = (): MetricData[] => [
     definition: '不同高度层飞行分布的均匀度，按区域和高度层细分。',
     insight: '空域分层良好。物流偏好100-150m，而测绘占据200m+。宝安区和南山区在各个高度层的活动最为活跃。',
     suggestion: '保持0-50m净空，以减少居民区附近的噪音。加强中高空域的协调管理。',
-    chartType: 'StackedBar',
+    chartType: 'GroupedBar',
     chartData: {
       // Grouped bar chart data structure: [x_axis_index, y_axis_index, value]
       // x: altitude layers, y: districts

@@ -2458,8 +2458,8 @@ export const ChartRenderer = ({ type, data, definition, title }: { type: string,
         case 'Chord': ChartComponent = <ChordDiagram data={data} />; break;
         case 'Graph': ChartComponent = <NetworkGraph data={data} />; break;
         case 'ControlChart': ChartComponent = <QualityControlChart data={data} />; break;
-        case 'StackedBar':
-          // Use AirspaceBarChart for both StackedBar (new name for grouped bar) and legacy cases
+        case 'GroupedBar':
+          // Use AirspaceBarChart for grouped bar (chart #17)
           ChartComponent = <AirspaceBarChart data={data} />;
           break;
         case 'Calendar': ChartComponent = <CalendarHeatmap data={data} />; break;
