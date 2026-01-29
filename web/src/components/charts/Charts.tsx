@@ -1804,24 +1804,13 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           top: 10
         },
         grid: {
-          left: '3%',
+          left: '15%',
           right: '4%',
           bottom: '3%',
           top: '15%',
           containLabel: true
         },
         xAxis: {
-          type: 'category',
-          data: chartData.districts,
-          axisLabel: {
-            color: '#64748b',
-            fontSize: 10
-          },
-          axisLine: {
-            lineStyle: { color: '#cbd5e1' }
-          }
-        },
-        yAxis: {
           type: 'value',
           name: '架次',
           axisLabel: {
@@ -1833,6 +1822,17 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           },
           splitLine: {
             lineStyle: { color: '#e5e7eb' }
+          }
+        },
+        yAxis: {
+          type: 'category',
+          data: chartData.districts,
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
           }
         },
         series: chartData.altitudes.map((alt: string, idx: number) => ({
@@ -1855,23 +1855,12 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           }
         },
         grid: {
-          left: '3%',
+          left: '15%',
           right: '4%',
           bottom: '3%',
           containLabel: true
         },
         xAxis: {
-          type: 'category',
-          data: chartData.map((d: any) => d.name),
-          axisLabel: {
-            color: '#64748b',
-            fontSize: 10
-          },
-          axisLine: {
-            lineStyle: { color: '#cbd5e1' }
-          }
-        },
-        yAxis: {
           type: 'value',
           name: '架次',
           axisLabel: {
@@ -1883,6 +1872,17 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           },
           splitLine: {
             lineStyle: { color: '#e5e7eb' }
+          }
+        },
+        yAxis: {
+          type: 'category',
+          data: chartData.map((d: any) => d.name),
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
           }
         },
         series: [{
@@ -1937,7 +1937,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
     <div 
       ref={chartRef}
       role="img" 
-      aria-label="Vertical airspace distribution grouped bar chart" 
+      aria-label="Vertical airspace distribution horizontal bar chart" 
       style={{ 
         width: '100%', 
         height: '100%', 
