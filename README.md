@@ -6,7 +6,7 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 [![React](https://img.shields.io/badge/React-18+-61DAFB.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-3178C6.svg)](https://www.typescriptlang.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io/)
-[![ECharts](https://img.shields.io/badge/ECharts-5.4+-EE6666.svg)](https://echarts.apache.org/)
+[![ECharts](https://img.shields.io/badge/ECharts-5.6+-EE6666.svg)](https://echarts.apache.org/)
 
 [![Deploy to GitHub Pages](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-00ADD8.svg)](https://LASER-IDEA.github.io/white-paper/)
