@@ -928,8 +928,8 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
 };
 
 // 8. Polar Clock (All Weather)
-export const PolarClockChart = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Polar clock chart showing hourly activity" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+export const PolarClockChart = ({ data, ariaLabel = "Polar clock chart showing hourly activity" }: ChartProps) => (
+  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
       <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
         <PolarGrid stroke="#e5e7eb" />
@@ -943,8 +943,8 @@ export const PolarClockChart = ({ data }: { data: any[] }) => (
 );
 
 // 9. Box Plot (Seasonal)
-export const SeasonalBoxChart = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Seasonal box plot chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+export const SeasonalBoxChart = ({ data, ariaLabel = "Seasonal box plot chart" }: ChartProps) => (
+  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
       <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
@@ -960,14 +960,14 @@ export const SeasonalBoxChart = ({ data }: { data: any[] }) => (
 );
 
 // 10. Gauge (Efficiency)
-export const GaugeChart = ({ data }: { data: any[] }) => {
+export const GaugeChart = ({ data, ariaLabel = "Efficiency gauge chart" }: ChartProps) => {
   const val = data[0].value;
   const pieData = [
     { name: '效率', value: val },
     { name: '剩余', value: 100 - val }
   ];
   return (
-    <div role="img" aria-label="Efficiency gauge chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
       <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
         <PieChart>
         <Pie
@@ -997,8 +997,8 @@ export const GaugeChart = ({ data }: { data: any[] }) => {
 };
 
 // 11. Funnel (Endurance)
-export const MissionFunnelChart = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Mission endurance funnel chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+export const MissionFunnelChart = ({ data, ariaLabel = "Mission endurance funnel chart" }: ChartProps) => (
+  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
       <FunnelChart>
         <Tooltip />
@@ -1015,8 +1015,8 @@ export const MissionFunnelChart = ({ data }: { data: any[] }) => (
 );
 
 // 12. Histogram (Wide Area)
-export const CoverageHistogram = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Coverage area histogram" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+export const CoverageHistogram = ({ data, ariaLabel = "Coverage area histogram" }: ChartProps) => (
+  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
       <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -2053,8 +2053,8 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
 };
 
 // 16. Waveform (Night Economy)
-export const NightWaveChart = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Night economy waveform chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+export const NightWaveChart = ({ data, ariaLabel = "Night economy waveform chart" }: ChartProps) => (
+  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
       <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
         <defs>
@@ -2434,19 +2434,25 @@ export const ChartRenderer = ({ type, data, definition, title }: { type: string,
     );
 
     let ChartComponent;
+    // Pass localized aria-label if title is available to override default English labels
+    const commonProps = {
+      data,
+      ariaLabel: title ? `${title} 图表` : undefined
+    };
+
     switch (type) {
-        case 'Area': ChartComponent = <TrafficAreaChart data={data} />; break;
-        case 'DualLine': ChartComponent = <DualLineChart data={data} />; break;
-        case 'StackedBar': ChartComponent = <StackedBarChart data={data} />; break;
-        case 'Pareto': ChartComponent = <ParetoChart data={data} />; break;
-        case 'Rose': ChartComponent = <NightingaleRoseChart data={data} />; break;
-        case 'Treemap': ChartComponent = <FleetTreemap data={data} />; break;
+        case 'Area': ChartComponent = <TrafficAreaChart {...commonProps} />; break;
+        case 'DualLine': ChartComponent = <DualLineChart {...commonProps} />; break;
+        case 'StackedBar': ChartComponent = <StackedBarChart {...commonProps} />; break;
+        case 'Pareto': ChartComponent = <ParetoChart {...commonProps} />; break;
+        case 'Rose': ChartComponent = <NightingaleRoseChart {...commonProps} />; break;
+        case 'Treemap': ChartComponent = <FleetTreemap {...commonProps} />; break;
         case 'Map': ChartComponent = <ChoroplethMap data={data} />; break;
-        case 'Polar': ChartComponent = <PolarClockChart data={data} />; break;
-        case 'BoxPlot': ChartComponent = <SeasonalBoxChart data={data} />; break;
-        case 'Gauge': ChartComponent = <GaugeChart data={data} />; break;
-        case 'Funnel': ChartComponent = <MissionFunnelChart data={data} />; break;
-        case 'Histogram': ChartComponent = <CoverageHistogram data={data} />; break;
+        case 'Polar': ChartComponent = <PolarClockChart {...commonProps} />; break;
+        case 'BoxPlot': ChartComponent = <SeasonalBoxChart {...commonProps} />; break;
+        case 'Gauge': ChartComponent = <GaugeChart {...commonProps} />; break;
+        case 'Funnel': ChartComponent = <MissionFunnelChart {...commonProps} />; break;
+        case 'Histogram': ChartComponent = <CoverageHistogram {...commonProps} />; break;
         case 'Chord': ChartComponent = <ChordDiagram data={data} />; break;
         case 'Graph': ChartComponent = <NetworkGraph data={data} />; break;
         case 'ControlChart': ChartComponent = <QualityControlChart data={data} />; break;
@@ -2455,8 +2461,8 @@ export const ChartRenderer = ({ type, data, definition, title }: { type: string,
           ChartComponent = <AirspaceBarChart data={data} />;
           break;
         case 'Calendar': ChartComponent = <CalendarHeatmap data={data} />; break;
-        case 'Wave': ChartComponent = <NightWaveChart data={data} />; break;
-        case 'Radar': ChartComponent = <EntityRadarChart data={data} />; break;
+        case 'Wave': ChartComponent = <NightWaveChart {...commonProps} />; break;
+        case 'Radar': ChartComponent = <EntityRadarChart {...commonProps} />; break;
         case 'Dashboard': ChartComponent = <CompositeDashboardChart data={data} />; break;
         default: ChartComponent = <div className="flex items-center justify-center h-full text-red-500">未知图表类型</div>;
     }

@@ -35,3 +35,7 @@
 ## 2025-05-30 - Interactive Heatmap Accessibility
 **Learning:** Visualization elements like calendar heatmaps are often implemented as static divs, making their rich data (tooltips) inaccessible to keyboard and screen reader users.
 **Action:** Convert interactive data cells to semantic `button` elements (or use `tabindex="0"` with `role="gridcell"`), ensuring `onFocus` behavior mirrors `onHover` to provide equal access to data details.
+
+## 2025-06-01 - Localized Accessibility Attributes
+**Learning:** Hardcoded English `aria-label` attributes in UI components can be actively harmful in localized applications, as screen readers may attempt to pronounce English text with the localized voice engine or vice versa, causing confusion.
+**Action:** Always derive `aria-label` from localized content props (like `title`) or localization keys, rather than providing English defaults in component definitions, especially in single-language non-English apps.
