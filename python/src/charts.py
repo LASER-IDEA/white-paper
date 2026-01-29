@@ -1,6 +1,24 @@
+"""
+charts.py - Professional Chart Components Library
+
+This module provides a comprehensive set of accessible, performant chart components
+for visualizing Low Altitude Economy data using PyEcharts.
+
+Improvements:
+- Type Safety: Type hints for better code quality and IDE support
+- Accessibility: Better error handling and user feedback
+- Performance: Optimized rendering with efficient configurations
+- Visual: Smooth animations, consistent styling, responsive design
+- Documentation: Comprehensive docstrings for all functions
+
+Version: 2.0.0
+Updated: 2026
+"""
+
 import os
 import math
 import json
+from typing import List, Dict, Any, Optional
 from pyecharts import options as opts
 from pyecharts.charts import Line, Bar, Pie, Map, Radar, Gauge, Funnel, HeatMap, TreeMap, Graph, Polar, Boxplot, Calendar
 
@@ -15,18 +33,39 @@ CHART_CONFIG = {
     'grid_color': '#e2e8f0',
     'tooltip_bg': 'rgba(255, 255, 255, 0.95)',
     'tooltip_border': '#e2e8f0',
-    'animation_duration': 1000,
+    'animation_duration': 800,  # Optimized for better UX
     'font_size': 12,
     'title_font_size': 16,
     'axis_line_color': '#e2e8f0',
     'split_line_color': '#e2e8f0'
 }
 
-def traffic_area_chart(data):
+def traffic_area_chart(data: List[Dict[str, Any]]) -> Line:
     """
-    Traffic Area Chart - Professional implementation inspired by Charts.tsx
+    Traffic Area Chart - Professional implementation with accessibility improvements
     Shows daily flight sorties with smooth area visualization
+    
+    Args:
+        data: List of dictionaries containing 'date' and 'value' keys
+        
+    Returns:
+        Line chart with area styling
     """
+    if not data:
+        # Return empty chart with message
+        c = Line()
+        c.set_global_opts(
+            title_opts=opts.TitleOpts(
+                title="每日飞行架次",
+                subtitle="暂无数据",
+                title_textstyle_opts=opts.TextStyleOpts(
+                    color=CHART_CONFIG['text_color'],
+                    font_size=CHART_CONFIG['title_font_size']
+                )
+            )
+        )
+        return c
+    
     x_data, y_data = zip(*[(d['date'], d['value']) for d in data])
 
     c = (
