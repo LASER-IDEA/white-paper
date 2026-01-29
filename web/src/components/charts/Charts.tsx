@@ -1760,11 +1760,10 @@ export const QualityControlChart = ({ data }: { data: any }) => {
 // Color palette for airspace visualization
 const AIRSPACE_COLORS = ['#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7', '#0369a1', '#075985'];
 
-// 15. 2D Grouped Bar (Vertical Airspace)
+// 17. 2D Grouped Bar (Vertical Airspace)
 export const AirspaceBarChart = ({ data }: { data: any }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
-  const isMountedRef = useRef(true);
 
   // 2D rendering function
   const render2D = useCallback((chart: echarts.ECharts, chartData: any) => {
@@ -1926,14 +1925,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
+      // Cleanup chart instance on unmount
       if (chartInstance.current) {
         chartInstance.current.dispose();
         chartInstance.current = null;
