@@ -1937,7 +1937,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
     <div 
       ref={chartRef}
       role="img" 
-      aria-label="Vertical airspace distribution horizontal bar chart" 
+      aria-label="Airspace distribution by district horizontal bar chart" 
       style={{ 
         width: '100%', 
         height: '100%', 
