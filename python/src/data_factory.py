@@ -179,7 +179,7 @@ def generate_data():
         ]
     }
 
-    # 17. Airspace Efficiency (3D Bar -> Bar)
+    # 17. Airspace Efficiency (Grouped Bar)
     data["airspace"] = [
         {"name": "<120m", "value": 600},
         {"name": "120-300m", "value": 380},
