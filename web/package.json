@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "echarts": "^6.0.0",
+    "echarts-gl": "^2.0.9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "recharts": "^3.6.0"

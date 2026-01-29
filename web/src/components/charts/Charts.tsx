@@ -1757,24 +1757,345 @@ export const QualityControlChart = ({ data }: { data: any }) => {
   );
 };
 
+// Color palette for airspace visualization
+const AIRSPACE_COLORS = ['#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7', '#0369a1', '#075985'];
+
 // 15. 3D Bar (Vertical Airspace)
-export const AirspaceBarChart = ({ data }: { data: any[] }) => (
-  <div role="img" aria-label="Vertical airspace distribution bar chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
-    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
-      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-        <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-        <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-        <Tooltip />
-        <Bar dataKey="value">
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#ea580c' : '#dc2626'} />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
-  </div>
-);
+export const AirspaceBarChart = ({ data }: { data: any }) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+  const isMountedRef = useRef(true);
+
+  // Fallback 2D rendering function
+  const renderFallback2D = useCallback((chart: echarts.ECharts, chartData: any) => {
+    // Check if it's the new 3D data structure or old array format
+    const is3DData = chartData && chartData.districts && chartData.altitudes && chartData.data;
+    
+    if (is3DData) {
+      // Convert 3D data to 2D grouped bar chart
+      // Group data by altitude layer
+      const altitudeData: any = {};
+      chartData.altitudes.forEach((alt: string, altIdx: number) => {
+        altitudeData[alt] = chartData.districts.map((_: string, distIdx: number) => {
+          const dataPoint = chartData.data.find((d: number[]) => d[0] === altIdx && d[1] === distIdx);
+          return dataPoint ? dataPoint[2] : 0;
+        });
+      });
+
+      const option: any = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          formatter: (params: any) => {
+            let result = `${params[0].name}<br/>`;
+            params.forEach((item: any) => {
+              result += `${item.seriesName}: ${item.value} 架次<br/>`;
+            });
+            return result;
+          }
+        },
+        legend: {
+          data: chartData.altitudes,
+          textStyle: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          top: 10
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '15%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: chartData.districts,
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: '架次',
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
+          },
+          splitLine: {
+            lineStyle: { color: '#e5e7eb' }
+          }
+        },
+        series: chartData.altitudes.map((alt: string, idx: number) => ({
+          name: alt,
+          type: 'bar',
+          data: altitudeData[alt],
+          itemStyle: {
+            color: AIRSPACE_COLORS[idx % AIRSPACE_COLORS.length]
+          }
+        }))
+      };
+      chart.setOption(option);
+    } else {
+      // Old simple array format
+      const option: any = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: chartData.map((d: any) => d.name),
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: '架次',
+          axisLabel: {
+            color: '#64748b',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: { color: '#cbd5e1' }
+          },
+          splitLine: {
+            lineStyle: { color: '#e5e7eb' }
+          }
+        },
+        series: [{
+          type: 'bar',
+          data: chartData.map((d: any, index: number) => ({
+            value: d.value,
+            itemStyle: {
+              color: index === 0 ? '#f59e0b' : index === 1 ? '#ea580c' : '#dc2626'
+            }
+          })),
+          barWidth: '60%'
+        }]
+      };
+      chart.setOption(option);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+
+    // Initialize chart if not already done
+    if (!chartInstance.current) {
+      chartInstance.current = echarts.init(chartRef.current);
+    }
+
+    const chart = chartInstance.current;
+
+    // Check if we have 3D data structure or simple array
+    const is3DData = data && data.districts && data.altitudes && data.data;
+
+    if (is3DData) {
+      // Import echarts-gl for 3D charts
+      import('echarts-gl').then(() => {
+        // Check if component is still mounted
+        if (!isMountedRef.current || !chartInstance.current) return;
+
+        const option: any = {
+          tooltip: {
+            formatter: (params: any) => {
+              if (!params || !params.value || params.value.length < 3) {
+                return 'No data';
+              }
+              const districtIdx = params.value[1];
+              const altitudeIdx = params.value[0];
+              const district = data.districts?.[districtIdx] || 'Unknown';
+              const altitude = data.altitudes?.[altitudeIdx] || 'Unknown';
+              const value = params.value[2];
+              return `${district}<br/>${altitude}: ${value} 架次`;
+            }
+          },
+          visualMap: {
+            max: Math.max(...data.data.map((d: number[]) => d[2]), 1200),
+            min: 0,
+            inRange: {
+              color: AIRSPACE_COLORS
+            },
+            textStyle: {
+              color: '#64748b',
+              fontSize: 10
+            },
+            dimension: 2,
+            orient: 'vertical',
+            right: 10,
+            top: 'center',
+            itemWidth: 12,
+            itemHeight: 100
+          },
+          xAxis3D: {
+            type: 'category',
+            data: data.altitudes,
+            name: '高度层',
+            nameTextStyle: {
+              color: '#64748b',
+              fontSize: 11
+            },
+            axisLabel: {
+              color: '#64748b',
+              fontSize: 9,
+              interval: 0,
+              rotate: 20
+            },
+            axisLine: {
+              lineStyle: { color: '#cbd5e1' }
+            }
+          },
+          yAxis3D: {
+            type: 'category',
+            data: data.districts,
+            name: '区域',
+            nameTextStyle: {
+              color: '#64748b',
+              fontSize: 11
+            },
+            axisLabel: {
+              color: '#64748b',
+              fontSize: 9
+            },
+            axisLine: {
+              lineStyle: { color: '#cbd5e1' }
+            }
+          },
+          zAxis3D: {
+            type: 'value',
+            name: '架次',
+            nameTextStyle: {
+              color: '#64748b',
+              fontSize: 11
+            },
+            axisLabel: {
+              color: '#64748b',
+              fontSize: 9
+            },
+            axisLine: {
+              lineStyle: { color: '#cbd5e1' }
+            }
+          },
+          grid3D: {
+            boxWidth: 200,
+            boxDepth: 120,
+            viewControl: {
+              alpha: 25,
+              beta: 30,
+              distance: 200,
+              rotateSensitivity: 1,
+              zoomSensitivity: 1,
+              panSensitivity: 1,
+              autoRotate: false
+            },
+            light: {
+              main: {
+                intensity: 1.2,
+                shadow: true
+              },
+              ambient: {
+                intensity: 0.3
+              }
+            }
+          },
+          series: [{
+            type: 'bar3D',
+            data: data.data,
+            shading: 'realistic',
+            label: {
+              show: false
+            },
+            emphasis: {
+              label: {
+                show: false
+              },
+              itemStyle: {
+                color: '#0ea5e9'
+              }
+            },
+            itemStyle: {
+              opacity: 0.9
+            }
+          }]
+        };
+
+        chart.setOption(option);
+      }).catch((error) => {
+        console.error('Failed to load echarts-gl:', error);
+        // Fallback to 2D visualization if 3D fails
+        if (isMountedRef.current && chartInstance.current) {
+          renderFallback2D(chartInstance.current, data);
+        }
+      });
+    } else {
+      // Fallback for old data format (simple array)
+      renderFallback2D(chart, data);
+    }
+  }, [data, renderFallback2D]);
+
+  // Handle resize in separate effect
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartInstance.current) {
+        chartInstance.current.resize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (chartInstance.current) {
+        chartInstance.current.dispose();
+        chartInstance.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div 
+      ref={chartRef}
+      role="img" 
+      aria-label="Vertical airspace distribution 3D bar chart" 
+      style={{ 
+        width: '100%', 
+        height: '100%', 
+        minHeight: `${CHART_MIN_HEIGHT}px` 
+      }}
+    />
+  );
+};
 
 // 15. Calendar Heatmap
 export const CalendarHeatmap = ({ data }: { data: any[] }) => {
