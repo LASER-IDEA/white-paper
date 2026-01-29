@@ -93,7 +93,7 @@ const App: React.FC = () => {
       </a>
 
       {/* Mobile Header */}
-      <div className="md:hidden sticky top-0 bg-white border-b border-slate-200 z-30 px-4 py-3 flex items-center justify-between shadow-sm">
+      <div className="md:hidden sticky top-0 bg-white border-b border-slate-200 z-30 px-4 py-3 flex items-center justify-between shadow-sm no-print print:hidden">
         <h1 className="font-bold text-[#002FA7]">低空经济白皮书</h1>
         <button
           onClick={() => setIsMobileMenuOpen(true)}
@@ -107,14 +107,14 @@ const App: React.FC = () => {
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden no-print print:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
         />
       )}
 
       {/* Sidebar Navigation (Hidden on Print) */}
-      <aside className={`w-64 bg-white border-r border-slate-200 fixed h-full overflow-y-auto no-print z-50 md:z-10 ${isMobileMenuOpen ? 'block' : 'hidden'} md:block`}>
+      <aside className={`w-64 bg-white border-r border-slate-200 fixed h-full flex flex-col no-print z-50 md:z-10 ${isMobileMenuOpen ? 'block' : 'hidden'} md:block`}>
         {/* Mobile Close Button */}
         <button
           onClick={() => setIsMobileMenuOpen(false)}
@@ -124,44 +124,48 @@ const App: React.FC = () => {
            <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
 
-        <div className="p-6">
-          <h1 className="text-xl font-bold text-[#002FA7] leading-tight">
-            低空经济 <span className="text-[#002FA7] block">白皮书</span>
-          </h1>
-          <p className="text-xs text-slate-500 mt-2">发展指数仪表盘</p>
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6">
+            <h1 className="text-xl font-bold text-[#002FA7] leading-tight">
+              低空经济 <span className="text-[#002FA7] block">白皮书</span>
+            </h1>
+            <p className="text-xs text-slate-500 mt-2">发展指数仪表盘</p>
+          </div>
+
+          <nav className="mt-4 px-4 space-y-1 pb-4" aria-label="Main navigation">
+             <button
+                onClick={() => updateDimension('All')}
+                aria-current={selectedDimension === 'All' ? 'page' : undefined}
+                className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 flex items-center ${
+                  selectedDimension === 'All'
+                  ? 'bg-[#002FA7] text-white'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {getDimensionIcon('All')}
+                完整报告
+              </button>
+            {dimensions.map((dim) => (
+              <button
+                key={dim}
+                onClick={() => updateDimension(dim)}
+                aria-current={selectedDimension === dim ? 'page' : undefined}
+                className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 flex items-center ${
+                  selectedDimension === dim
+                  ? 'bg-blue-50 text-[#002FA7] border border-[#002FA7]/20'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {getDimensionIcon(dim)}
+                {dim}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <nav className="mt-4 px-4 space-y-1" aria-label="Main navigation">
-           <button
-              onClick={() => updateDimension('All')}
-              aria-current={selectedDimension === 'All' ? 'page' : undefined}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 flex items-center ${
-                selectedDimension === 'All'
-                ? 'bg-[#002FA7] text-white'
-                : 'text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {getDimensionIcon('All')}
-              完整报告
-            </button>
-          {dimensions.map((dim) => (
-            <button
-              key={dim}
-              onClick={() => updateDimension(dim)}
-              aria-current={selectedDimension === dim ? 'page' : undefined}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 flex items-center ${
-                selectedDimension === dim
-                ? 'bg-blue-50 text-[#002FA7] border border-[#002FA7]/20'
-                : 'text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {getDimensionIcon(dim)}
-              {dim}
-            </button>
-          ))}
-        </nav>
-
-        <div className="absolute bottom-0 w-full p-4 border-t border-slate-200 bg-white">
+        {/* Fixed Export Button at Bottom */}
+        <div className="flex-shrink-0 w-full p-4 border-t border-slate-200 bg-white">
           <button
             onClick={handlePrint}
             className="w-full flex items-center justify-center space-x-2 bg-[#002FA7] hover:bg-[#001F7A] text-white py-2.5 rounded-lg shadow-sm transition-all font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2"
@@ -183,7 +187,7 @@ const App: React.FC = () => {
 
           {/* Cover Page Placeholder (Only visible on All) */}
            {selectedDimension === 'All' && (
-             <div className="w-[210mm] h-[297mm] bg-gradient-to-br from-[#002FA7] to-[#001F7A] text-white shadow-2xl mx-auto my-8 p-[20mm] flex flex-col justify-between page-break relative overflow-hidden print:shadow-none print:m-0 print:w-full print:rounded-none">
+             <div className="w-[210mm] h-[297mm] bg-gradient-to-br from-[#002FA7] to-[#001F7A] text-white shadow-2xl mx-auto my-8 p-[20mm] flex flex-col justify-between page-break relative overflow-hidden print:shadow-none print:m-0 print:w-full print:h-[297mm] print:rounded-none">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 print:opacity-40"></div>
 
                 <div className="relative z-10">
