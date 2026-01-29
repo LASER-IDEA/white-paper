@@ -740,7 +740,7 @@ def process_csv(df):
     ))
     ts_data.append(create_metric(
         "17", "立体空域利用效能指数", "垂直空域利用率", "创新与融合",
-        airspace_entropy, "熵值", "3DBar",
+        airspace_entropy, "熵值", "GroupedBar",
         streamlit_data['airspace']
     ))
     ts_calendar = [{"date": d[0], "value": d[1]} for d in cal_data.values.tolist()]
