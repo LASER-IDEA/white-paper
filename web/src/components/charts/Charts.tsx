@@ -35,6 +35,9 @@ interface ChartProps {
   ariaLabel?: string;
 }
 
+// Chart container constants
+const CHART_MIN_HEIGHT = 280;
+
 // Enhanced color palette
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6366f1'];
 
@@ -56,8 +59,8 @@ export const TrafficAreaChart = ({ data, ariaLabel = "Daily flight sorties area 
   }
   
   return (
-    <div role="img" aria-label={ariaLabel}>
-      <ResponsiveContainer width="100%" height="100%">
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
         <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
@@ -109,8 +112,8 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
   }
   
   return (
-    <div role="img" aria-label={ariaLabel}>
-      <ResponsiveContainer width="100%" height="100%">
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
         <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
           <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
@@ -194,8 +197,9 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart 
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <BarChart 
         data={data} 
         margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
         aria-label={ariaLabel}
@@ -253,7 +257,8 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
           animationEasing="ease-in-out"
         />
       </BarChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
@@ -287,8 +292,9 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart 
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <ComposedChart 
         data={processedData} 
         margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
         aria-label={ariaLabel}
@@ -348,7 +354,8 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
           animationEasing="ease-in-out"
         />
       </ComposedChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
@@ -422,8 +429,9 @@ export const NightingaleRoseChart = ({ data, ariaLabel = "Nightingale rose chart
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart aria-label={ariaLabel} role="img">
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <PieChart aria-label={ariaLabel} role="img">
         <Pie
           data={roseData}
           cx="50%"
@@ -451,7 +459,8 @@ export const NightingaleRoseChart = ({ data, ariaLabel = "Nightingale rose chart
         />
         <Legend verticalAlign="bottom" height={36} wrapperStyle={{color: '#64748b', fontSize: '12px'}}/>
       </PieChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
@@ -502,8 +511,9 @@ export const FleetTreemap = ({ data, ariaLabel = "Fleet diversity treemap chart"
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <Treemap
+    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <Treemap
         data={data}
         dataKey="size"
         aspectRatio={4 / 3}
@@ -513,7 +523,8 @@ export const FleetTreemap = ({ data, ariaLabel = "Fleet diversity treemap chart"
         animationDuration={800}
         aria-label={ariaLabel}
       />
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
@@ -918,30 +929,34 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
 
 // 8. Polar Clock (All Weather)
 export const PolarClockChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-      <PolarGrid stroke="#e5e7eb" />
-      <PolarAngleAxis dataKey="hour" tick={{ fontSize: 10 }} />
-      <PolarRadiusAxis angle={30} domain={[0, 'auto']} tick={false} axisLine={false} />
-      <Radar name="活跃度" dataKey="value" stroke="#002FA7" fill="#002FA7" fillOpacity={0.6} />
-      <Tooltip />
-    </RadarChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label="Polar clock chart showing hourly activity" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+        <PolarGrid stroke="#e5e7eb" />
+        <PolarAngleAxis dataKey="hour" tick={{ fontSize: 10 }} />
+        <PolarRadiusAxis angle={30} domain={[0, 'auto']} tick={false} axisLine={false} />
+        <Radar name="活跃度" dataKey="value" stroke="#002FA7" fill="#002FA7" fillOpacity={0.6} />
+        <Tooltip />
+      </RadarChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 9. Box Plot (Seasonal)
 export const SeasonalBoxChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <Tooltip />
-      <Bar dataKey="max" fill="#cbd5e1" barSize={10} stackId="a" />
-       <Line type="monotone" dataKey="avg" stroke="#0ea5e9" strokeWidth={3} dot={{r:4}} />
-       <Line type="monotone" dataKey="min" stroke="#10b981" strokeDasharray="3 3" dot={false} />
-    </ComposedChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label="Seasonal box plot chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+        <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+        <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+        <Tooltip />
+        <Bar dataKey="max" fill="#cbd5e1" barSize={10} stackId="a" />
+         <Line type="monotone" dataKey="avg" stroke="#0ea5e9" strokeWidth={3} dot={{r:4}} />
+         <Line type="monotone" dataKey="min" stroke="#10b981" strokeDasharray="3 3" dot={false} />
+      </ComposedChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 10. Gauge (Efficiency)
@@ -952,8 +967,9 @@ export const GaugeChart = ({ data }: { data: any[] }) => {
     { name: '剩余', value: 100 - val }
   ];
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
+    <div role="img" aria-label="Efficiency gauge chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <PieChart>
         <Pie
           data={pieData}
           cx="50%"
@@ -975,37 +991,42 @@ export const GaugeChart = ({ data }: { data: any[] }) => {
           效率
         </text>
       </PieChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
 // 11. Funnel (Endurance)
 export const MissionFunnelChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <FunnelChart>
-      <Tooltip />
-      <Funnel
-        dataKey="value"
-        data={data}
-        isAnimationActive
-      >
-        <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
-      </Funnel>
-    </FunnelChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label="Mission endurance funnel chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <FunnelChart>
+        <Tooltip />
+        <Funnel
+          dataKey="value"
+          data={data}
+          isAnimationActive
+        >
+          <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
+        </Funnel>
+      </FunnelChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 12. Histogram (Wide Area)
 export const CoverageHistogram = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+  <div role="img" aria-label="Coverage area histogram" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
         <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
         <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
         <Tooltip cursor={{fill: '#f8fafc'}} />
         <Bar dataKey="value" fill="#f59e0b" barSize={40} radius={[4,4,0,0]} />
-    </BarChart>
-  </ResponsiveContainer>
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 13. Chord Diagram (Micro Circulation)
@@ -1738,19 +1759,21 @@ export const QualityControlChart = ({ data }: { data: any }) => {
 
 // 15. 3D Bar (Vertical Airspace)
 export const AirspaceBarChart = ({ data }: { data: any[] }) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-      <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-      <Tooltip />
-      <Bar dataKey="value">
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#ea580c' : '#dc2626'} />
-        ))}
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label="Vertical airspace distribution bar chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+        <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <Tooltip />
+        <Bar dataKey="value">
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#ea580c' : '#dc2626'} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 15. Calendar Heatmap
@@ -1860,21 +1883,23 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
 
 // 16. Waveform (Night Economy)
 export const NightWaveChart = ({ data }: { data: any[] }) => (
-    <ResponsiveContainer width="100%" height="100%">
-    <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-       <defs>
-        <linearGradient id="colorNight" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8}/>
-          <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-        </linearGradient>
-      </defs>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-      <XAxis dataKey="hour" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-      <Tooltip />
-       <Area type="monotone" dataKey="value" stroke="#f59e0b" fill="url(#colorNight)" />
-    </AreaChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label="Night economy waveform chart" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+      <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+        <defs>
+          <linearGradient id="colorNight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8}/>
+            <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+        <XAxis dataKey="hour" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+        <Tooltip />
+        <Area type="monotone" dataKey="value" stroke="#f59e0b" fill="url(#colorNight)" />
+      </AreaChart>
+    </ResponsiveContainer>
+  </div>
 );
 
 // 17. Radar (Leading Entity) - Enhanced with accessibility
@@ -1894,8 +1919,9 @@ export const EntityRadarChart = ({ data, ariaLabel = "Entity comparison radar ch
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <RadarChart 
+    <div style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <RadarChart 
         cx="50%" 
         cy="50%" 
         outerRadius="70%" 
@@ -1941,7 +1967,8 @@ export const EntityRadarChart = ({ data, ariaLabel = "Entity comparison radar ch
           }}
         />
       </RadarChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
