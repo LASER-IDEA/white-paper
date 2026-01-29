@@ -180,12 +180,34 @@ def generate_data():
     }
 
     # 17. Airspace Efficiency (Grouped Bar)
-    data["airspace"] = [
-        {"name": "<120m", "value": 600},
-        {"name": "120-300m", "value": 380},
-        {"name": "300-600m", "value": 200},
-        {"name": ">600m", "value": 80}
-    ]
+    # Generate structured data matching web format for grouped bar visualization
+    districts = ['宝安区', '南山区', '福田区', '龙岗区', '罗湖区', '盐田区']
+    altitudes = ['0-50m', '50-100m', '100-150m', '150-200m', '200-250m', '250-300m', '300m+']
+    
+    # Generate data in format: [altitude_idx, district_idx, value]
+    airspace_data = []
+    for alt_idx in range(len(altitudes)):
+        for dist_idx in range(len(districts)):
+            # Higher values for mid-range altitudes (100-150m), decreasing for others
+            if alt_idx == 2:  # 100-150m
+                base_value = 1200
+            elif alt_idx == 1:  # 50-100m
+                base_value = 850
+            elif alt_idx == 3:  # 150-200m
+                base_value = 680
+            else:
+                base_value = 300
+            
+            # Vary by district (higher activity in first few districts)
+            district_factor = 1.0 - (dist_idx * 0.15)
+            value = int(base_value * district_factor * (0.8 + np.random.random() * 0.4))
+            airspace_data.append([alt_idx, dist_idx, value])
+    
+    data["airspace"] = {
+        "districts": districts,
+        "altitudes": altitudes,
+        "data": airspace_data
+    }
 
     # 18. Calendar Heatmap
     cal_dates = pd.date_range(start="2023-01-01", end="2023-12-31", freq="D")
