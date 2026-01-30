@@ -1,0 +1,112 @@
+% % ==========================================
+% %                 封面设计
+% % ==========================================
+% \begin{titlepage}
+%     % 注意：TikZ 绝对定位需要编译两次才能正确显示
+%     % 【关键修复】：将所有装饰（页眉、页脚、Logo）统一放在这一个 tikzpicture 中
+%     \begin{tikzpicture}[remember picture, overlay]
+        
+%         % ------------------------------------------------
+%         % 1. 全局背景 (全页浅白)
+%         % ------------------------------------------------
+%         \fill[white] (current page.south west) rectangle (current page.north east);
+        
+%         % ------------------------------------------------
+%         % 2. 顶部装饰 (深空色曲线 + 科技蓝线条)
+%         % ------------------------------------------------
+%         \fill[deepspace] 
+%             (current page.north west) -- 
+%             (current page.north east) -- 
+%             ([yshift=-8cm]current page.north east) .. controls 
+%             ([yshift=-4cm, xshift=-4cm]current page.north east) and 
+%             ([yshift=-10cm, xshift=4cm]current page.north west) .. 
+%             ([yshift=-5cm]current page.north west) -- cycle;
+            
+%         \draw[techblue, line width=2pt] 
+%             ([yshift=-5.2cm]current page.north west) .. controls 
+%             ([yshift=-10.2cm, xshift=4cm]current page.north west) and 
+%             ([yshift=-4.2cm, xshift=-4cm]current page.north east) .. 
+%             ([yshift=-8.2cm]current page.north east);
+
+%         % ------------------------------------------------
+%         % 3. LOGO 区域 (右上角)
+%         % ------------------------------------------------
+%         % 想要替换 LOGO，请取消下面这行的注释，并注释掉虚线框部分
+%         \node[anchor=north east, inner sep=1cm] at (current page.north east) {\includegraphics[width=3cm]{images/纯图形Logo-纯彩.png}};
+        
+%         % [占位符]
+%         % \node[anchor=north east, inner sep=0.8cm] at (current page.north east) {
+%         %     \begin{tikzpicture}
+%         %         \fill[white, opacity=0.9, rounded corners] (0,0) rectangle (4, 1.5);
+%         %         \node at (2, 0.75) {\textbf{\textcolor{deepspace}{LOGO 区域}}};
+%         %         \draw[dashed, deepspace] (0.1,0.1) rectangle (3.9, 1.4);
+%         %     \end{tikzpicture}
+%         % };
+
+%         % ------------------------------------------------
+%         % 4. 装饰元素 (圆点)
+%         % ------------------------------------------------
+%         \fill[accentorange] ([xshift=3cm, yshift=-4cm]current page.north west) circle (0.15);
+%         \fill[white] ([xshift=3.5cm, yshift=-3.5cm]current page.north west) circle (0.08);
+
+%         % ------------------------------------------------
+%         % 5. 底部页脚 (MOVED HERE) - 强制置于底部
+%         % ------------------------------------------------
+%         % 蓝色底条 (高度增加到 2.2cm 以防裁切)
+%         \fill[techblue] (current page.south west) rectangle ([yshift=2.5cm]current page.south east);
+        
+%         % 页脚文字 (白色，稍微调高位置 yshift=0.9cm)
+%         \node[anchor=south, white, yshift=0.5cm] at (current page.south) {
+%             \begin{tabular}{c}
+%                 \textbf{发布机构：} XX 研究院 \quad | \quad \textbf{联合发布：} XX 科技集团 \\
+%                 \small 官方网站：www.leap-index.com \quad | \quad 联系电话：400-888-8888
+%             \end{tabular}
+%         };
+
+%     \end{tikzpicture}
+
+%     % --- 封面正文内容 ---
+%     \vspace*{5cm} % 调整文字起始位置
+    
+%     \begin{center}
+%         \textcolor{gray}{\fontsize{30}{40} \textbf{低空经济发展动态评估指数蓝皮书}} \\[0.5cm]
+        
+%         {
+%             \fontsize{25}{35}\selectfont \textbf{\textcolor{deepspace}{基于领航模型（PILOT）的数据驱动洞察}} 
+%         } \\[0.2cm]
+        
+%         \textcolor{techblue}{\Large \textsc{Performance} \textsc{Index} for \textsc{Low-altitude} \textsc{Operation} \&  \textsc{Technology}} \\[1.5cm]
+
+% % PILOT-Performance Index for Low-altitude Operation & Technology
+        
+%         \begin{tcolorbox}[colback=skygradient, colframe=white, width=0.8\textwidth, arc=0mm, boxrule=0pt]
+%             \centering \large \textcolor{deepspace}{``基于动态运行数据的五维评价体系，洞察万亿级蓝海新机遇''}
+%         \end{tcolorbox}
+%     \end{center}
+    
+%     % \vfill 不需要了，因为页脚已经固定绘制
+    
+% \end{titlepage}
+\newgeometry{margin=0pt}
+
+% ==========================================
+%                 封面 (Cover)
+% ==========================================
+\begin{titlepage}
+    \noindent
+    \IfFileExists{images/cover.pdf}{%
+        \includegraphics[width=\paperwidth, height=\paperheight]{images/cover.pdf}%
+    }{%
+        \IfFileExists{images/cover.png}{%
+            \includegraphics[width=\paperwidth, height=\paperheight]{images/cover.png}%
+        }{%
+            % 备用方案...
+            \begin{tikzpicture}[remember picture, overlay]
+                \fill[blue] (current page.south west) rectangle (current page.north east);
+                \node[white] at (current page.center) {Missing Cover File};
+            \end{tikzpicture}%
+        }%
+    }%
+\end{titlepage}
+% 3. 恢复页边距，以免影响正文
+\restoregeometry
