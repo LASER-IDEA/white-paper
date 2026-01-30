@@ -38,14 +38,17 @@ const ReportPage: React.FC<PageProps> = ({ data, pageNumber }) => {
       </div>
 
       {/* 3. Key Metrics Cards (Middle-Bottom 15%) */}
-      <div className="h-[15%] grid grid-cols-3 gap-6 mb-8">
+      <dl className="h-[15%] grid grid-cols-3 gap-6 mb-8" aria-label="关键指标">
         {data.keyMetrics.map((metric, idx) => (
-          <div key={idx} className="bg-white rounded-lg border border-slate-200 p-4 flex flex-col justify-center shadow-sm print:shadow-none print:border-slate-300">
-             <span className="text-sm text-slate-500 uppercase tracking-wide font-medium">{metric.label}</span>
-             <span className="text-2xl font-bold text-[#002FA7] mt-1">{metric.value}</span>
+          <div
+            key={idx}
+            className="bg-white rounded-lg border border-slate-200 p-4 flex flex-col justify-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 print:shadow-none print:border-slate-300 print:translate-y-0"
+          >
+             <dt className="text-sm text-slate-500 uppercase tracking-wide font-medium">{metric.label}</dt>
+             <dd className="text-2xl font-bold text-[#002FA7] mt-1">{metric.value}</dd>
           </div>
         ))}
-      </div>
+      </dl>
 
       {/* 4. Insight Text (Bottom 25%) */}
       <div className="flex-1 flex flex-col space-y-4">
