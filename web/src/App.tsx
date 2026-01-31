@@ -1,19 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReportPage from './components/ReportPage';
 import BackToTop from './components/BackToTop';
+import StrategyPage from './components/StrategyPage';
 import { getAllData } from './utils/mockData';
 import { Dimension } from './types';
 
-const getDimensionIcon = (dimension: string) => {
+const getDimensionIcon = (dimension: string | 'Strategy') => {
   const iconClass = "w-5 h-5 mr-3 flex-shrink-0";
   const paths: Record<string, string> = {
     'All': "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+    'Strategy': "M13 10V3L4 14h7v7l9-11h-7z", // Reusing Efficiency icon for now, or use a new one like a bulb
     [Dimension.ScaleGrowth]: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6",
     [Dimension.StructureEntity]: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
     [Dimension.TimeSpace]: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
     [Dimension.EfficiencyQuality]: "M13 10V3L4 14h7v7l9-11h-7z",
     [Dimension.InnovationIntegration]: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
   };
+
+  // Special icon for Strategy if needed, otherwise use fallback
+  if (dimension === 'Strategy') {
+     return (
+        <svg aria-hidden="true" className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+     );
+  }
 
   if (!paths[dimension]) return null;
   return (
@@ -61,7 +72,7 @@ const App: React.FC = () => {
   }, [selectedDimension]);
 
   // Filter Data
-  const filteredData = selectedDimension === 'All'
+  const filteredData = selectedDimension === 'All' || selectedDimension === 'Strategy'
     ? allData
     : allData.filter(d => d.dimension === selectedDimension);
 
@@ -153,6 +164,21 @@ const App: React.FC = () => {
                 {getDimensionIcon('All')}
                 完整报告
               </button>
+
+             {/* Strategy Page Navigation */}
+             <button
+                onClick={() => updateDimension('Strategy')}
+                aria-current={selectedDimension === 'Strategy' ? 'page' : undefined}
+                className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 flex items-center ${
+                  selectedDimension === 'Strategy'
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {getDimensionIcon('Strategy')}
+                策略与洞察
+              </button>
+
             {dimensions.map((dim) => (
               <button
                 key={dim}
@@ -206,49 +232,55 @@ const App: React.FC = () => {
       >
         <div className="max-w-[210mm] mx-auto print:max-w-none print:mx-0 print:w-full">
 
-          {/* Cover Page Placeholder (Only visible on All) */}
-           {selectedDimension === 'All' && (
-             <div className="w-[210mm] h-[297mm] bg-gradient-to-br from-[#002FA7] to-[#001F7A] text-white shadow-2xl mx-auto my-8 p-[20mm] flex flex-col justify-between page-break relative overflow-hidden print:shadow-none print:m-0 print:w-full print:h-[297mm] print:rounded-none">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 print:opacity-40"></div>
+          {selectedDimension === 'Strategy' ? (
+            <StrategyPage />
+          ) : (
+            <>
+              {/* Cover Page Placeholder (Only visible on All) */}
+               {selectedDimension === 'All' && (
+                 <div className="w-[210mm] h-[297mm] bg-gradient-to-br from-[#002FA7] to-[#001F7A] text-white shadow-2xl mx-auto my-8 p-[20mm] flex flex-col justify-between page-break relative overflow-hidden print:shadow-none print:m-0 print:w-full print:h-[297mm] print:rounded-none">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 print:opacity-40"></div>
 
-                <div className="relative z-10">
-                   <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">本页面展示的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。不代表任何真实的市场情况、统计数据或商业信息。</div>
-                   <h1 className="text-6xl font-extrabold leading-tight tracking-tight text-white print:text-white">
-                    低空经济 <br/>
-                    <br/>
-                    <span className="text-white print:text-white">发展指数白皮书</span>
-                   </h1>
-                   <div className="w-24 h-2 bg-white mt-8"></div>
-                </div>
+                    <div className="relative z-10">
+                       <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">本页面展示的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。不代表任何真实的市场情况、统计数据或商业信息。</div>
+                       <h1 className="text-6xl font-extrabold leading-tight tracking-tight text-white print:text-white">
+                        低空经济 <br/>
+                        <br/>
+                        <span className="text-white print:text-white">发展指数白皮书</span>
+                       </h1>
+                       <div className="w-24 h-2 bg-white mt-8"></div>
+                    </div>
 
-                <div className="relative z-10">
-                  <div className="grid grid-cols-2 gap-12 mb-12">
-                     <div>
-                       <span className="block text-white/70 text-sm uppercase mb-1">统计周期</span>
-                       <span className="text-2xl font-bold text-white">2023年第三季度</span>
-                     </div>
-                     <div>
-                       <span className="block text-white/70 text-sm uppercase mb-1">区域</span>
-                       <span className="text-2xl font-bold text-white">深圳先行示范区</span>
-                     </div>
-                  </div>
-                  <p className="text-white/70 text-sm max-w-md leading-relaxed">
-                    本白皮书基于规模、结构、时空、效率、创新5D框架，提供低空经济的综合分析。
-                  </p>
-                </div>
-             </div>
-           )}
+                    <div className="relative z-10">
+                      <div className="grid grid-cols-2 gap-12 mb-12">
+                         <div>
+                           <span className="block text-white/70 text-sm uppercase mb-1">统计周期</span>
+                           <span className="text-2xl font-bold text-white">2023年第三季度</span>
+                         </div>
+                         <div>
+                           <span className="block text-white/70 text-sm uppercase mb-1">区域</span>
+                           <span className="text-2xl font-bold text-white">深圳先行示范区</span>
+                         </div>
+                      </div>
+                      <p className="text-white/70 text-sm max-w-md leading-relaxed">
+                        本白皮书基于规模、结构、时空、效率、创新5D框架，提供低空经济的综合分析。
+                      </p>
+                    </div>
+                 </div>
+               )}
 
-          {/* Render Pages */}
-          {filteredData.map((data, index) => (
-            <ReportPage
-              key={data.id}
-              data={data}
-              pageNumber={index + 1}
-            />
-          ))}
+              {/* Render Pages */}
+              {filteredData.map((data, index) => (
+                <ReportPage
+                  key={data.id}
+                  data={data}
+                  pageNumber={index + 1}
+                />
+              ))}
+            </>
+          )}
 
-          {filteredData.length === 0 && (
+          {selectedDimension !== 'Strategy' && filteredData.length === 0 && (
             <div className="flex flex-col items-center justify-center h-96 text-center">
               <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
                 <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
