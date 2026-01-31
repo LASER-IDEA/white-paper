@@ -116,128 +116,60 @@
 
 \newpage
 \section*{附录: 维度子指数计算表}
-% % \nopagebreak[4]
-% % \subsection*{维度子指数计算表}
-% \begin{table}[H]
-%     \centering
-%     \small
-%     \rotatebox{90}{
-%     \begin{tabular}{|p{1cm}|p{2cm}|p{2.5cm}|p{2.5cm}|p{4cm}|p{2cm}|p{4cm}|}
-% \hline \rowcolor{skygradient!100} \multicolumn{1}{|l|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} & \multicolumn{1}{|c|}{可视化} \\
-% \hline 1 & 低空交通流量指数 & 以基期的月均架次为基准值 （100），衡量区域低空飞行活动的绝对规模，反映整体市场容量。 & 回答＂忙不忙＂，是衡量产业基本盘的核心指标。直观反映城市低空经济的＂繁忙程度＂。 & $\displaystyle \frac{F_t}{F_0} \times 100$ \newline
-% \textit{其中：$F_t$为当期月均架次，$F_0$为基期月均架次} & 每日飞行架次统计 & 折线图展示月度趋势，柱状图展示日度对比。面积图：展示累积增长趋势，直观反映＂繁忙度＂。 \\
-% \hline 2 & 低空作业强度指数 & 衡量单位空域面积或单位时间内的飞行活动密度。 & 反映空域资源的利用压力和运营紧凑程度。衡量真实的业务负荷。 &  $\displaystyle \left[w_1 \frac{T_t}{T_0} + w_2 \frac{D_t}{D_0}\right] \times 100$ \newline
-% \textit{其中：$T_t$为当期单位时间飞行时长，$T_0$为基期值；$D_t$为当期单位飞行里程，$D_0$为基期值；$w_1,w_2$为权重系数} & 年合计飞行时长、里程 & 热力图：在电子地图上展示飞行时长或架次的空间密度分布。双轴折线图：同步展示时长与里程增长，剔除无效飞行。 \\
-% \hline 3 & 活跃运力规模指数 & 衡量实际投入运营的航空器及运营主体的数量规模。 & 反映市场供给侧的投入程度和参与广度。 & $N_a$ \newline
-% \textit{其中：$N_a$为统计期内（月度/季度）去重活跃航空器SN码数量} & 按航空器类别统计的活跃SN数 & 双轴折线图：左轴为航空器数，右轴为企业数，观察增长关系。 \\
-% \hline 4 & 增长动能指数 & 衡量飞行活动规模的扩张速度和趋势强度。 & 判断市场处于爆发期、稳定期或瓶颈期。 & $\displaystyle R_m = \frac{F_m - F_{m-1}}{F_{m-1}} \times 100\%$ \newline
-% $\displaystyle R_y = \frac{F_m - F_{m-12}}{F_{m-12}} \times 100\%$ \newline
-% \textit{其中：$R_m$为月度环比，$R_y$为月度同比；$F_m$为本月总架次，$F_{m-1}$为上月总架次，$F_{m-12}$为去年同期总架次} & 月度飞行架次 & 面积图: 展示增长率的连续变化，正负区域清晰直观。 \\
-% \hline 5 & 市场集中度指数 & 衡量头部企业对市场飞行活动的控制力。 & 判断市场是垄断、寡头还是充分竞争，评估市场风险。 & $\displaystyle CR_{50} = \frac{\sum_{i=1}^{50} F_i}{F_{\text{total}}} \times 100$ \newline
-% \textit{其中：$CR_{50}$为前50企业集中度；$F_i$为第$i$企业飞行架次；$F_{\text{total}}$为市场总飞行架次} & 各明细企业年合计飞行架次 & 水球图：显示$CR_{50}$具体数值，并标注健康区间（如$<70\%$为竞争型）。帕累托图：直观显示头部企业累计份额，判断垄断或竞争格局。 \\
-% \hline
-% \end{tabular}}
-%     \caption{Caption}
-%     \label{tab:my_label}
-% \end{table}
+
 \begin{table}[H]
     \centering
     \small
     \rotatebox{90}{
     \begin{tabular}{|p{1cm}|p{2cm}|p{2.5cm}|p{2.5cm}|p{4cm}|p{2cm}|}
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|l|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} \\
-\hline 1 & 低空交通流量指数 & 以基期的月均架次为基准值（100），衡量区域低空飞行活动的绝对规模，反映整体市场容量。 & 回答``忙不忙''，是衡量产业基本盘的核心指标。直观反映城市低空经济的``繁忙程度''。 & $\displaystyle \frac{F_t}{F_0} \times 100$ \newline
-\textit{其中：$F_t$为当期月均架次，$F_0$为基期月均架次} & 每日飞行架次统计 \\
-\hline 2 & 低空作业强度指数 & 衡量单位空域面积或单位时间内的飞行活动密度。 & 反映空域资源的利用压力和运营紧凑程度。衡量真实的业务负荷。 &  $\displaystyle \left[w_1 \frac{T_t}{T_0} + w_2 \frac{D_t}{D_0}\right] \times 100$ \newline
-\textit{其中：$T_t$为当期单位时间飞行时长，$T_0$为基期值；$D_t$为当期单位飞行里程，$D_0$为基期值；$w_1,w_2$为权重系数} & 年合计飞行时长、里程 \\
-\hline 3 & 活跃运力规模指数 & 衡量实际投入运营的航空器及运营主体的数量规模。 & 反映市场供给侧的投入程度和参与广度。 & $N_a$ \newline
-\textit{其中：$N_a$为统计期内（月度/季度）去重活跃航空器SN码数量} & 按航空器类别统计的活跃SN数 \\
-\hline 4 & 增长动能指数 & 衡量飞行活动规模的扩张速度和趋势强度。 & 判断市场处于爆发期、稳定期或瓶颈期。 & $\displaystyle R_m = \frac{F_m - F_{m-1}}{F_{m-1}} \times 100\%$ \newline
-$\displaystyle R_y = \frac{F_m - F_{m-12}}{F_{m-12}} \times 100\%$ \newline
-\textit{其中：$R_m$为月度环比，$R_y$为月度同比；$F_m$为本月总架次，$F_{m-1}$为上月总架次，$F_{m-12}$为去年同期总架次} & 月度飞行架次 \\
-\hline 5 & 市场集中度指数 & 衡量头部企业对市场飞行活动的控制力。 & 判断市场是垄断、寡头还是充分竞争，评估市场风险。 & $\displaystyle CR_{50} = \frac{\sum_{i=1}^{50} F_i}{F_{\text{total}}} \times 100$ \newline
-\textit{其中：$CR_{50}$为前50企业集中度；$F_i$为第$i$企业飞行架次；$F_{\text{total}}$为市场总飞行架次} & 各明细企业年合计飞行架次 \\
+\hline 1 & 低空交通流量指数 & 衡量区域低空飞行活动的绝对规模与市场容量。 & 衡量产业基本盘的核心指标，直观反映城市``繁忙度''。 & $\displaystyle \frac{F_t}{F_0} \times 100$ \newline
+\textit{$F_t$: 当期架次, $F_0$: 基期架次} & 每日飞行架次统计 \\
+\hline 2 & 低空作业强度指数 & 衡量单位空域面积或单位时间内的飞行活动密度。 & 反映空域资源利用压力与业务负荷。 &  $\displaystyle \left[w_1 \frac{T_t}{T_0} + w_2 \frac{D_t}{D_0}\right] \times 100$ \newline
+\textit{$T_t$: 当期时长, $D_t$: 当期里程} & 年合计飞行时长、里程 \\
+\hline 3 & 活跃运力规模指数 & 衡量实际投入运营的航空器及主体数量。 & 反映供给侧投入程度与参与广度。 & $N_a$ \newline
+\textit{$N_a$: 活跃航空器SN码数量} & 活跃SN数 \\
+\hline 4 & 增长动能指数 & 衡量飞行规模扩张速度与趋势。 & 判断市场处于爆发期、稳定期或瓶颈期。 & $\displaystyle R_m = \frac{F_m - F_{m-1}}{F_{m-1}} \times 100\%$ \newline
+\textit{$R_m$: 环比增长率} & 月度飞行架次 \\
+\hline 5 & 市场集中度指数 & 衡量头部企业对市场的控制力。 & 判断市场竞争格局（垄断/竞争）与风险。 & $\displaystyle CR_{50} = \frac{\sum_{i=1}^{50} F_i}{F_{\text{total}}} \times 100$ \newline
+\textit{$CR_{50}$: 前50企业份额} & 企业飞行架次 \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总}
     \label{tab:index-formulas}
 \end{table}
 
-% \begin{table}[H]
-%     \centering
-%     \small
-%     \rotatebox{90}{
-%     \begin{tabular}{|p{1cm}|p{2cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2cm}|p{4.5cm}|}
-% \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} & \multicolumn{1}{|c|}{可视化} \\
-% \hline 6 & 商业化成熟指数 & 衡量飞行活动由消费娱乐转向生产性、商业化应用的程度。 & 反映产业＂自我造血＂能力和真实经济价值。 & （企业用户飞行架次／总飞行架次）＊ 100 & 按用户类型统计的飞行架次 & 堆叠柱状图：按季度展示生产性、消费性等不同类型飞行量的结构变化。南丁格尔玫瑰图：对比企业、个人、政府等不同用户占比。 \\
-% \hline 7 & 机型生态多元指数 & 衡量运营航空器型号的丰富性与均衡性。 & 反映技术路线的丰富度和供应链的韧性，避免单一依赖。 & $1-\Sigma\left(\mathrm{Pi}^2\right)$ ，其中 Pi 为第 i 种机型架次占比 （辛普森多样性指数） & 各航空器型号年合计飞行架次 & 旭日图：直观展示＂类别 （如多旋翼） －＞型号－＞制造商＂的层级分布。矩形树图：矩形大小代表机型飞行量，颜色代表厂商，展示生态构成。 \\
-% \hline 8 & 区域发展均衡指数 & 衡量飞行活动在不同行政或地理单元分布的均衡性。 & 识别发展热点与盲区，指导基础设施（如起降点）的均衡布局，辅助区域协同政策制定。 & 1－（各区域飞行架次占比的基尼系数） & 各行政区年合计飞行架次 & 分级设色地图：用颜色深浅表示，叠加基尼系数值。 \\
-% \hline 9 & 全时段运行指数 & 衡量飞行活动在 24小时内的分布离散度，值越高表示全天候运行越好。 & 评估基础设施支持能力和夜间经济潜力。 & $-\Sigma\left(\mathrm{Pi}^* \ln \mathrm{Pi}\right)$, Pi为第 i 个时段架次占总架次的比例 & 各时段年合计飞行架次 & 24小时雷达图：或环形热力图，清晰显示24小时各时段的活动强度。 24 小时极坐标图：类似时钟，半径方向表示架次，展示全天候飞行模式。 \\
-% \hline 10 & 季候稳定性指数 & 衡量飞行活动受季节、月份影响的波动程度。 & 判断产业是全年稳定运行，还是受气候、节假日等因素影响显著。 & 1 －（月度架次标准差／月度架次均值） & 每月合计飞行架次／时长 & 月度折线图：展示连续多个自然年的月度数据，观察季节模式是否重复。箱线图：展示各月度数据的分布与中位数，判断季节性波动。 \\
-% \hline
-% \end{tabular}}
-%     % \caption{Caption}
-%     % \label{tab:my_label}
-% \end{table}
 \begin{table}[H]
     \centering
     \small
     \rotatebox{90}{
     \begin{tabular}{|p{1cm}|p{2cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2cm}|}
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} \\
-\hline 6 & 商业化成熟指数 & 衡量飞行活动由消费娱乐转向生产性、商业化应用的程度。 & 反映产业``自我造血''能力和真实经济价值。 & （企业用户飞行架次／总飞行架次）＊ 100 & 按用户类型统计的飞行架次 \\
-\hline 7 & 机型生态多元指数 & 衡量运营航空器型号的丰富性与均衡性。 & 反映技术路线的丰富度和供应链的韧性，避免单一依赖。 & $1-\Sigma\left(\mathrm{P_i}^2\right)$ ，其中 $\mathrm{P_i}$ 为第 $i$ 种机型架次占比（辛普森多样性指数） & 各航空器型号年合计飞行架次 \\
-\hline 8 & 区域发展均衡指数 & 衡量飞行活动在不同行政或地理单元分布的均衡性。 & 识别发展热点与盲区，指导基础设施（如起降点）的均衡布局，辅助区域协同政策制定。 & $1 - G$，其中 $G$ 为各区域飞行架次占比的基尼系数 & 各行政区年合计飞行架次 \\
-\hline 9 & 全时段运行指数 & 衡量飞行活动在 24小时内的分布离散度，值越高表示全天候运行越好。 & 评估基础设施支持能力和夜间经济潜力。 & $-\Sigma\left(\mathrm{P_i} \cdot \ln \mathrm{P_i}\right)$，其中 $\mathrm{P_i}$ 为第 $i$ 个时段架次占总架次的比例（信息熵） & 各时段年合计飞行架次 \\
-\hline 10 & 季候稳定性指数 & 衡量飞行活动受季节、月份影响的波动程度。 & 判断产业是全年稳定运行，还是受气候、节假日等因素影响显著。 & $1 - \frac{\sigma}{\mu}$，其中 $\sigma$ 为月度架次标准差，$\mu$ 为月度架次均值 & 每月合计飞行架次／时长 \\
+\hline 6 & 商业化成熟指数 & 衡量飞行活动中生产性、商业化应用的占比。 & 反映产业``自我造血''能力与真实价值。 & (企业用户架次/总架次) $\times 100$ & 用户类型统计 \\
+\hline 7 & 机型生态多元指数 & 衡量运营航空器型号的丰富性与均衡性。 & 反映技术路线丰富度与供应链韧性。 & $1-\Sigma\left(\mathrm{P_i}^2\right)$ \newline
+\textit{辛普森多样性指数} & 机型飞行架次 \\
+\hline 8 & 区域发展均衡指数 & 衡量飞行活动在地理单元分布的均衡性。 & 识别热点与盲区，指导基础设施布局。 & $1 - G$ \newline
+\textit{G: 基尼系数} & 行政区飞行架次 \\
+\hline 9 & 全时段运行指数 & 衡量飞行活动在24小时内的分布离散度。 & 评估全天候运行能力与夜间经济潜力。 & $-\Sigma\left(\mathrm{P_i} \cdot \ln \mathrm{P_i}\right)$ \newline
+\textit{信息熵} & 时段飞行架次 \\
+\hline 10 & 季候稳定性指数 & 衡量飞行活动受季节、月份影响的波动程度。 & 判断产业是否实现全年常态化运行。 & $1 - \frac{\sigma}{\mu}$ \newline
+\textit{$\sigma$: 标准差, $\mu$: 均值} & 月度飞行架次 \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总（续）}
     \label{tab:index-formulas-2}
 \end{table}
 
-% \begin{table}[H]
-%     \centering
-%     \small
-%     \rotatebox{90}{
-%     \begin{tabular}{|p{1cm}|p{2cm}|p{6cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|}
-% \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} & \multicolumn{1}{|c|}{可视化} \\
-% \hline 11 & 网络化枢纽指数 & 识别航线网络中的关键节点。综合计算起降点的连接度（通航点数量）、加权流量（航班频次）和中介中心性（中转重要性）。衡量核心起降点或空域节点的航线连通性与流量集中度。
-% \begin{itemize}
-%     \item NHI很高（如大雨0.8) 反映核心枢纽，流量大、连接广；
-% \item NHI值中等（如0。3-0.8）反映为区域枢纽或重要节点，在某些维度突出。
-% \item NHI值很低（如小于0.3）：反映为末端节点，连接有限，流量小。
-% \end{itemize}
-%  & 识别物流、载人网络的关键枢纽，指导基础设施投资与规划。节点指数越高，其枢纽地位越核心。可据此划分重点枢纽、区域枢纽和末端节点。 & 基于起降点航线网络，计算各节点的度中心性（连接航线数量）。 & 起降点坐标、点对点航线频次
-%  & 网络关系图：节点大小代表中心性，连线粗细代表航班频次，直观呈现网络结构。 \\
-% \hline 12 & 单机作业效能指数 & 衡量平均每架航空器的年度使用频率。 & 评估任务规划的合理性和航空器的经济性。 & 年度总飞行架次／年度去重活跃航空器 SN数 & 年合计飞行架次、活跃 SN数 & 散点矩阵图：分析里程、时长、高度等多个效能维度间的相关性。 －仪表盘图 （Gauge Chart）。显示当前值，并标记＂行业平均线＂。 \\
-% \hline 13 & 长航时任务占比指数 & 衡量高价值、复杂作业任务的比重。 & 反映执行复杂、远程作业的能力和技术可靠性。 & （单次飞行时长＞T分钟的架次数／总架次数）＊ 100 & 各飞行时长区间年合计架次 & 分布直方图：展示不同飞行时长区间的架次数量分布，突出长尾部分 －漏斗图 （Funnel Chart）。从 ＜5分钟到 $>60$ 分钟的层级递减。 \\
-% \hline 14 & 广域覆盖能力指数 & 衡量飞行活动所覆盖的地理范围广度。 & 评估服务网络的覆盖面和通达性。 & $\Sigma$（各里程区间架次占比＊区间中值里程） & 各飞行里程区间年合计架次 & 点密度图：将飞行轨迹点渲染在地图上，直观展示空间覆盖范围。 \\
-% \hline
-% \end{tabular}}
-%     % \caption{Caption}
-%     % \label{tab:my_label}
-% \end{table}
 \begin{table}[H]
     \centering
     \small
     \rotatebox{90}{
     \begin{tabular}{|p{1cm}|p{2cm}|p{6cm}|p{2cm}|p{5cm}|p{2cm}|}
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} \\
-\hline 11 & 网络化枢纽指数 & 识别航线网络中的关键节点。综合计算起降点的连接度（通航点数量）、加权流量（航班频次）和中介中心性（中转重要性）。衡量核心起降点或空域节点的航线连通性与流量集中度。
-\begin{itemize}
-    \item NHI很高（如大于0.8）反映核心枢纽，流量大、连接广；
-    \item NHI值中等（如0.3-0.8）反映为区域枢纽或重要节点，在某些维度突出；
-    \item NHI值很低（如小于0.3）反映为末端节点，连接有限，流量小。
-\end{itemize}
- & 识别物流、载人网络的关键枢纽，指导基础设施投资与规划。节点指数越高，其枢纽地位越核心。可据此划分重点枢纽、区域枢纽和末端节点。 & $NHI = \alpha \cdot DC + \beta \cdot WF + \gamma \cdot BC$ \newline
-\textit{其中：$NHI$为网络化枢纽指数，$DC$为度中心性（连接航线数量），$WF$为加权流量（航班频次），$BC$为中介中心性（中转重要性），$\alpha, \beta, \gamma$为权重系数且$\alpha+\beta+\gamma=1$} & 起降点坐标、点对点航线频次 \\
-\hline 12 & 单机作业效能指数 & 衡量平均每架航空器的年度使用频率。 & 评估任务规划的合理性和航空器的经济性。 & $\displaystyle E = \frac{N_{\text{总}}}{M_{\text{活跃}}}$ \newline
-\textit{其中：$E$为单机作业效能指数，$N_{\text{总}}$为年度总飞行架次，$M_{\text{活跃}}$为年度去重活跃航空器SN数} & 年合计飞行架次、活跃SN数 \\
-\hline 13 & 长航时任务占比指数 & 衡量高价值、复杂作业任务的比重。 & 反映执行复杂、远程作业的能力和技术可靠性。 & $\displaystyle L = \frac{N_{>T}}{N_{\text{总}}} \times 100\%$ \newline
-\textit{其中：$L$为长航时任务占比指数，$N_{>T}$为单次飞行时长$>T$分钟的架次数，$N_{\text{总}}$为总架次数，$T$为长航时阈值（如60分钟）} & 各飞行时长区间年合计架次 \\
-\hline 14 & 广域覆盖能力指数 & 衡量飞行活动所覆盖的地理范围广度。 & 评估服务网络的覆盖面和通达性。 & $\displaystyle C = \sum_{i=1}^{n} \left(p_i \times d_i\right)$ \newline
-\textit{其中：$C$为广域覆盖能力指数，$p_i$为第$i$个里程区间架次占比，$d_i$为第$i$个区间中值里程，$n$为里程区间总数} & 各飞行里程区间年合计架次 \\
+\hline 11 & 网络化枢纽指数 & 综合计算起降点的连接度、加权流量和中介中心性。 & 识别关键枢纽，指导基建投资。 & $NHI = \alpha \cdot DC + \beta \cdot WF + \gamma \cdot BC$ & 航线频次 \\
+\hline 12 & 单机作业效能指数 & 衡量平均每架航空器的年度使用频率。 & 评估资产运营效率。 & $\displaystyle E = \frac{N_{\text{总}}}{M_{\text{活跃}}}$ & 总架次/活跃SN数 \\
+\hline 13 & 长航时任务占比指数 & 衡量长航时（$>T$分钟）高价值任务的比重。 & 反映执行复杂任务的技术可靠性。 & $\displaystyle L = \frac{N_{>T}}{N_{\text{总}}} \times 100\%$ & 时长区间架次 \\
+\hline 14 & 广域覆盖能力指数 & 衡量飞行活动覆盖的地理范围广度。 & 评估服务网络的覆盖通达性。 & $\displaystyle C = \sum \left(p_i \times d_i\right)$ & 里程区间架次 \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总（续二）}
@@ -250,35 +182,15 @@ $\displaystyle R_y = \frac{F_m - F_{m-12}}{F_{m-12}} \times 100\%$ \newline
     \rotatebox{90}{
     \begin{tabular}{|p{1cm}|p{2cm}|p{4cm}|p{3cm}|p{2cm}|p{2cm}|}
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源}  \\
-\hline 15 & 任务完成质量指数 & 衡量飞行任务按计划执行的完整性和规范性。 & 监控运行安全与服务质量，识别系统性风，险。 & （实际完成的有效飞行架次 ／计划报备的飞行架次）＊ 100 & 有效飞行架次、飞行计划数据  \\
-\hline 16 & 城市微循环渗透指数 & 衡量航空器在楼宇、社区等城市末端场景的精细体应用程度。 & 衡量低空飞行作为城市毛细血管，连接不同行政区的网络化程度。反映低空经济与智慧城市、民生服务的融合深度。 & （跨区飞行架次／总架次） ＊跨区组合对数 & 不同跨区组合年合计架次  \\
-\hline 17 & 立体空域利用效能指数 （Stereoscopic Airspace Efficiency Index） & 衡量对不同高度层进行差异化、协同化利用的效率。 & 评估空域精细化管理水平，挖掘三维空间潜力。 & $-\Sigma\left(Pi^* \ln Pi\right)$, $Pi$为第$i$个高度层时长占比 （信息熵） & 各高度区间年合计飞行时长  \\
-\hline 18 & 低空经济＂生产 ／消费＂属性指数 & 通过对比工作日与周末活跃度，判断产业驱动属
-\begin{itemize}
-    \item[\bullet]指数$> 1.2$：生产驱动型（物流、巡检为主，周末休息）。
-    \item[\bullet]指数$< 0.8$：消费娱乐型（文旅、表演、航拍，周末热闹）。
-    \item[\bullet] 指数 $\approx 1.0$ ：混合型。
-\end{itemize} & 判断产业当前的主要驱动力和未来价值走向。 & 全年工作日总架次/工作日天数/全年周末总架次/周未天数 & 每日架次 （区分工作日/周末） \\
+\hline 15 & 任务完成质量指数 & 衡量飞行任务按计划执行的完整性。 & 监控运行安全与服务质量。 & (有效架次/计划架次) $\times 100$ & 飞行计划数据  \\
+\hline 16 & 城市微循环渗透指数 & 衡量航空器在楼宇、社区等末端场景的应用深度。 & 反映低空经济与智慧城市的融合度。 & (跨区架次/总架次) $\times$ 跨区对数 & 跨区飞行架次  \\
+\hline 17 & 立体空域利用效能指数 & 衡量不同高度层差异化利用的效率。 & 评估空域精细化管理水平。 & $-\Sigma\left(P_i \ln P_i\right)$ & 高度层时长  \\
+\hline 18 & 生产/消费属性指数 & 对比工作日与周末活跃度，判断驱动属性。 & 判断产业主要驱动力（生产vs消费）。 & 工作日均架次 / 周末日均架次 & 每日架次 \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总（续三）}
     \label{tab:my_label}
 \end{table}
-
-
-% \begin{table}[H]
-%     \centering
-%     \small
-%     \rotatebox{90}{
-%     \begin{tabular}{|p{1cm}|p{2cm}|p{4cm}|p{2cm}|p{2cm}|p{2cm}|p{4cm}|}
-% \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} & \multicolumn{1}{|c|}{可视化} \\
-% \hline 19 & 低空夜间经济指数 & 衡量夜间低空飞行活动的活跃度及其创造的经济社会价值。 & 挖掘低空经济的＂时间增量＂价值，评估全天候运行生态。 & （夜间飞行架次／总飞行架次）＊ 100 & 各时段年合计飞行架次 & 对比仪表盘：并排显示日间与夜间的主要指标 （架次、场景、企业数）。深色波形图：在 24 小时波形中高亮夜间波段，突出夜间活力。 \\
-% \hline 20 & 头部企业＂领航＂指数 & 衡量头部企业在技术路线、运营模式和市场开拓上的引领作用。 & 衡量头部企业在高难度、高价值任务中的引领作用。 & Top5 单位在＂长航时＂或＂长里程＂任务中的架次占比 & 各飞行里程／时长区间 Top5 单位 & 创新扩散曲线图：对比头部企业与行业整体在新场景／机型采纳上的时间线与渗透率。雷达图：从多个高价值任务维度评价头部企业技术领导力。 \\
-% \hline
-% \end{tabular}}
-%     % \caption{Caption}
-%     % \label{tab:my_label}
-% \end{table}
 
 \begin{table}[H]
     \centering
@@ -286,10 +198,8 @@ $\displaystyle R_y = \frac{F_m - F_{m-12}}{F_{m-12}} \times 100\%$ \newline
     \rotatebox{90}{
     \begin{tabular}{|p{1cm}|p{2cm}|p{4cm}|p{2cm}|p{5cm}|p{2cm}|}
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源} \\
-\hline 19 & 低空夜间经济指数 & 衡量夜间低空飞行活动的活跃度及其创造的经济社会价值。 & 挖掘低空经济的``时间增量''价值，评估全天候运行生态。 & $\displaystyle N = \frac{N_{\text{夜}}}{N_{\text{总}}} \times 100\%$ \newline
-\textit{其中：$N$为低空夜间经济指数，$N_{\text{夜}}$为夜间飞行架次，$N_{\text{总}}$为总飞行架次} & 各时段年合计飞行架次 \\
-\hline 20 & 头部企业``领航''指数 & 衡量头部企业在技术路线、运营模式和市场开拓上的引领作用。 & 衡量头部企业在高难度、高价值任务中的引领作用。 & $\displaystyle L = \frac{N_{\text{Top5}}}{N_{\text{总}}} \times 100\%$ \newline
-\textit{其中：$L$为头部企业``领航''指数，$N_{\text{Top5}}$为Top5单位在``长航时''或``长里程''任务中的架次数，$N_{\text{总}}$为总架次数} & 各飞行里程／时长区间 Top5 单位 \\
+\hline 19 & 低空夜间经济指数 & 衡量夜间飞行活跃度。 & 挖掘``时间增量''价值，评估全天候能力。 & $\displaystyle N = \frac{N_{\text{夜}}}{N_{\text{总}}} \times 100\%$ & 时段飞行架次 \\
+\hline 20 & 头部企业``领航''指数 & 衡量头部企业在技术与模式上的引领作用。 & 评估头部企业在高端任务中的领导力。 & $\displaystyle L = \frac{N_{\text{Top5}}}{N_{\text{总}}} \times 100\%$ & Top5单位数据 \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总（续四）}
