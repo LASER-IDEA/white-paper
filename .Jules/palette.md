@@ -39,3 +39,7 @@
 ## 2025-06-01 - Localized Accessibility Attributes
 **Learning:** Hardcoded English `aria-label` attributes in UI components can be actively harmful in localized applications, as screen readers may attempt to pronounce English text with the localized voice engine or vice versa, causing confusion.
 **Action:** Always derive `aria-label` from localized content props (like `title`) or localization keys, rather than providing English defaults in component definitions, especially in single-language non-English apps.
+
+## 2025-06-15 - Feedback for Blocking Operations
+**Learning:** Browser native operations like `window.print()` block the main thread and freeze the UI immediately, leaving users wondering if their click registered.
+**Action:** Always render a "loading" or "preparing" state *before* triggering the blocking operation, using `setTimeout` to allow the UI to repaint and provide immediate feedback.
