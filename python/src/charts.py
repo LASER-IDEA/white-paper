@@ -1284,14 +1284,64 @@ def chord_chart(data):
     return c
 
 def airspace_bar(data):
-    x_data, y_data = zip(*[(d['name'], d['value']) for d in data])
-    c = (
-        Bar()
-        .add_xaxis(list(x_data))
-        .add_yaxis("Sorties", list(y_data), itemstyle_opts=opts.ItemStyleOpts(color=COLORS[4]))
-        .set_global_opts(title_opts=opts.TitleOpts(title="Vertical Airspace"))
+    """
+    Airspace Efficiency - Grouped Bar Chart
+    Handles both legacy list format and new structured format
+    """
+    # Handle legacy format (list of dicts)
+    if isinstance(data, list):
+        x_data, y_data = zip(*[(d['name'], d['value']) for d in data])
+        c = (
+            Bar()
+            .add_xaxis(list(x_data))
+            .add_yaxis("Sorties", list(y_data), itemstyle_opts=opts.ItemStyleOpts(color=COLORS[4]))
+            .set_global_opts(title_opts=opts.TitleOpts(title="Vertical Airspace"))
+        )
+        return c
+
+    # Handle new format (dict with districts, altitudes, data)
+    districts = data.get("districts", [])
+    altitudes = data.get("altitudes", [])
+    raw_data = data.get("data", [])
+
+    bar = Bar()
+    bar.add_xaxis(districts)
+
+    # Parse raw_data: [alt_idx, dist_idx, value]
+    for alt_idx, alt_name in enumerate(altitudes):
+        series_data = [0] * len(districts)
+        for d in raw_data:
+            if d[0] == alt_idx:
+                series_data[d[1]] = d[2]
+
+        bar.add_yaxis(
+            alt_name,
+            series_data,
+            stack="stack1",
+            label_opts=opts.LabelOpts(is_show=False)
+        )
+
+    bar.set_global_opts(
+        title_opts=opts.TitleOpts(
+            title="Vertical Airspace Distribution",
+            subtitle="Flight density by altitude and district",
+            title_textstyle_opts=opts.TextStyleOpts(
+                color=CHART_CONFIG['title_color'],
+                font_size=CHART_CONFIG['title_font_size']
+            )
+        ),
+        tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="shadow"),
+        legend_opts=opts.LegendOpts(pos_top="bottom"),
+        xaxis_opts=opts.AxisOpts(
+            name="District",
+            axislabel_opts=opts.LabelOpts(color=CHART_CONFIG['text_color'])
+        ),
+        yaxis_opts=opts.AxisOpts(
+            name="Sorties",
+            axislabel_opts=opts.LabelOpts(color=CHART_CONFIG['text_color'])
+        )
     )
-    return c
+    return bar
 
 def calendar_heatmap(data):
     c = (
