@@ -50,8 +50,6 @@ def validate_and_execute_chart_code(code: str, max_lines: int = MAX_CODE_LINES) 
         return False, f"Syntax error in generated code: {e}"
     
     # Check for dangerous operations
-    # Note: We're being strict here - dunder methods in string context are blocked
-    # But legitimate uses like class.__name__ in imports are allowed via AST validation
     dangerous_patterns = [
         r'\b(eval|compile|__import__|open|file)\s*\(',
         r'\bos\.(system|popen|spawn|exec)',
@@ -110,6 +108,15 @@ def validate_and_execute_chart_code(code: str, max_lines: int = MAX_CODE_LINES) 
     except Exception as e:
         return False, f"Execution error: {str(e)}"
 
+def render_dimension_insights(dimension):
+    """Helper to render insights for a specific dimension"""
+    insights = [i for i in st.session_state.get('insights', []) if i['dimension'] == dimension]
+    if insights:
+        with st.expander(f"✨ Insights for {dimension}", expanded=True):
+            for i in insights:
+                icon = "🤖" if i['type'] == 'ai' else "👤"
+                st.markdown(f"{icon} **{i['type'].upper()}**: {i['content']}")
+
 st.set_page_config(page_title="Low Altitude Economy Index", layout="wide")
 
 st.title("Low Altitude Economy Development Index")
@@ -122,6 +129,8 @@ if 'ts_data' not in st.session_state:
     st.session_state.ts_data = None
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "insights" not in st.session_state:
+    st.session_state.insights = []
 
 # Sidebar for CSV Upload
 with st.sidebar:
@@ -246,7 +255,7 @@ with st.sidebar:
 data = st.session_state.data
 
 # Create Tabs
-tab1, tab2 = st.tabs(["Dashboard", "AI Assistant"])
+tab1, tab2, tab3 = st.tabs(["Dashboard", "AI Assistant", "Insights & Strategy"])
 
 with tab1:
     # ----------------- Dashboard Overview -----------------
@@ -269,6 +278,7 @@ with tab1:
 
     # ----------------- 1. Scale & Growth -----------------
     st.header("1. Scale & Growth")
+    render_dimension_insights("Scale & Growth")
     col1, col2, col3 = st.columns(3)
     with col1:
         if "traffic" in data:
@@ -282,6 +292,7 @@ with tab1:
 
     # ----------------- 2. Structure & Entity -----------------
     st.header("2. Structure & Entity")
+    render_dimension_insights("Structure & Entity")
     c1, c2, c3 = st.columns(3)
     with c1:
         if "fleet" in data:
@@ -298,6 +309,7 @@ with tab1:
 
     # ----------------- 3. Time & Space -----------------
     st.header("3. Time & Space")
+    render_dimension_insights("Time & Space")
     c1, c2 = st.columns([2, 1])
     with c1:
         st.subheader("Regional Heatmap")
@@ -325,6 +337,7 @@ with tab1:
 
     # ----------------- 4. Efficiency & Quality -----------------
     st.header("4. Efficiency & Quality")
+    render_dimension_insights("Efficiency & Quality")
     c1, c2, c3 = st.columns(3)
     with c1:
         if "seasonal" in data:
@@ -348,6 +361,7 @@ with tab1:
 
     # ----------------- 5. Innovation & Integration -----------------
     st.header("5. Innovation & Integration")
+    render_dimension_insights("Innovation & Integration")
     c1, c2 = st.columns(2)
     with c1:
         if "radar" in data:
@@ -413,3 +427,79 @@ with tab2:
             "content": explanation,
             "chart_code": code
         })
+
+with tab3:
+    st.header("Strategic Insights & Planning")
+    st.markdown("Collaborate on strategic planning by adding manual insights or using AI to generate observations based on the **Low Altitude Economy Blue Book**.")
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        st.subheader("Add User Insight")
+        st.info("Your insight will be automatically classified into one of the 5 dimensions.")
+        user_insight = st.text_area("Enter your observation or strategy:", height=150, placeholder="e.g., The drone delivery network in Shenzhen shows high density in Nanshan district...")
+
+        if st.button("Analyze & Add Insight", type="primary"):
+            if user_insight:
+                with st.spinner("Classifying..."):
+                    dim = llm_helper.classify_insight(user_insight, api_key=api_key, base_url=base_url, model=model)
+                    st.session_state.insights.append({
+                        "content": user_insight,
+                        "type": "user",
+                        "dimension": dim,
+                        "timestamp": pd.Timestamp.now().isoformat()
+                    })
+                    st.success(f"Added to dimension: **{dim}**")
+            else:
+                st.warning("Please enter some text.")
+
+    with col2:
+        st.subheader("Generate AI Insights")
+        st.markdown("Generate insights for all dimensions based on current data and Blue Book standards.")
+        if st.button("Generate All Insights"):
+            with st.spinner("Analyzing all dimensions using Blue Book Knowledge Base..."):
+                dimensions = ["Scale & Growth", "Structure & Entity", "Time & Space", "Efficiency & Quality", "Innovation & Integration"]
+
+                # Check for existing AI insights to avoid duplicates if needed, or just append
+                # For this demo, we append.
+
+                progress_bar = st.progress(0)
+                for i, dim in enumerate(dimensions):
+                    content = llm_helper.generate_dimension_insights(st.session_state.data, dim, api_key=api_key, base_url=base_url, model=model)
+                    st.session_state.insights.append({
+                        "content": content,
+                        "type": "ai",
+                        "dimension": dim,
+                        "timestamp": pd.Timestamp.now().isoformat()
+                    })
+                    progress_bar.progress((i + 1) / len(dimensions))
+
+                st.success("Generated insights for all dimensions!")
+
+    st.divider()
+    st.subheader("Current Insights Repository")
+
+    # Filter controls
+    filter_dim = st.selectbox("Filter by Dimension", ["All"] + ["Scale & Growth", "Structure & Entity", "Time & Space", "Efficiency & Quality", "Innovation & Integration"])
+
+    filtered_insights = st.session_state.insights
+    if filter_dim != "All":
+        filtered_insights = [i for i in filtered_insights if i['dimension'] == filter_dim]
+
+    if filtered_insights:
+        for i, insight in enumerate(filtered_insights):
+            with st.container():
+                cols = st.columns([1, 6, 1])
+                # Show icon and dimension
+                icon = "🤖 AI" if insight['type'] == 'ai' else "👤 User"
+                cols[0].markdown(f"**{insight['dimension']}**\n\n{icon}")
+                cols[1].markdown(insight['content'])
+
+                # Find the index in the original list to delete
+                original_index = st.session_state.insights.index(insight)
+                if cols[2].button("Delete", key=f"del_{original_index}_{i}"):
+                    st.session_state.insights.pop(original_index)
+                    st.rerun()
+                st.divider()
+    else:
+        st.info("No insights found.")

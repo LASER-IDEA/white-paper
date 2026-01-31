@@ -18,19 +18,37 @@ try:
 except ImportError:
     OpenAI = None
 
+# Import KnowledgeBase
+try:
+    from knowledge_base import KnowledgeBase
+except ImportError:
+    try:
+        from .knowledge_base import KnowledgeBase
+    except ImportError:
+        KnowledgeBase = None
+
 # Type alias for data that can be summarized
 DataType = Union[Dict, pd.DataFrame]
+
+# Global KB instance
+_kb = None
+
+def _get_kb():
+    global _kb
+    if _kb is None and KnowledgeBase:
+        try:
+            # Try to find the docs directory relative to where we are running
+            # Default to docs/latex/sections assuming running from project root
+            _kb = KnowledgeBase()
+        except Exception as e:
+            print(f"Failed to load KnowledgeBase: {e}")
+            return None
+    return _kb
 
 def summarize_data(data: DataType) -> str:
     """
     Creates a summary of the data structure (keys, types, sample values)
     to be efficient for the LLM prompt.
-    
-    Args:
-        data: The data to summarize (dict or DataFrame)
-        
-    Returns:
-        String summary of the data structure
     """
     summary: List[str] = []
 
@@ -66,16 +84,8 @@ def summarize_data(data: DataType) -> str:
 def determine_task_complexity(query: str) -> bool:
     """
     Determine if a task requires complex reasoning or is simple.
-    
-    Args:
-        query: The user's query string
-        
-    Returns:
-        True for complex tasks (use deepseek-reasoner), False for simple tasks (use deepseek-chat)
     """
     query_lower = query.lower()
-
-    # Keywords that indicate complex reasoning tasks
     complex_keywords = [
         'analyze', 'compare', 'correlation', 'trend', 'pattern', 'relationship',
         'calculate', 'compute', 'optimize', 'forecast', 'predict', 'model',
@@ -84,20 +94,34 @@ def determine_task_complexity(query: str) -> bool:
         'efficiency', 'performance', 'optimization', 'benchmark'
     ]
 
-    # Check for complex keywords
     for keyword in complex_keywords:
         if keyword in query_lower:
             return True
 
-    # Check query length (longer queries tend to be more complex)
     if len(query.split()) > 20:
         return True
 
-    # Check for multiple questions or complex structure
     if query.count('?') > 1 or ' and ' in query_lower or ' or ' in query_lower:
         return True
 
     return False
+
+def get_api_config(api_key=None, base_url=None, model=None, query=""):
+    """Helper to get API config from args or env"""
+    if not api_key:
+        api_key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
+
+    if not base_url:
+        base_url = os.environ.get("DEEPSEEK_BASE_URL")
+
+    if not model:
+        is_complex = determine_task_complexity(query) if query else False
+        if is_complex:
+            model = os.environ.get("DEEPSEEK_REASONER_MODEL", "deepseek-reasoner")
+        else:
+            model = os.environ.get("DEEPSEEK_CHAT_MODEL", "deepseek-chat")
+
+    return api_key, base_url, model
 
 def get_llm_response(
     query: str, 
@@ -108,74 +132,63 @@ def get_llm_response(
 ) -> Tuple[str, Optional[str]]:
     """
     Interact with the LLM to generate a visualization based on the query and data context.
-
-    Args:
-        query: The user's question or request
-        data_context: The available data to work with (dict or DataFrame)
-        api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
-        base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
-        model: Model name to use. If None, auto-selects based on task complexity
-
-    Returns:
-        Tuple of (explanation, code):
-            explanation: The text response from the LLM
-            code: The generated Python code to create the chart (or None)
+    Uses RAG to include knowledge from the Blue Book.
     """
+    api_key, base_url, model = get_api_config(api_key, base_url, model, query)
 
-    # Load configuration from .env if not provided
-    if not api_key:
-        api_key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
-
-    if not base_url:
-        base_url = os.environ.get("DEEPSEEK_BASE_URL")
-
-    # Auto-select model based on task complexity if not specified
-    if not model:
-        is_complex = determine_task_complexity(query)
-        if is_complex:
-            model = os.environ.get("DEEPSEEK_REASONER_MODEL", "deepseek-reasoner")
+    # RAG Retrieval
+    kb = _get_kb()
+    kb_context = ""
+    if kb:
+        # Search for relevant documents
+        # We increase top_k to get enough context
+        docs = kb.search(query, top_k=5)
+        if docs:
+            kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
+            for d in docs:
+                kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
         else:
-            model = os.environ.get("DEEPSEEK_CHAT_MODEL", "deepseek-chat")
+             # Fallback: if query is very generic, maybe provide introduction?
+             pass
 
     if not api_key:
-        # Fallback for testing without key - returns a mock bar chart
-        explanation = "I need an API key to process your request using a real LLM. However, I can demonstrate how this would work with a mock example. Here is a sample chart generated based on a hypothetical interpretation of your request."
+        # Fallback for testing without key
+        explanation = "I need an API key to process your request using a real LLM. (Mock Response with RAG info if available)"
+        if kb_context:
+            explanation += f"\n\nI found some relevant info in the Blue Book:\n{kb_context[:500]}..."
 
         code = """
 from pyecharts.charts import Bar
 from pyecharts import options as opts
 
-# Mock data generation based on the idea of 'inferring new indices'
-# Assuming we want to show some calculated index
-categories = ["Index A", "Index B", "Index C", "Index D", "Index E"]
-values = [85, 72, 90, 65, 88]
+# Mock data generation
+categories = ["A", "B", "C", "D", "E"]
+values = [10, 20, 30, 40, 50]
 
 c = (
     Bar()
     .add_xaxis(categories)
-    .add_yaxis("Calculated Index", values, color="#3b82f6")
-    .set_global_opts(
-        title_opts=opts.TitleOpts(title="Inferred Index Visualization (Mock)"),
-        yaxis_opts=opts.AxisOpts(name="Value"),
-        xaxis_opts=opts.AxisOpts(name="Category")
-    )
+    .add_yaxis("Mock Series", values)
+    .set_global_opts(title_opts=opts.TitleOpts(title="Mock Chart"))
 )
 chart = c
 """
         return explanation, code
 
     if OpenAI is None:
-        return "The 'openai' library is not installed. Please install it to use this feature.", None
+        return "The 'openai' library is not installed.", None
 
     client = OpenAI(api_key=api_key, base_url=base_url)
 
-    # Construct the system prompt
-    # We describe the environment and available libraries (pyecharts)
     system_prompt = """
 You are a data analysis assistant for a Low Altitude Economy dashboard.
 Your goal is to help the user understand the data and visualize new indices or insights.
 You have access to the data in the variable `data`.
 The `data` is a dictionary or dataframe containing metrics about flights, fleet, etc.
+
+You also have access to the "Low Altitude Economy Blue Book" content below.
+Use this content to understand how indices are defined, calculated, and what they mean.
+When the user asks about specific indices (e.g., Innovation, Efficiency), refer to the Blue Book definitions.
 
 When asked to visualize something:
 1. Infer the necessary calculation or data transformation.
@@ -188,8 +201,10 @@ When asked to visualize something:
 Available data context structure:
 {data_summary}
 
+{kb_context}
+
 Example Output Format:
-Here is the analysis of the data...
+Here is the analysis of the data based on the Blue Book definitions...
 
 ```python
 from pyecharts.charts import Bar
@@ -197,18 +212,13 @@ from pyecharts import options as opts
 
 c = (
     Bar()
-    .add_xaxis(...)
-    .add_yaxis(...)
-    .set_global_opts(...)
+    ...
 )
 chart = c
 ```
 """
-
-    # Create a summary of the data structure to send to the LLM
     data_summary = summarize_data(data_context)
-
-    formatted_system_prompt = system_prompt.replace("{data_summary}", data_summary)
+    formatted_system_prompt = system_prompt.replace("{data_summary}", data_summary).replace("{kb_context}", kb_context)
 
     messages = [
         {"role": "system", "content": formatted_system_prompt},
@@ -222,7 +232,6 @@ chart = c
         )
         content = response.choices[0].message.content
 
-        # Extract code block
         code_match = re.search(r"```python(.*?)```", content, re.DOTALL)
         if code_match:
             code = code_match.group(1).strip()
@@ -235,3 +244,96 @@ chart = c
 
     except Exception as e:
         return f"Error communicating with LLM: {str(e)}", None
+
+def classify_insight(text: str, api_key: Optional[str] = None, base_url: Optional[str] = None, model: Optional[str] = None) -> str:
+    """
+    Classifies a user insight into one of the 5 Dimensions.
+    Returns the dimension name.
+    """
+    valid_dimensions = [
+        "Scale & Growth", "Structure & Entity", "Time & Space",
+        "Efficiency & Quality", "Innovation & Integration"
+    ]
+
+    api_key, base_url, model = get_api_config(api_key, base_url, model, text)
+
+    if not api_key or OpenAI is None:
+        # Mock classification
+        if "growth" in text.lower() or "scale" in text.lower(): return "Scale & Growth"
+        if "structure" in text.lower() or "company" in text.lower(): return "Structure & Entity"
+        if "time" in text.lower() or "space" in text.lower() or "region" in text.lower(): return "Time & Space"
+        if "efficiency" in text.lower() or "quality" in text.lower(): return "Efficiency & Quality"
+        if "innovation" in text.lower() or "tech" in text.lower(): return "Innovation & Integration"
+        return "Scale & Growth" # Default
+
+    client = OpenAI(api_key=api_key, base_url=base_url)
+
+    prompt = f"""
+    Classify the following text into one of these 5 dimensions:
+    {', '.join(valid_dimensions)}
+
+    Text: "{text}"
+
+    Return ONLY the dimension name.
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        result = response.choices[0].message.content.strip()
+        # Basic cleanup to ensure it matches one of the known dimensions
+        for dim in valid_dimensions:
+            if dim.lower() in result.lower():
+                return dim
+        return "Scale & Growth" # Fallback
+    except Exception as e:
+        print(f"Error classifying insight: {e}")
+        return "Scale & Growth"
+
+def generate_dimension_insights(data: DataType, dimension: str, api_key: Optional[str] = None, base_url: Optional[str] = None, model: Optional[str] = None) -> str:
+    """
+    Generates insights for a specific dimension using data and Blue Book knowledge.
+    """
+    api_key, base_url, model = get_api_config(api_key, base_url, model, f"insight for {dimension}")
+
+    # Get RAG context for this dimension
+    kb = _get_kb()
+    kb_context = ""
+    if kb:
+        # Search for the dimension name specifically
+        docs = kb.search(dimension, top_k=5)
+        for d in docs:
+            kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
+
+    if not api_key or OpenAI is None:
+        return f"**AI Insight (Mock):** Based on the data, the {dimension} shows a positive trend. (API Key required for real analysis)"
+
+    client = OpenAI(api_key=api_key, base_url=base_url)
+
+    data_summary = summarize_data(data)
+
+    prompt = f"""
+    You are an expert analyst for the Low Altitude Economy.
+    Analyze the provided data for the dimension: "{dimension}".
+
+    Use the following definitions and context from the Blue Book to guide your analysis:
+    {kb_context}
+
+    Data Summary:
+    {data_summary}
+
+    Provide 2-3 concise, strategic insights or observations.
+    Focus on "what this means" rather than just "what the numbers are".
+    Format as a bulleted list.
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Error generating insights: {e}"
