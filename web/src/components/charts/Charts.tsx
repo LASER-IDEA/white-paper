@@ -2397,39 +2397,114 @@ export const CompositeDashboardChart = ({ data }: { data: any[] }) => {
   );
 };
 
+// Helper component for accessible table view
+const SimpleTable = ({ data }: { data: any[] }) => {
+  if (!data || !data.length) return null;
+
+  // Extract headers from the first item, ignoring 'children' or object types for simplicity
+  const headers = Object.keys(data[0]).filter(k =>
+    k !== 'children' &&
+    typeof data[0][k] !== 'object' &&
+    !k.startsWith('_') // ignore internal properties if any
+  );
+
+  return (
+    <div className="w-full h-full overflow-auto bg-white p-4 rounded-lg border border-slate-100">
+      <table className="w-full text-sm text-left text-slate-600">
+        <caption className="sr-only">Data Table View</caption>
+        <thead className="text-xs text-slate-500 uppercase bg-slate-50 sticky top-0 z-10">
+          <tr>
+            {headers.map(h => (
+              <th key={h} scope="col" className="px-4 py-3 font-medium tracking-wider whitespace-nowrap">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {data.map((row, i) => (
+            <tr key={i} className="hover:bg-slate-50 transition-colors">
+              {headers.map(h => (
+                <td key={`${i}-${h}`} className="px-4 py-3 whitespace-nowrap font-mono text-xs">
+                   {row[h]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 // Map chart types to components
 export const ChartRenderer = ({ type, data, definition, title }: { type: string, data: any, definition?: string, title?: string }) => {
+    const [isTableView, setIsTableView] = useState(false);
+
+    // Check if data is suitable for table view (array of objects)
+    const hasTableData = useMemo(() => {
+        return Array.isArray(data) && data.length > 0 && typeof data[0] === 'object' && !Array.isArray(data[0]);
+    }, [data]);
+
     // Add a subtle info icon if definition is present
     const Container = ({ children }: { children: React.ReactNode }) => (
       <div
-        className="w-full h-full min-h-[280px] min-w-0 relative"
+        className="w-full h-full min-h-[280px] min-w-0 relative group/container"
         role="figure"
         aria-label={title ? `${title} 图表` : "数据图表"}
       >
-         {children}
-         {definition && (
-           <div className="absolute top-2 right-2 z-20 flex flex-col items-end group">
-              <button
-                aria-label="查看指标定义"
-                className="w-5 h-5 flex items-center justify-center bg-white/80 backdrop-blur rounded-full shadow-sm border border-slate-200 text-slate-400 hover:text-[#002FA7] hover:border-[#002FA7] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#002FA7] focus:ring-offset-1 transition-all"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-              </button>
-              <div
-                role="tooltip"
-                className="absolute top-6 right-0 w-64 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
-              >
-                 <div className="mt-2 bg-slate-800 text-white text-xs p-3 rounded-lg shadow-xl border border-slate-700 relative">
-                    {/* Little arrow */}
-                    <div className="absolute top-0 right-1.5 -mt-1 w-2 h-2 bg-slate-800 transform rotate-45 border-t border-l border-slate-700"></div>
-                    <div className="font-bold mb-1 border-b border-slate-600 pb-1 text-slate-200">指标定义</div>
-                    <p className="leading-relaxed text-slate-300">{definition}</p>
-                 </div>
-              </div>
-           </div>
+         {/* Main Content: Chart or Table */}
+         {isTableView && hasTableData ? (
+             <SimpleTable data={data} />
+         ) : (
+             children
          )}
+
+         {/* Controls Area */}
+         <div className="absolute top-2 right-2 z-20 flex items-center space-x-2 opacity-0 group-hover/container:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
+             {hasTableData && (
+                <button
+                    onClick={() => setIsTableView(!isTableView)}
+                    aria-label={isTableView ? "切换回图表视图" : "切换至表格视图"}
+                    title={isTableView ? "查看图表" : "查看数据"}
+                    className="w-7 h-7 flex items-center justify-center bg-white/90 backdrop-blur rounded-md shadow-sm border border-slate-200 text-slate-400 hover:text-[#002FA7] hover:border-[#002FA7] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#002FA7] transition-all"
+                >
+                    {isTableView ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    )}
+                </button>
+             )}
+
+             {definition && (
+               <div className="relative group/tooltip">
+                  <button
+                    aria-label="查看指标定义"
+                    className="w-7 h-7 flex items-center justify-center bg-white/90 backdrop-blur rounded-md shadow-sm border border-slate-200 text-slate-400 hover:text-[#002FA7] hover:border-[#002FA7] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#002FA7] transition-all"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                  <div
+                    role="tooltip"
+                    className="absolute top-8 right-0 w-64 opacity-0 group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto group-focus-within/tooltip:pointer-events-auto z-30"
+                  >
+                     <div className="bg-slate-800 text-white text-xs p-3 rounded-lg shadow-xl border border-slate-700 relative">
+                        {/* Little arrow */}
+                        <div className="absolute top-0 right-2 -mt-1 w-2 h-2 bg-slate-800 transform rotate-45 border-t border-l border-slate-700"></div>
+                        <div className="font-bold mb-1 border-b border-slate-600 pb-1 text-slate-200">指标定义</div>
+                        <p className="leading-relaxed text-slate-300">{definition}</p>
+                     </div>
+                  </div>
+               </div>
+             )}
+         </div>
       </div>
     );
 
