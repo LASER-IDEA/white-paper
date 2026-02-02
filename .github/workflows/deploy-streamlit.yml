@@ -41,14 +41,38 @@ jobs:
           python -m py_compile src/data_processor.py
           python -m py_compile src/charts.py
 
-      - name: Deploy to Streamlit Cloud
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare Docker build
         run: |
-          echo "Streamlit app validation completed successfully"
-          echo "To deploy to Streamlit Cloud:"
-          echo "1. Visit https://share.streamlit.io"
-          echo "2. Connect your GitHub repository"
-          echo "3. Select the python/src/app.py file as the main app"
-          echo "4. Configure environment variables (DEEPSEEK_API_KEY, etc.)"
+          cp config/requirements.txt python/requirements.txt
+
+      - name: Build Docker image
+        working-directory: ./python
+        run: |
+          docker build -t streamlit-rag-llm:latest .
+          echo "Docker image built successfully"
+
+      - name: Deployment Information
+        run: |
+          echo "✅ Streamlit app validation completed successfully"
           echo ""
-          echo "For automated deployment, configure Streamlit Cloud secrets:"
-          echo "- DEEPSEEK_API_KEY=\${{ secrets.DEEPSEEK_API_KEY }}"
+          echo "📦 Docker image built: streamlit-rag-llm:latest"
+          echo ""
+          echo "🚀 Deployment Options:"
+          echo ""
+          echo "Option 1 - Streamlit Community Cloud:"
+          echo "  1. Visit https://share.streamlit.io"
+          echo "  2. Connect your GitHub repository"
+          echo "  3. Select 'python/src/app.py' as the main app"
+          echo "  4. Configure secrets: DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL"
+          echo ""
+          echo "Option 2 - Docker Deployment:"
+          echo "  docker run -p 8501:8501 -e DEEPSEEK_API_KEY=your_key streamlit-rag-llm:latest"
+          echo ""
+          echo "Option 3 - Cloud Platforms (Railway, Render, Heroku):"
+          echo "  - Configure Docker deployment from this repository"
+          echo "  - Set environment variables for API keys"
+          echo ""
+          echo "ℹ️ Note: Remember to set the DEEPSEEK_API_KEY environment variable for LLM features"
