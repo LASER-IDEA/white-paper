@@ -135,8 +135,9 @@ if 'kb' not in st.session_state:
     if KNOWLEDGE_BASE_AVAILABLE:
         with st.spinner("Initializing knowledge base..."):
             st.session_state.kb = knowledge_base.initialize_knowledge_base()
-            if st.session_state.kb:
-                st.success("✅ Knowledge base initialized with white paper documents")
+        # Show success message outside spinner so it persists
+        if st.session_state.kb:
+            st.success("✅ Knowledge base initialized with white paper documents")
     else:
         st.session_state.kb = None
 

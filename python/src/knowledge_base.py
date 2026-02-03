@@ -200,8 +200,8 @@ class KnowledgeBase:
         # Perform similarity search with scores
         if score_threshold is not None:
             results = self.vectorstore.similarity_search_with_score(query, k=k)
-            # Filter by score threshold (lower score = more similar in some implementations)
-            results = [(doc, score) for doc, score in results if score >= score_threshold]
+            # Filter by score threshold (ChromaDB uses distance metric: lower score = more similar)
+            results = [(doc, score) for doc, score in results if score <= score_threshold]
         else:
             results = self.vectorstore.similarity_search_with_score(query, k=k)
         

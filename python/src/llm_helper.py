@@ -176,9 +176,10 @@ chart = c
     rag_context = ""
     if knowledge_base is not None:
         try:
-            rag_context = knowledge_base.get_context_for_query(query, k=3, max_context_length=3000)
-            if rag_context and rag_context != "No relevant information found in the knowledge base.":
-                rag_context = f"\n\nRelevant information from white papers:\n{rag_context}\n"
+            context = knowledge_base.get_context_for_query(query, k=3, max_context_length=3000)
+            # Only include context if we have meaningful content
+            if context and len(context.strip()) > 0 and not context.startswith("No relevant"):
+                rag_context = f"\n\nRelevant information from white papers:\n{context}\n"
         except Exception as e:
             print(f"Error retrieving RAG context: {e}")
             rag_context = ""
