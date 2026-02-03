@@ -120,11 +120,15 @@ Want to explore the dashboard without setup? Visit our **[live demo](https://LAS
 git clone <repository-url>
 cd white-paper
 
-# Install Python dependencies
+# Install Python dependencies (includes RAG support)
 pip install -r config/requirements.txt
 
-# Note: This includes RAG dependencies (langchain, chromadb, etc.)
-# First run will build the vector database from PDF documents in docs/pdf/
+# Or install only core dependencies + RAG separately
+pip install streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv openai
+pip install -r config/requirements-rag.txt
+
+# Note: First run will build the vector database from PDF documents in docs/pdf/
+# This may take a few minutes to download the embedding model
 ```
 
 #### AI Setup (Optional)
