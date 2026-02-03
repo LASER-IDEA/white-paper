@@ -1,0 +1,343 @@
+"""
+Knowledge Base module for RAG (Retrieval-Augmented Generation).
+
+This module handles:
+- Loading and processing PDF documents
+- Chunking text for optimal retrieval
+- Vector database initialization and management
+- Document embedding and indexing
+- Similarity search for relevant context
+"""
+
+import os
+from pathlib import Path
+from typing import List, Optional, Dict, Any
+import streamlit as st
+
+# Handle optional dependencies
+try:
+    from langchain_community.document_loaders import PyPDFLoader
+    from langchain_community.vectorstores import Chroma
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.schema import Document
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+    Document = None
+
+
+class KnowledgeBase:
+    """
+    Manages the vector database and RAG functionality for white paper documents.
+    """
+    
+    def __init__(
+        self,
+        persist_directory: str = "./chroma_db",
+        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    ):
+        """
+        Initialize the knowledge base.
+        
+        Args:
+            persist_directory: Directory to persist the vector database
+            embedding_model: HuggingFace embedding model to use
+        """
+        if not LANGCHAIN_AVAILABLE:
+            raise ImportError(
+                "LangChain dependencies not available. "
+                "Install with: pip install langchain langchain-community chromadb pypdf sentence-transformers"
+            )
+        
+        self.persist_directory = persist_directory
+        self.embedding_model_name = embedding_model
+        self.embeddings = None
+        self.vectorstore = None
+        self.documents = []
+        
+    def initialize_embeddings(self) -> None:
+        """Initialize the embedding model."""
+        if self.embeddings is None:
+            self.embeddings = HuggingFaceEmbeddings(
+                model_name=self.embedding_model_name,
+                model_kwargs={'device': 'cpu'},
+                encode_kwargs={'normalize_embeddings': True}
+            )
+    
+    def load_pdf_documents(self, pdf_paths: List[str]) -> List[Document]:
+        """
+        Load PDF documents from the specified paths.
+        
+        Args:
+            pdf_paths: List of paths to PDF files
+            
+        Returns:
+            List of loaded documents
+        """
+        documents = []
+        
+        for pdf_path in pdf_paths:
+            if not os.path.exists(pdf_path):
+                print(f"Warning: PDF file not found: {pdf_path}")
+                continue
+                
+            try:
+                loader = PyPDFLoader(pdf_path)
+                docs = loader.load()
+                
+                # Add metadata about the source
+                for doc in docs:
+                    doc.metadata['source_file'] = os.path.basename(pdf_path)
+                
+                documents.extend(docs)
+                print(f"Loaded {len(docs)} pages from {os.path.basename(pdf_path)}")
+            except Exception as e:
+                print(f"Error loading {pdf_path}: {e}")
+        
+        self.documents = documents
+        return documents
+    
+    def chunk_documents(
+        self,
+        documents: Optional[List[Document]] = None,
+        chunk_size: int = 1000,
+        chunk_overlap: int = 200
+    ) -> List[Document]:
+        """
+        Split documents into smaller chunks for better retrieval.
+        
+        Args:
+            documents: Documents to chunk (uses self.documents if None)
+            chunk_size: Maximum size of each chunk
+            chunk_overlap: Overlap between chunks to preserve context
+            
+        Returns:
+            List of chunked documents
+        """
+        if documents is None:
+            documents = self.documents
+            
+        if not documents:
+            return []
+        
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            length_function=len,
+            separators=["\n\n", "\n", " ", ""]
+        )
+        
+        chunks = text_splitter.split_documents(documents)
+        print(f"Split {len(documents)} documents into {len(chunks)} chunks")
+        
+        return chunks
+    
+    def build_vectorstore(
+        self,
+        documents: Optional[List[Document]] = None,
+        force_rebuild: bool = False
+    ) -> None:
+        """
+        Build or load the vector database.
+        
+        Args:
+            documents: Documents to index (will load and chunk if None)
+            force_rebuild: If True, rebuild even if existing database found
+        """
+        self.initialize_embeddings()
+        
+        # Check if existing database exists
+        if not force_rebuild and os.path.exists(self.persist_directory):
+            try:
+                self.vectorstore = Chroma(
+                    persist_directory=self.persist_directory,
+                    embedding_function=self.embeddings
+                )
+                print(f"Loaded existing vector database from {self.persist_directory}")
+                return
+            except Exception as e:
+                print(f"Error loading existing database: {e}. Rebuilding...")
+        
+        # Build new database
+        if documents is None:
+            if not self.documents:
+                raise ValueError("No documents available. Load documents first.")
+            documents = self.chunk_documents()
+        
+        if not documents:
+            raise ValueError("No documents to index")
+        
+        # Create vector store
+        self.vectorstore = Chroma.from_documents(
+            documents=documents,
+            embedding=self.embeddings,
+            persist_directory=self.persist_directory
+        )
+        
+        print(f"Built vector database with {len(documents)} chunks")
+    
+    def search(
+        self,
+        query: str,
+        k: int = 4,
+        score_threshold: Optional[float] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Search for relevant documents based on the query.
+        
+        Args:
+            query: Search query
+            k: Number of results to return
+            score_threshold: Minimum similarity score (0-1)
+            
+        Returns:
+            List of dictionaries with 'content', 'metadata', and 'score'
+        """
+        if self.vectorstore is None:
+            raise ValueError("Vector store not initialized. Call build_vectorstore() first.")
+        
+        # Perform similarity search with scores
+        if score_threshold is not None:
+            results = self.vectorstore.similarity_search_with_score(query, k=k)
+            # Filter by score threshold (lower score = more similar in some implementations)
+            results = [(doc, score) for doc, score in results if score >= score_threshold]
+        else:
+            results = self.vectorstore.similarity_search_with_score(query, k=k)
+        
+        # Format results
+        formatted_results = []
+        for doc, score in results:
+            formatted_results.append({
+                'content': doc.page_content,
+                'metadata': doc.metadata,
+                'score': score
+            })
+        
+        return formatted_results
+    
+    def get_context_for_query(
+        self,
+        query: str,
+        k: int = 4,
+        max_context_length: int = 4000
+    ) -> str:
+        """
+        Get relevant context from the knowledge base for a query.
+        
+        Args:
+            query: User query
+            k: Number of chunks to retrieve
+            max_context_length: Maximum length of combined context
+            
+        Returns:
+            Formatted context string
+        """
+        results = self.search(query, k=k)
+        
+        if not results:
+            return "No relevant information found in the knowledge base."
+        
+        # Build context from results
+        context_parts = []
+        total_length = 0
+        
+        for i, result in enumerate(results, 1):
+            content = result['content']
+            source = result['metadata'].get('source_file', 'Unknown')
+            page = result['metadata'].get('page', 'N/A')
+            
+            part = f"[Source {i}: {source}, Page {page}]\n{content}\n"
+            
+            if total_length + len(part) > max_context_length:
+                break
+                
+            context_parts.append(part)
+            total_length += len(part)
+        
+        return "\n---\n".join(context_parts)
+
+
+@st.cache_resource
+def initialize_knowledge_base(
+    pdf_directory: str = "docs/pdf",
+    force_rebuild: bool = False
+) -> Optional[KnowledgeBase]:
+    """
+    Initialize and cache the knowledge base (Streamlit cached).
+    
+    Args:
+        pdf_directory: Directory containing PDF files
+        force_rebuild: Force rebuild of vector database
+        
+    Returns:
+        Initialized KnowledgeBase instance or None if initialization fails
+    """
+    if not LANGCHAIN_AVAILABLE:
+        print("LangChain not available. RAG features disabled.")
+        return None
+    
+    try:
+        # Get absolute path to project root
+        project_root = Path(__file__).parent.parent.parent
+        pdf_dir = project_root / pdf_directory
+        
+        if not pdf_dir.exists():
+            print(f"PDF directory not found: {pdf_dir}")
+            return None
+        
+        # Find all PDF files
+        pdf_files = list(pdf_dir.glob("*.pdf"))
+        
+        if not pdf_files:
+            print(f"No PDF files found in {pdf_dir}")
+            return None
+        
+        print(f"Found {len(pdf_files)} PDF files")
+        
+        # Initialize knowledge base
+        kb = KnowledgeBase(
+            persist_directory=str(project_root / "chroma_db")
+        )
+        
+        # Load documents
+        kb.load_pdf_documents([str(f) for f in pdf_files])
+        
+        # Build vector store
+        kb.build_vectorstore(force_rebuild=force_rebuild)
+        
+        print("Knowledge base initialized successfully")
+        return kb
+        
+    except Exception as e:
+        print(f"Error initializing knowledge base: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def test_knowledge_base():
+    """Test function for the knowledge base."""
+    print("Testing Knowledge Base...")
+    
+    kb = initialize_knowledge_base()
+    
+    if kb is None:
+        print("Failed to initialize knowledge base")
+        return
+    
+    # Test search
+    test_queries = [
+        "What are the key dimensions of the Low Altitude Economy index?",
+        "How is traffic volume measured?",
+        "What aircraft types are included in the analysis?"
+    ]
+    
+    for query in test_queries:
+        print(f"\nQuery: {query}")
+        context = kb.get_context_for_query(query, k=2)
+        print(f"Context preview: {context[:200]}...")
+
+
+if __name__ == "__main__":
+    test_knowledge_base()
