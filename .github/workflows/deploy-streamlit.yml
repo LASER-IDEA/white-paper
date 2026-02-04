@@ -1,0 +1,78 @@
+name: Deploy Streamlit RAG LLM App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'python/**'
+      - 'config/requirements.txt'
+      - '.github/workflows/deploy-streamlit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: config/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -r config/requirements.txt
+
+      - name: Validate Python app
+        working-directory: ./python
+        run: |
+          python -m py_compile src/app.py
+          python -m py_compile src/llm_helper.py
+          python -m py_compile src/data_factory.py
+          python -m py_compile src/data_processor.py
+          python -m py_compile src/charts.py
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare Docker build
+        run: |
+          cp config/requirements.txt python/requirements.txt
+
+      - name: Build Docker image
+        working-directory: ./python
+        run: |
+          docker build -t streamlit-rag-llm:latest .
+          echo "Docker image built successfully"
+
+      - name: Deployment Information
+        run: |
+          echo "✅ Streamlit app validation completed successfully"
+          echo ""
+          echo "📦 Docker image built: streamlit-rag-llm:latest"
+          echo ""
+          echo "🚀 Deployment Options:"
+          echo ""
+          echo "Option 1 - Streamlit Community Cloud:"
+          echo "  1. Visit https://share.streamlit.io"
+          echo "  2. Connect your GitHub repository"
+          echo "  3. Select 'python/src/app.py' as the main app"
+          echo "  4. Configure secrets: DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL"
+          echo ""
+          echo "Option 2 - Docker Deployment:"
+          echo "  docker run -p 8501:8501 -e DEEPSEEK_API_KEY=your_key streamlit-rag-llm:latest"
+          echo ""
+          echo "Option 3 - Cloud Platforms (Railway, Render, Heroku):"
+          echo "  - Configure Docker deployment from this repository"
+          echo "  - Set environment variables for API keys"
+          echo ""
+          echo "ℹ️ Note: Remember to set the DEEPSEEK_API_KEY environment variable for LLM features"

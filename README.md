@@ -9,6 +9,7 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 [![ECharts](https://img.shields.io/badge/ECharts-5.6+-EE6666.svg)](https://echarts.apache.org/)
 
 [![Deploy to GitHub Pages](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy.yml)
+[![Deploy Streamlit RAG LLM App](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy-streamlit.yml/badge.svg)](https://github.com/LASER-IDEA/white-paper/actions/workflows/deploy-streamlit.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-00ADD8.svg)](https://LASER-IDEA.github.io/white-paper/)
 
 ## ⚠️ 数据说明
