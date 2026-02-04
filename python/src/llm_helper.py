@@ -179,11 +179,8 @@ def get_llm_response(
             kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
             for d in docs:
                 # docs is a list of dicts with 'content', 'metadata', 'score'
-                source = d.get('metadata', {}).get('source_file', 'Unknown')
-                kb_context += f"--- Source: {source} ---\n{d['content']}\n"
-        else:
-             # Fallback: if query is very generic, maybe provide introduction?
-             pass
+                source_file = d.get('metadata', {}).get('source_file', 'Unknown')
+                kb_context += f"--- Source: {source_file} ---\n{d['content']}\n"
 
     if not api_key:
         # Fallback for testing without key
@@ -345,8 +342,8 @@ def generate_dimension_insights(data: DataType, dimension: str, api_key: Optiona
         docs = kb.search(dimension, k=5)
         for d in docs:
             # docs is a list of dicts with 'content', 'metadata', 'score'
-            source = d.get('metadata', {}).get('source_file', 'Unknown')
-            kb_context += f"--- Source: {source} ---\n{d['content']}\n"
+            source_file = d.get('metadata', {}).get('source_file', 'Unknown')
+            kb_context += f"--- Source: {source_file} ---\n{d['content']}\n"
 
     if not api_key or OpenAI is None:
         return f"**AI Insight (Mock):** Based on the data, the {dimension} shows a positive trend. (API Key required for real analysis)"
