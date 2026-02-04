@@ -87,7 +87,11 @@ white-paper/
 ├── docs/                     # Documentation and Assets
 │   ├── pdf/                  # White papers and reports
 │   │   ├── Low-Altitude Economy White Paper.pdf
-│   │   └── 白皮书.pdf
+│   │   ├── scale_growth_report.pdf
+│   │   ├── structure_entity_report.pdf
+│   │   ├── time_space_report.pdf
+│   │   ├── efficiency_quality_report.pdf
+│   │   └── innovation_integration_report.pdf
 │   └── figures/              # Generated chart exports
 │       └── index_files/
 │           └── figure-pdf/
@@ -320,8 +324,16 @@ npm test
 
 ## 📚 Documentation
 
-- **[Technical White Paper](docs/pdf/Low-Altitude%20Economy%20White%20Paper.pdf)**: Comprehensive analysis framework
-- **[中文白皮书](docs/pdf/白皮书.pdf)**: Chinese version of the technical documentation
+The system includes comprehensive white papers and reports:
+
+- **[Low-Altitude Economy White Paper](docs/pdf/Low-Altitude%20Economy%20White%20Paper.pdf)**: Comprehensive analysis framework covering all dimensions
+- **[Scale & Growth Report](docs/pdf/scale_growth_report.pdf)**: Traffic volume, market size, and demand pattern analysis
+- **[Structure & Entity Report](docs/pdf/structure_entity_report.pdf)**: Fleet composition and entity analysis metrics
+- **[Time & Space Report](docs/pdf/time_space_report.pdf)**: Airspace utilization and regional distribution insights
+- **[Efficiency & Quality Report](docs/pdf/efficiency_quality_report.pdf)**: Operational metrics and quality standards
+- **[Innovation & Integration Report](docs/pdf/innovation_integration_report.pdf)**: Technology adoption and market integration indicators
+
+These documents are automatically indexed by the RAG knowledge base system to provide domain-specific context for AI-powered analysis.
 
 ## 🤝 Contributing
 
