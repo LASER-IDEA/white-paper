@@ -58,7 +58,7 @@ const StrategyPage: React.FC = () => {
         timestamp: new Date().toISOString()
       }));
 
-      setInsights([...newInsights, ...insights]);
+      setInsights(prevInsights => [...newInsights, ...prevInsights]);
       setIsGenerating(false);
     }, 2000);
   };
