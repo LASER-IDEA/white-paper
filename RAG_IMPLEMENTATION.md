@@ -229,6 +229,19 @@ Potential improvements:
 - [ ] Incremental updates to vector database
 - [ ] Advanced chunking strategies
 
+## Current Knowledge Base Documents
+
+The RAG system automatically indexes all PDF documents in the `docs/pdf/` directory. The current knowledge base includes:
+
+1. **Low-Altitude Economy White Paper.pdf** - Comprehensive analysis framework covering all dimensions
+2. **scale_growth_report.pdf** - Traffic volume, market size, and demand pattern analysis
+3. **structure_entity_report.pdf** - Fleet composition and entity analysis metrics
+4. **time_space_report.pdf** - Airspace utilization and regional distribution insights
+5. **efficiency_quality_report.pdf** - Operational metrics and quality standards
+6. **innovation_integration_report.pdf** - Technology adoption and market integration indicators
+
+These documents are organized by the five core dimensions of the Low Altitude Economy index, providing comprehensive domain-specific knowledge for the RAG system.
+
 ## Files Modified
 
 1. `config/requirements.txt` - Added RAG dependencies
