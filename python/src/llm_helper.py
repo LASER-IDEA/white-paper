@@ -4,6 +4,10 @@ import re
 import streamlit as st
 import pandas as pd
 from typing import Tuple, Optional, Union, Dict, List
+from utils.logger import setup_logger
+
+# Initialize logger
+logger = setup_logger("llm_helper")
 
 # Load environment variables from .env file
 try:
@@ -180,8 +184,9 @@ chart = c
             # Only include context if we have meaningful content
             if context and len(context.strip()) > 0 and not context.startswith("No relevant"):
                 rag_context = f"\n\nRelevant information from white papers:\n{context}\n"
+                logger.info(f"Retrieved RAG context: {len(context)} characters")
         except Exception as e:
-            print(f"Error retrieving RAG context: {e}")
+            logger.error(f"Error retrieving RAG context: {e}")
             rag_context = ""
 
     # Construct the system prompt

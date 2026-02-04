@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
 import json
+import time
 from datetime import datetime
 from typing import Dict, List, Tuple, Any, Optional
+from utils.logger import setup_logger
+
+# Initialize logger for data processing
+logger = setup_logger("data_processor")
 
 def reconstruct_streamlit_data(ts_data: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
@@ -127,8 +132,14 @@ def process_csv(df):
     - start_region
     - end_region
     """
-
-    # 1. Standardization & Validation
+    start_time = time.time()
+    logger.info("=" * 80)
+    logger.info("Starting CSV data processing")
+    logger.info(f"Input data shape: {df.shape[0]} rows × {df.shape[1]} columns")
+    
+    try:
+        # 1. Standardization & Validation
+        logger.info("Step 1: Column standardization and validation")
     column_map = {
         "日期": "date",
         "时间": "time",
@@ -165,14 +176,25 @@ def process_csv(df):
             new_columns[col] = column_map[col]
     df = df.rename(columns=new_columns)
     df.columns = [c.lower() for c in df.columns]
+    
+    logger.info(f"Columns after mapping: {list(df.columns)}")
 
     required_cols = ['date', 'region', 'duration', 'distance', 'entity']
     for col in required_cols:
         if col not in df.columns:
+            logger.error(f"Missing required column: {col}")
             raise ValueError(f"Missing required column: {col} (or equivalent Chinese column)")
+    
+    logger.info("All required columns present")
 
     df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    initial_count = len(df)
     df = df.dropna(subset=['date'])
+    dropped_count = initial_count - len(df)
+    if dropped_count > 0:
+        logger.warning(f"Dropped {dropped_count} rows with invalid dates")
+    
+    logger.info(f"Data after validation: {len(df)} rows")
 
     df['month'] = df['date'].dt.strftime('%Y-%m')
     df['date_str'] = df['date'].dt.strftime('%Y-%m-%d')
@@ -243,6 +265,12 @@ def process_csv(df):
         return s
 
     df['user_type'] = df['user_type'].apply(normalize_user_type)
+    
+    logger.info("Step 2: Data preprocessing complete")
+    logger.info(f"Date range: {df['date'].min()} to {df['date'].max()}")
+    logger.info(f"Unique entities: {df['entity'].nunique()}")
+    logger.info(f"Unique aircraft: {df['sn'].nunique()}")
+    logger.info(f"Total regions: {df['region'].nunique()}")
 
     def calc_gini(values):
         vals = np.array(values, dtype=float)
@@ -263,6 +291,10 @@ def process_csv(df):
         return float(-(probs * np.log(probs)).sum())
 
     streamlit_data = {}
+    
+    logger.info("=" * 80)
+    logger.info("Step 3: Computing indices")
+    index_start_time = time.time()
 
     # --- 1. 低空交通流量指数 ---
     daily_counts = df.groupby('date_str').size().reset_index(name='value')
@@ -272,6 +304,9 @@ def process_csv(df):
     traffic_index = monthly_avg.copy()
     traffic_index['value'] = (traffic_index['avg'] / base_avg * 100).round(1)
     streamlit_data['traffic'] = traffic_index.rename(columns={'month': 'date'})[['date', 'value']].to_dict(orient='records')
+    
+    latest_traffic = traffic_index['value'].iloc[-1] if not traffic_index.empty else 0
+    logger.info(f"Index 01 - Traffic Index: {latest_traffic:.1f} (base: {base_avg:.1f})")
 
     # --- 2. 低空作业强度指数 ---
     monthly_ops = df.groupby('month')[['duration', 'distance']].sum().reset_index()
@@ -449,7 +484,21 @@ def process_csv(df):
 
     # Generate control chart data
     # 1. Trajectory deviation by hour (simulated with flight duration variance)
-    df['hour'] = pd.to_datetime(df['start_time']).dt.hour
+    
+    # Safe extraction of hour - handle both start_time and time columns
+    if 'start_time' in df.columns:
+        try:
+            df['hour'] = pd.to_datetime(df['start_time'], errors='coerce').dt.hour
+            logger.info("Extracted hour from start_time column")
+        except Exception as e:
+            logger.warning(f"Error extracting hour from start_time: {e}, using existing hour column")
+    elif 'hour' not in df.columns:
+        logger.warning("No hour column available, using default hour=12 for control chart")
+        df['hour'] = 12
+    
+    # Fillna for hour column to avoid errors
+    df['hour'] = df['hour'].fillna(12).astype(int)
+    
     hourly_stats = df.groupby('hour')['duration'].agg(['mean', 'std']).reset_index()
 
     # Select 12 key hours for trajectory deviation
@@ -770,5 +819,26 @@ def process_csv(df):
         leading_pct, "%", "Radar",
         ts_radar
     ))
+
+    
+    # Log computation summary
+    computation_time = time.time() - index_start_time
+    logger.info("=" * 80)
+    logger.info(f"Index computation complete: {len(ts_data)} indices computed in {computation_time:.2f}s")
+    logger.info("Key indices summary:")
+    logger.info(f"  - Traffic Index: {latest_traffic:.1f}")
+    logger.info(f"  - Active Fleet: {unique_sn}")
+    logger.info(f"  - Market Concentration (CR50): {cr50_pct:.1f}%")
+    logger.info(f"  - Commercial Maturity: {commercial_pct:.1f}%")
+    logger.info(f"  - Diversity Index: {diversity_index:.3f}")
+    logger.info(f"  - Task Completion Quality: {completion_pct:.1f}%")
+    
+    total_time = time.time() - start_time
+    logger.info(f"Total processing time: {total_time:.2f}s")
+    logger.info("=" * 80)
+
+    except Exception as e:
+        logger.error(f"Error during CSV processing: {str(e)}", exc_info=True)
+        raise
 
     return streamlit_data, ts_data
