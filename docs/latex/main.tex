@@ -69,13 +69,21 @@
     urlbordercolor=red, % URL 边框颜色
     pdftitle={低空经济发展动态评估指数蓝皮书}
 }
-
-
+% --- 在导言区添加 ---
+\usepackage{tabularx} % 智能表格环境
+\usepackage{array}    % 扩展表格功能
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}} % 左对齐固定宽度列
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}  % 右对齐固定宽度列
+\usepackage{xparse} % 可选，用于定义更灵活的命令
+% 定义一个智能姓名对齐命令
+\newcommand{\namebox}[1]{%
+  \makebox[3em][r]{#1}% 3em宽度，右对齐（可根据需要调整宽度）
+}
 % --- 页眉页脚 ---
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\textcolor{gray}{\small 基于``领航''模型（PILOT）的数据驱动洞察}}
+\lhead{\textcolor{gray}{\small 基于领航模型（PILOT）的数据驱动洞察}}
 % \rhead{\textcolor{gray}{\small 2025年度报告}}
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.5pt}
@@ -93,6 +101,61 @@
 % \input{sections/titlepage}
 \includepdf[pages=1]{images/cover.pdf}
 % \includepdf[pages=1]{images/cover2.pdf}
+
+% 编撰者页（新增部分）
+% \newpage
+% \thispagestyle{empty} % 本页无页眉页脚
+% \vspace*{\fill} % 垂直居中
+% \begin{center}
+%     {\Huge\bfseries 编撰者信息}\\[2em]
+
+%     % {\Large\textbf{主编}}\\[0.5em]
+%     % 王明 博士（首席数据科学家）\\[1.5em]
+
+%     {\Large\textbf{核心编撰团队}}\\[0.5em]
+%     张蕾（高级产品经理）\\
+%     陈子纯（高级大数据工程师）\\
+%     孙硕（产品经理）\\[1.5em]
+
+%     {\Large\textbf{技术支持}}\\[0.5em]
+%     杨泽渊（高级产品总监）\\
+%     胡骁（高级研究员）\\[2em]
+
+%     % {\Large\textbf{联系方式}}\\[0.5em]
+%     % \texttt{research@pilot-model.org}\\[1em]
+
+%     {\Large\textbf{版本}}\\[0.5em]
+%     v1.0 - \today
+% \end{center}
+% \vspace*{\fill}
+% \newpage
+
+% --- 编撰者页 ---
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+
+\begin{center}
+    {\Huge\bfseries \textcolor{techblue}{编撰者信息}}\\[2em]
+
+    % 使用固定宽度的姓名列
+    \begin{tabular}{r r}
+        \textbf{\textcolor{techblue}{姓\quad 名}} & \textbf{职位} \\[0.5em]
+        \hline \\[-0.8em]
+        \namebox{\textcolor{techblue}{张\quad 蕾}} & 高级产品经理 \\
+        \namebox{\textcolor{techblue}{陈子纯}} & 高级大数据工程师 \\
+        \namebox{\textcolor{techblue}{孙\quad 硕}} & 产品经理 \\
+        \namebox{\textcolor{techblue}{杨泽渊}} & 高级产品总监 \\
+        \namebox{\textcolor{techblue}{胡\quad 骁}} & 高级研究员 \\
+    \end{tabular}
+    \\[2em]
+
+    {\large\textbf{版本：} v1.0 \hspace{2em} \textbf{日期：} \today}
+
+\end{center}
+
+\vspace*{\fill}
+\newpage
 
 \input{sections/section1}
 
@@ -252,13 +315,13 @@ $\displaystyle R_y = \frac{F_m - F_{m-12}}{F_{m-12}} \times 100\%$ \newline
 \hline \rowcolor{skygradient!100} \multicolumn{1}{|c|}{序号} & \multicolumn{1}{|c|}{指数名称} & \multicolumn{1}{|c|}{定义} & \multicolumn{1}{|c|}{作用} & \multicolumn{1}{|c|}{计算公式} & \multicolumn{1}{|c|}{数据源}  \\
 \hline 15 & 任务完成质量指数 & 衡量飞行任务按计划执行的完整性和规范性。 & 监控运行安全与服务质量，识别系统性风，险。 & （实际完成的有效飞行架次 ／计划报备的飞行架次）＊ 100 & 有效飞行架次、飞行计划数据  \\
 \hline 16 & 城市微循环渗透指数 & 衡量航空器在楼宇、社区等城市末端场景的精细体应用程度。 & 衡量低空飞行作为城市毛细血管，连接不同行政区的网络化程度。反映低空经济与智慧城市、民生服务的融合深度。 & （跨区飞行架次／总架次） ＊跨区组合对数 & 不同跨区组合年合计架次  \\
-\hline 17 & 立体空域利用效能指数 （Stereoscopic Airspace Efficiency Index） & 衡量对不同高度层进行差异化、协同化利用的效率。 & 评估空域精细化管理水平，挖掘三维空间潜力。 & $-\Sigma\left(Pi^* \ln Pi\right)$, $Pi$为第$i$个高度层时长占比 （信息熵） & 各高度区间年合计飞行时长  \\
+\hline 17 & 立体空域利用效能指数 （Stereoscopic Airspace Efficiency Index） & 衡量对不同高度层进行差异化、协同化利用的效率。 & 评估空域精细化管理水平，挖掘三维空间潜力。 & $-\Sigma\left(\mathrm{Pi}^* \ln \mathrm{Pi}\right)$, Pi为第 i 个高度层时长占比 （信息熵） & 各高度区间年合计飞行时长  \\
 \hline 18 & 低空经济＂生产 ／消费＂属性指数 & 通过对比工作日与周末活跃度，判断产业驱动属
 \begin{itemize}
     \item[\bullet]指数$> 1.2$：生产驱动型（物流、巡检为主，周末休息）。
     \item[\bullet]指数$< 0.8$：消费娱乐型（文旅、表演、航拍，周末热闹）。
     \item[\bullet] 指数 $\approx 1.0$ ：混合型。
-\end{itemize} & 判断产业当前的主要驱动力和未来价值走向。 & 全年工作日总架次/工作日天数/全年周末总架次/周未天数 & 每日架次 （区分工作日/周末） \\
+\end{itemize} & 判断产业当前的主要驱动力和未来价值走向。 & 全年工作日总架次／工作日天数／全年周末总架次／周未天数 & 每日架次 （区分工作日／周末） \\
 \hline
 \end{tabular}}
     \caption{低空经济指数计算公式汇总（续三）}

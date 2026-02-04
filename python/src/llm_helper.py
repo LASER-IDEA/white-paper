@@ -106,8 +106,33 @@ def determine_task_complexity(query: str) -> bool:
 
     return False
 
-def get_api_config(api_key=None, base_url=None, model=None, query=""):
-    """Helper to get API config from args or env"""
+def get_llm_response(
+    query: str, 
+    data_context: DataType, 
+    api_key: Optional[str] = None, 
+    base_url: Optional[str] = None, 
+    model: Optional[str] = None,
+    knowledge_base: Optional[object] = None
+) -> Tuple[str, Optional[str]]:
+    """
+    Interact with the LLM to generate a visualization based on the query and data context.
+    Uses RAG (Retrieval-Augmented Generation) if knowledge_base is provided.
+
+    Args:
+        query: The user's question or request
+        data_context: The available data to work with (dict or DataFrame)
+        api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
+        base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
+        model: Model name to use. If None, auto-selects based on task complexity
+        knowledge_base: Optional KnowledgeBase instance for RAG
+
+    Returns:
+        Tuple of (explanation, code):
+            explanation: The text response from the LLM
+            code: The generated Python code to create the chart (or None)
+    """
+
+    # Load configuration from .env if not provided
     if not api_key:
         api_key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
 
@@ -180,6 +205,20 @@ chart = c
 
     client = OpenAI(api_key=api_key, base_url=base_url)
 
+    # Get relevant context from knowledge base if available
+    rag_context = ""
+    if knowledge_base is not None:
+        try:
+            context = knowledge_base.get_context_for_query(query, k=3, max_context_length=3000)
+            # Only include context if we have meaningful content
+            if context and len(context.strip()) > 0 and not context.startswith("No relevant"):
+                rag_context = f"\n\nRelevant information from white papers:\n{context}\n"
+        except Exception as e:
+            print(f"Error retrieving RAG context: {e}")
+            rag_context = ""
+
+    # Construct the system prompt
+    # We describe the environment and available libraries (pyecharts)
     system_prompt = """
 You are a data analysis assistant for a Low Altitude Economy dashboard.
 Your goal is to help the user understand the data and visualize new indices or insights.
@@ -200,9 +239,7 @@ When asked to visualize something:
 
 Available data context structure:
 {data_summary}
-
-{kb_context}
-
+{rag_context}
 Example Output Format:
 Here is the analysis of the data based on the Blue Book definitions...
 
@@ -218,7 +255,9 @@ chart = c
 ```
 """
     data_summary = summarize_data(data_context)
-    formatted_system_prompt = system_prompt.replace("{data_summary}", data_summary).replace("{kb_context}", kb_context)
+
+    formatted_system_prompt = system_prompt.replace("{data_summary}", data_summary)
+    formatted_system_prompt = formatted_system_prompt.replace("{rag_context}", rag_context)
 
     messages = [
         {"role": "system", "content": formatted_system_prompt},

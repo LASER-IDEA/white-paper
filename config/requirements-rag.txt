@@ -1,0 +1,17 @@
+# RAG (Retrieval-Augmented Generation) Dependencies
+# Install these for enhanced AI responses with document context
+# Usage: pip install -r config/requirements-rag.txt
+
+# Core RAG framework
+langchain>=0.1.0
+langchain-community>=0.0.20
+langchain-openai>=0.0.5
+
+# Vector database
+chromadb>=0.4.22
+
+# Document processing
+pypdf>=4.0.0
+
+# Embeddings
+sentence-transformers>=2.2.0

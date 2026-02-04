@@ -1,165 +1,343 @@
+"""
+Knowledge Base module for RAG (Retrieval-Augmented Generation).
+
+This module handles:
+- Loading and processing PDF documents
+- Chunking text for optimal retrieval
+- Vector database initialization and management
+- Document embedding and indexing
+- Similarity search for relevant context
+"""
+
 import os
-import re
-from typing import List, Dict, Optional
 from pathlib import Path
+from typing import List, Optional, Dict, Any
+import streamlit as st
 
-class Document:
-    def __init__(self, content: str, source: str, section: str = ""):
-        self.content = content
-        self.source = source
-        self.section = section
+# Handle optional dependencies
+try:
+    from langchain_community.document_loaders import PyPDFLoader
+    from langchain_community.vectorstores import Chroma
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.schema import Document
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+    Document = None
 
-    def __repr__(self):
-        return f"Document(source='{self.source}', section='{self.section}', content_len={len(self.content)})"
 
 class KnowledgeBase:
-    def __init__(self, doc_dir: str = "docs/latex/sections"):
+    """
+    Manages the vector database and RAG functionality for white paper documents.
+    """
+    
+    def __init__(
+        self,
+        persist_directory: str = "./chroma_db",
+        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    ):
         """
-        Initialize the KnowledgeBase.
-
+        Initialize the knowledge base.
+        
         Args:
-            doc_dir: Path to the directory containing LaTeX section files.
-                     Can be relative to project root or absolute.
+            persist_directory: Directory to persist the vector database
+            embedding_model: HuggingFace embedding model to use
         """
-        # Resolve path relative to project root if it's relative
-        project_root = Path(__file__).parent.parent.parent
-        self.doc_dir = (project_root / doc_dir).resolve()
-
-        if not self.doc_dir.exists():
-            # Fallback for when running in different context or if path is different
-            self.doc_dir = Path(doc_dir).resolve()
-
-        self.documents: List[Document] = []
-        self.load_documents()
-
-    def load_documents(self):
-        """Loads all .tex files from the document directory and chunks them."""
-        if not self.doc_dir.exists():
-            print(f"Warning: Document directory {self.doc_dir} does not exist.")
-            return
-
-        for file_path in self.doc_dir.glob("*.tex"):
+        if not LANGCHAIN_AVAILABLE:
+            raise ImportError(
+                "LangChain dependencies not available. "
+                "Install with: pip install langchain langchain-community chromadb pypdf sentence-transformers"
+            )
+        
+        self.persist_directory = persist_directory
+        self.embedding_model_name = embedding_model
+        self.embeddings = None
+        self.vectorstore = None
+        self.documents = []
+        
+    def initialize_embeddings(self) -> None:
+        """Initialize the embedding model."""
+        if self.embeddings is None:
+            self.embeddings = HuggingFaceEmbeddings(
+                model_name=self.embedding_model_name,
+                model_kwargs={'device': 'cpu'},
+                encode_kwargs={'normalize_embeddings': True}
+            )
+    
+    def load_pdf_documents(self, pdf_paths: List[str]) -> List[Document]:
+        """
+        Load PDF documents from the specified paths.
+        
+        Args:
+            pdf_paths: List of paths to PDF files
+            
+        Returns:
+            List of loaded documents
+        """
+        documents = []
+        
+        for pdf_path in pdf_paths:
+            if not os.path.exists(pdf_path):
+                print(f"Warning: PDF file not found: {pdf_path}")
+                continue
+                
             try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    content = f.read()
-                    chunks = self._chunk_content(content, file_path.name)
-                    self.documents.extend(chunks)
+                loader = PyPDFLoader(pdf_path)
+                docs = loader.load()
+                
+                # Add metadata about the source
+                for doc in docs:
+                    doc.metadata['source_file'] = os.path.basename(pdf_path)
+                
+                documents.extend(docs)
+                print(f"Loaded {len(docs)} pages from {os.path.basename(pdf_path)}")
             except Exception as e:
-                print(f"Error reading file {file_path}: {e}")
-
-        print(f"Loaded {len(self.documents)} chunks from {self.doc_dir}")
-
-    def _chunk_content(self, content: str, source: str) -> List[Document]:
+                print(f"Error loading {pdf_path}: {e}")
+        
+        self.documents = documents
+        return documents
+    
+    def chunk_documents(
+        self,
+        documents: Optional[List[Document]] = None,
+        chunk_size: int = 1000,
+        chunk_overlap: int = 200
+    ) -> List[Document]:
         """
-        Splits LaTeX content into chunks based on sections/subsections.
-        Removes basic LaTeX formatting.
+        Split documents into smaller chunks for better retrieval.
+        
+        Args:
+            documents: Documents to chunk (uses self.documents if None)
+            chunk_size: Maximum size of each chunk
+            chunk_overlap: Overlap between chunks to preserve context
+            
+        Returns:
+            List of chunked documents
         """
-        chunks = []
-
-        # Simple regex to split by \section or \subsection
-        # This is a naive implementation but sufficient for this task
-        # We look for \section{...} or \subsection{...}
-
-        # Split by \section or \subsection, keeping the delimiter
-        # The regex looks for lines starting with \section or \subsection
-        pattern = r'(\\section\{[^}]+\}|\\subsection\{[^}]+\})'
-        parts = re.split(pattern, content)
-
-        current_section = "Introduction"
-        if parts:
-            # First part is usually preamble or text before first section
-            if parts[0].strip():
-                clean_text = self._clean_latex(parts[0])
-                if clean_text:
-                    chunks.append(Document(clean_text, source, current_section))
-
-            # Iterate through the rest
-            for i in range(1, len(parts), 2):
-                header = parts[i]
-                body = parts[i+1] if i+1 < len(parts) else ""
-
-                # Extract section title
-                title_match = re.search(r'\\(sub)?section\{([^}]+)\}', header)
-                if title_match:
-                    current_section = title_match.group(2)
-
-                full_text = header + "\n" + body
-                clean_text = self._clean_latex(full_text)
-
-                if clean_text:
-                    chunks.append(Document(clean_text, source, current_section))
-
-        return chunks
-
-    def _clean_latex(self, text: str) -> str:
-        """Removes common LaTeX commands to make text more readable for LLM."""
-        # Remove comments
-        text = re.sub(r'%.*', '', text)
-
-        # Remove \newpage, \clearpage
-        text = re.sub(r'\\(newpage|clearpage)', '', text)
-
-        # Remove \cite{...} but maybe keep a marker? For now, remove.
-        text = re.sub(r'\\cite\{[^}]+\}', '', text)
-
-        # Remove \ref{...}
-        text = re.sub(r'\\ref\{[^}]+\}', '', text)
-
-        # Replace \textbf{...}, \textit{...} with just the content
-        text = re.sub(r'\\[a-zA-Z]+\{([^}]+)\}', r'\1', text)
-
-        # Remove \begin{...} and \end{...} tags but keep content
-        text = re.sub(r'\\(begin|end)\{[^}]+\}', '', text)
-
-        # Remove \item
-        text = re.sub(r'\\item', '-', text)
-
-        # Collapse whitespace
-        text = re.sub(r'\s+', ' ', text).strip()
-
-        return text
-
-    def search(self, query: str, top_k: int = 3) -> List[Document]:
-        """
-        Search for documents relevant to the query.
-        Since we don't have a vector store, we'll use a simple keyword/overlap score.
-        For a small dataset, this is often "good enough".
-        """
-        if not self.documents:
+        if documents is None:
+            documents = self.documents
+            
+        if not documents:
             return []
+        
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            length_function=len,
+            separators=["\n\n", "\n", " ", ""]
+        )
+        
+        chunks = text_splitter.split_documents(documents)
+        print(f"Split {len(documents)} documents into {len(chunks)} chunks")
+        
+        return chunks
+    
+    def build_vectorstore(
+        self,
+        documents: Optional[List[Document]] = None,
+        force_rebuild: bool = False
+    ) -> None:
+        """
+        Build or load the vector database.
+        
+        Args:
+            documents: Documents to index (will load and chunk if None)
+            force_rebuild: If True, rebuild even if existing database found
+        """
+        self.initialize_embeddings()
+        
+        # Check if existing database exists
+        if not force_rebuild and os.path.exists(self.persist_directory):
+            try:
+                self.vectorstore = Chroma(
+                    persist_directory=self.persist_directory,
+                    embedding_function=self.embeddings
+                )
+                print(f"Loaded existing vector database from {self.persist_directory}")
+                return
+            except Exception as e:
+                print(f"Error loading existing database: {e}. Rebuilding...")
+        
+        # Build new database
+        if documents is None:
+            if not self.documents:
+                raise ValueError("No documents available. Load documents first.")
+            documents = self.chunk_documents()
+        
+        if not documents:
+            raise ValueError("No documents to index")
+        
+        # Create vector store
+        self.vectorstore = Chroma.from_documents(
+            documents=documents,
+            embedding=self.embeddings,
+            persist_directory=self.persist_directory
+        )
+        
+        print(f"Built vector database with {len(documents)} chunks")
+    
+    def search(
+        self,
+        query: str,
+        k: int = 4,
+        score_threshold: Optional[float] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Search for relevant documents based on the query.
+        
+        Args:
+            query: Search query
+            k: Number of results to return
+            score_threshold: Minimum similarity score (0-1)
+            
+        Returns:
+            List of dictionaries with 'content', 'metadata', and 'score'
+        """
+        if self.vectorstore is None:
+            raise ValueError("Vector store not initialized. Call build_vectorstore() first.")
+        
+        # Perform similarity search with scores
+        if score_threshold is not None:
+            results = self.vectorstore.similarity_search_with_score(query, k=k)
+            # Filter by score threshold (ChromaDB uses distance metric: lower score = more similar)
+            results = [(doc, score) for doc, score in results if score <= score_threshold]
+        else:
+            results = self.vectorstore.similarity_search_with_score(query, k=k)
+        
+        # Format results
+        formatted_results = []
+        for doc, score in results:
+            formatted_results.append({
+                'content': doc.page_content,
+                'metadata': doc.metadata,
+                'score': score
+            })
+        
+        return formatted_results
+    
+    def get_context_for_query(
+        self,
+        query: str,
+        k: int = 4,
+        max_context_length: int = 4000
+    ) -> str:
+        """
+        Get relevant context from the knowledge base for a query.
+        
+        Args:
+            query: User query
+            k: Number of chunks to retrieve
+            max_context_length: Maximum length of combined context
+            
+        Returns:
+            Formatted context string
+        """
+        results = self.search(query, k=k)
+        
+        if not results:
+            return "No relevant information found in the knowledge base."
+        
+        # Build context from results
+        context_parts = []
+        total_length = 0
+        
+        for i, result in enumerate(results, 1):
+            content = result['content']
+            source = result['metadata'].get('source_file', 'Unknown')
+            page = result['metadata'].get('page', 'N/A')
+            
+            part = f"[Source {i}: {source}, Page {page}]\n{content}\n"
+            
+            if total_length + len(part) > max_context_length:
+                break
+                
+            context_parts.append(part)
+            total_length += len(part)
+        
+        return "\n---\n".join(context_parts)
 
-        query_terms = set(query.lower().split())
 
-        scores = []
-        for doc in self.documents:
-            doc_terms = set(doc.content.lower().split())
-            # Jaccard similarity or simple intersection count
-            intersection = query_terms.intersection(doc_terms)
-            score = len(intersection)
+@st.cache_resource
+def initialize_knowledge_base(
+    pdf_directory: str = "docs/pdf",
+    force_rebuild: bool = False
+) -> Optional[KnowledgeBase]:
+    """
+    Initialize and cache the knowledge base (Streamlit cached).
+    
+    Args:
+        pdf_directory: Directory containing PDF files
+        force_rebuild: Force rebuild of vector database
+        
+    Returns:
+        Initialized KnowledgeBase instance or None if initialization fails
+    """
+    if not LANGCHAIN_AVAILABLE:
+        print("LangChain not available. RAG features disabled.")
+        return None
+    
+    try:
+        # Get absolute path to project root
+        project_root = Path(__file__).parent.parent.parent
+        pdf_dir = project_root / pdf_directory
+        
+        if not pdf_dir.exists():
+            print(f"PDF directory not found: {pdf_dir}")
+            return None
+        
+        # Find all PDF files
+        pdf_files = list(pdf_dir.glob("*.pdf"))
+        
+        if not pdf_files:
+            print(f"No PDF files found in {pdf_dir}")
+            return None
+        
+        print(f"Found {len(pdf_files)} PDF files")
+        
+        # Initialize knowledge base
+        kb = KnowledgeBase(
+            persist_directory=str(project_root / "chroma_db")
+        )
+        
+        # Load documents
+        kb.load_pdf_documents([str(f) for f in pdf_files])
+        
+        # Build vector store
+        kb.build_vectorstore(force_rebuild=force_rebuild)
+        
+        print("Knowledge base initialized successfully")
+        return kb
+        
+    except Exception as e:
+        print(f"Error initializing knowledge base: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
 
-            # Bonus for section title match
-            if any(term in doc.section.lower() for term in query_terms):
-                score += 2
 
-            scores.append((doc, score))
+def test_knowledge_base():
+    """Test function for the knowledge base."""
+    print("Testing Knowledge Base...")
+    
+    kb = initialize_knowledge_base()
+    
+    if kb is None:
+        print("Failed to initialize knowledge base")
+        return
+    
+    # Test search
+    test_queries = [
+        "What are the key dimensions of the Low Altitude Economy index?",
+        "How is traffic volume measured?",
+        "What aircraft types are included in the analysis?"
+    ]
+    
+    for query in test_queries:
+        print(f"\nQuery: {query}")
+        context = kb.get_context_for_query(query, k=2)
+        print(f"Context preview: {context[:200]}...")
 
-        # Sort by score descending
-        scores.sort(key=lambda x: x[1], reverse=True)
 
-        # Return top_k docs, filtering out 0 scores if any
-        results = [doc for doc, score in scores[:top_k] if score > 0]
-
-        # If no results found (score 0), and query is generic, maybe return introduction?
-        # Or just return nothing.
-        # If the corpus is small, maybe return all relevant ones.
-
-        # Fallback: if very few results, return top ones regardless of score,
-        # assuming the user wants *some* context from the blue book.
-        if not results and self.documents:
-            return self.documents[:1] # Return at least one
-
-        return results
-
-    def get_all_content(self) -> str:
-        """Returns all content concatenated."""
-        return "\n\n".join([f"--- Section: {d.section} ---\n{d.content}" for d in self.documents])
+if __name__ == "__main__":
+    test_knowledge_base()

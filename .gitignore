@@ -42,3 +42,6 @@ htmlcov/
 
 # Debug files
 debug-*.png
+
+# Vector database cache
+chroma_db/

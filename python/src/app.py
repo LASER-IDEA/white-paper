@@ -11,6 +11,13 @@ import re
 import ast
 from pathlib import Path
 
+# Import knowledge base module
+try:
+    import knowledge_base
+    KNOWLEDGE_BASE_AVAILABLE = True
+except ImportError:
+    KNOWLEDGE_BASE_AVAILABLE = False
+
 # Load environment variables
 try:
     from dotenv import load_dotenv
@@ -131,6 +138,17 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "insights" not in st.session_state:
     st.session_state.insights = []
+
+# Initialize knowledge base if available
+if 'kb' not in st.session_state:
+    if KNOWLEDGE_BASE_AVAILABLE:
+        with st.spinner("Initializing knowledge base..."):
+            st.session_state.kb = knowledge_base.initialize_knowledge_base()
+        # Show success message outside spinner so it persists
+        if st.session_state.kb:
+            st.success("✅ Knowledge base initialized with white paper documents")
+    else:
+        st.session_state.kb = None
 
 # Sidebar for CSV Upload
 with st.sidebar:
@@ -377,6 +395,15 @@ with tab1:
 with tab2:
     st.header("AI Data Analyst")
     st.markdown("Ask questions about the Low Altitude Economy data, and the AI will infer indices and visualize them.")
+    
+    # Display knowledge base status
+    if st.session_state.kb:
+        st.info("🧠 RAG Knowledge Base Active: AI responses are enhanced with information from white paper documents")
+    else:
+        if KNOWLEDGE_BASE_AVAILABLE:
+            st.warning("⚠️ Knowledge base initialization failed. AI will work without RAG context.")
+        else:
+            st.info("💡 Install RAG dependencies for enhanced AI responses: `pip install langchain langchain-community chromadb pypdf sentence-transformers`")
 
     # Display chat messages
     for message in st.session_state.messages:
@@ -407,7 +434,8 @@ with tab2:
                     st.session_state.data,
                     api_key=api_key,
                     base_url=base_url if base_url else None,
-                    model=model
+                    model=model,
+                    knowledge_base=st.session_state.kb
                 )
 
                 st.markdown(explanation)
