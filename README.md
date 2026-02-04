@@ -34,6 +34,8 @@ The GitHub Pages deployment automatically updates whenever code is pushed to the
 - **Auto Model Selection**: Context-aware choice between `deepseek-chat` and `deepseek-reasoner`
 - **Dynamic Visualization**: AI-generated charts based on user queries
 - **Smart Insights**: Automated pattern recognition and trend analysis
+- **RAG Knowledge Base**: Vector database-powered context retrieval from white paper documents
+- **LangChain Integration**: Advanced RAG (Retrieval-Augmented Generation) for enhanced AI responses
 
 ### 🎨 Professional Visualizations
 - **Interactive Charts**: Powered by ECharts for rich interactivity
@@ -51,7 +53,8 @@ white-paper/
 │   │   ├── charts.py         # ECharts visualization library
 │   │   ├── data_factory.py   # Mock data generation (模拟数据生成)
 │   │   ├── data_processor.py # Data processing utilities
-│   │   ├── llm_helper.py     # AI integration module
+│   │   ├── llm_helper.py     # AI integration module (RAG-enhanced)
+│   │   ├── knowledge_base.py # RAG vector database module
 │   │   └── utils/
 │   │       └── generate_mock_csv.py
 │   ├── data/                 # Sample datasets (模拟数据集)
@@ -90,8 +93,9 @@ white-paper/
 ├── scripts/                  # Build and automation scripts
 │   └── generate-pdfs.js      # PDF generation script
 ├── config/                   # Configuration Files
-│   ├── requirements.txt      # Python dependencies
+│   ├── requirements.txt      # Python dependencies (with RAG support)
 │   └── .env.example          # Environment template
+├── chroma_db/                # Vector database cache (auto-generated)
 ├── run_python_app.py         # Convenience script to run Python app
 ├── run_web_app.py            # Convenience script to run web app
 ├── .gitignore
@@ -116,8 +120,15 @@ Want to explore the dashboard without setup? Visit our **[live demo](https://LAS
 git clone <repository-url>
 cd white-paper
 
-# Install Python dependencies
+# Install Python dependencies (includes RAG support)
 pip install -r config/requirements.txt
+
+# Or install only core dependencies + RAG separately
+pip install streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv openai
+pip install -r config/requirements-rag.txt
+
+# Note: First run will build the vector database from PDF documents in docs/pdf/
+# This may take a few minutes to download the embedding model
 ```
 
 #### AI Setup (Optional)
@@ -128,6 +139,16 @@ cp config/.env.example .env
 # Edit .env file with your DeepSeek API key
 # DEEPSEEK_API_KEY=your_actual_api_key_here
 ```
+
+#### RAG Knowledge Base Setup
+The RAG knowledge base is automatically initialized on first run:
+- **PDF Sources**: Automatically indexes all PDF files in `docs/pdf/` directory
+- **Vector Database**: Creates `chroma_db/` directory for persistent storage
+- **Embeddings**: Uses `sentence-transformers/all-MiniLM-L6-v2` model
+- **First Run**: May take a few minutes to download embedding model and process PDFs
+- **Subsequent Runs**: Loads from cached database (instant startup)
+
+To rebuild the knowledge base, delete the `chroma_db/` directory.
 
 #### Running the Application
 
@@ -250,6 +271,13 @@ DEEPSEEK_REASONER_MODEL=deepseek-reasoner
 - **Natural Language Queries**: Ask questions in plain English
 - **Contextual Understanding**: AI interprets data relationships
 - **Automated Insights**: Pattern recognition and trend analysis
+
+### RAG Knowledge Base (New!)
+- **Vector Database**: ChromaDB-powered semantic search across white paper documents
+- **Document Retrieval**: Automatically finds relevant context from PDF white papers
+- **Enhanced Responses**: AI answers enriched with information from domain-specific documents
+- **LangChain Integration**: Production-ready RAG pipeline for reliable context retrieval
+- **Embeddings**: Sentence-transformers for efficient document vectorization
 
 ### Smart Model Selection
 - **Simple Queries** → `deepseek-chat`: Fast responses for basic analysis
