@@ -106,32 +106,24 @@ def determine_task_complexity(query: str) -> bool:
 
     return False
 
-def get_llm_response(
-    query: str, 
-    data_context: DataType, 
+def get_api_config(
     api_key: Optional[str] = None, 
     base_url: Optional[str] = None, 
     model: Optional[str] = None,
-    knowledge_base: Optional[object] = None
-) -> Tuple[str, Optional[str]]:
+    query: str = ""
+) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
-    Interact with the LLM to generate a visualization based on the query and data context.
-    Uses RAG (Retrieval-Augmented Generation) if knowledge_base is provided.
+    Helper function to get API configuration from arguments or environment variables.
 
     Args:
-        query: The user's question or request
-        data_context: The available data to work with (dict or DataFrame)
         api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
         base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
         model: Model name to use. If None, auto-selects based on task complexity
-        knowledge_base: Optional KnowledgeBase instance for RAG
+        query: The query string to determine task complexity for model selection
 
     Returns:
-        Tuple of (explanation, code):
-            explanation: The text response from the LLM
-            code: The generated Python code to create the chart (or None)
+        Tuple of (api_key, base_url, model)
     """
-
     # Load configuration from .env if not provided
     if not api_key:
         api_key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
