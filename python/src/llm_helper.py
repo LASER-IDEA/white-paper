@@ -119,7 +119,8 @@ def get_api_config(
         api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
         base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
         model: Model name to use. If None, auto-selects based on task complexity
-        query: The query string to determine task complexity for model selection
+        query: The query string to determine task complexity for model selection.
+               Defaults to empty string, which results in selecting the chat model.
 
     Returns:
         Tuple of (api_key, base_url, model)
