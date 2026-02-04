@@ -40,18 +40,23 @@ class TestKnowledgeBaseModuleStructure(unittest.TestCase):
 class TestLLMHelperIntegration(unittest.TestCase):
     """Test llm_helper integration with knowledge base."""
     
-    def test_llm_helper_has_kb_parameter(self):
-        """Test that get_llm_response accepts knowledge_base parameter."""
+    def test_llm_helper_uses_internal_kb(self):
+        """Test that get_llm_response uses internal _get_kb() helper."""
         llm_path = Path(__file__).parent.parent / "src" / "llm_helper.py"
         with open(llm_path, 'r') as f:
-            tree = ast.parse(f.read())
+            content = f.read()
         
-        # Find get_llm_response function
+        # Check that _get_kb() function exists
+        self.assertIn('def _get_kb():', content,
+                    "llm_helper should have _get_kb() helper function")
+        
+        # Find get_llm_response function and verify it doesn't have knowledge_base parameter
+        tree = ast.parse(content)
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef) and node.name == 'get_llm_response':
                 args = [arg.arg for arg in node.args.args]
-                self.assertIn('knowledge_base', args,
-                            "get_llm_response should have knowledge_base parameter")
+                self.assertNotIn('knowledge_base', args,
+                            "get_llm_response should not have knowledge_base parameter (uses _get_kb() instead)")
                 return
         
         self.fail("get_llm_response function not found")
@@ -73,14 +78,19 @@ class TestAppIntegration(unittest.TestCase):
         self.assertIn('st.session_state.kb', content,
                      "app.py should store kb in session state")
     
-    def test_app_passes_kb_to_llm_helper(self):
-        """Test that app.py passes kb to llm_helper."""
+    def test_app_uses_kb_in_session_state(self):
+        """Test that app.py manages kb in session state."""
         app_path = Path(__file__).parent.parent / "src" / "app.py"
         with open(app_path, 'r') as f:
             content = f.read()
         
-        self.assertIn('knowledge_base=st.session_state.kb', content,
-                     "app.py should pass kb to llm_helper")
+        # App should still maintain kb in session state for its own use
+        self.assertIn('st.session_state.kb', content,
+                     "app.py should store kb in session state")
+        
+        # But should not pass it to get_llm_response anymore
+        self.assertNotIn('knowledge_base=st.session_state.kb', content,
+                     "app.py should not pass kb to llm_helper (llm_helper uses _get_kb() internally)")
 
 
 class TestRequirements(unittest.TestCase):
