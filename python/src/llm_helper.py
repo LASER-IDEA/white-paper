@@ -141,6 +141,28 @@ def get_api_config(
 
     return api_key, base_url, model
 
+def _format_kb_context(docs: List[Dict[str, Any]]) -> str:
+    """
+    Format knowledge base search results into a context string.
+    
+    Args:
+        docs: List of dicts with 'content', 'metadata', and 'score' keys
+        
+    Returns:
+        Formatted context string
+    """
+    if not docs:
+        return ""
+    
+    context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
+    for d in docs:
+        if not isinstance(d, dict) or 'content' not in d:
+            continue  # Skip malformed results
+        source_file = d.get('metadata', {}).get('source_file', 'Unknown')
+        context += f"--- Source: {source_file} ---\n{d['content']}\n"
+    
+    return context
+
 def get_llm_response(
     query: str, 
     data_context: DataType, 
@@ -175,12 +197,7 @@ def get_llm_response(
         # Search for relevant documents
         # We increase k to get enough context
         docs = kb.search(query, k=5)
-        if docs:
-            kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
-            for d in docs:
-                # docs is a list of dicts with 'content', 'metadata', 'score'
-                source_file = d.get('metadata', {}).get('source_file', 'Unknown')
-                kb_context += f"--- Source: {source_file} ---\n{d['content']}\n"
+        kb_context = _format_kb_context(docs)
 
     if not api_key:
         # Fallback for testing without key
@@ -340,10 +357,7 @@ def generate_dimension_insights(data: DataType, dimension: str, api_key: Optiona
     if kb:
         # Search for the dimension name specifically
         docs = kb.search(dimension, k=5)
-        for d in docs:
-            # docs is a list of dicts with 'content', 'metadata', 'score'
-            source_file = d.get('metadata', {}).get('source_file', 'Unknown')
-            kb_context += f"--- Source: {source_file} ---\n{d['content']}\n"
+        kb_context = _format_kb_context(docs)
 
     if not api_key or OpenAI is None:
         return f"**AI Insight (Mock):** Based on the data, the {dimension} shows a positive trend. (API Key required for real analysis)"
