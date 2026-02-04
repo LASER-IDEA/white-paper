@@ -111,7 +111,7 @@ def get_api_config(
     base_url: Optional[str] = None, 
     model: Optional[str] = None,
     query: Optional[str] = None
-) -> Tuple[str, Optional[str], str]:
+) -> Tuple[Optional[str], Optional[str], str]:
     """
     Get API configuration with fallback to environment variables.
     Auto-selects model based on task complexity if query is provided.
