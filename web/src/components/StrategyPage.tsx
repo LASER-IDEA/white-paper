@@ -40,7 +40,7 @@ const StrategyPage: React.FC = () => {
         timestamp: new Date().toISOString()
       };
 
-      setInsights([newInsight, ...insights]);
+      setInsights(prev => [newInsight, ...prev]);
       setUserInput('');
       setIsAnalyzing(false);
     }, 1000);
@@ -58,13 +58,13 @@ const StrategyPage: React.FC = () => {
         timestamp: new Date().toISOString()
       }));
 
-      setInsights([...newInsights, ...insights]);
+      setInsights(prev => [...newInsights, ...prev]);
       setIsGenerating(false);
     }, 2000);
   };
 
   const handleDelete = (id: string) => {
-    setInsights(insights.filter(i => i.id !== id));
+    setInsights(prev => prev.filter(i => i.id !== id));
   };
 
   const filteredInsights = filterDim === 'All'
