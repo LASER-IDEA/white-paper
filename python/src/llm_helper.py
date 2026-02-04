@@ -173,12 +173,14 @@ def get_llm_response(
     kb_context = ""
     if kb:
         # Search for relevant documents
-        # We increase top_k to get enough context
-        docs = kb.search(query, top_k=5)
+        # We increase k to get enough context
+        docs = kb.search(query, k=5)
         if docs:
             kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
             for d in docs:
-                kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
+                # docs is a list of dicts with 'content', 'metadata', 'score'
+                source = d.get('metadata', {}).get('source_file', 'Unknown')
+                kb_context += f"--- Source: {source} ---\n{d['content']}\n"
         else:
              # Fallback: if query is very generic, maybe provide introduction?
              pass
@@ -340,9 +342,11 @@ def generate_dimension_insights(data: DataType, dimension: str, api_key: Optiona
     kb_context = ""
     if kb:
         # Search for the dimension name specifically
-        docs = kb.search(dimension, top_k=5)
+        docs = kb.search(dimension, k=5)
         for d in docs:
-            kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
+            # docs is a list of dicts with 'content', 'metadata', 'score'
+            source = d.get('metadata', {}).get('source_file', 'Unknown')
+            kb_context += f"--- Source: {source} ---\n{d['content']}\n"
 
     if not api_key or OpenAI is None:
         return f"**AI Insight (Mock):** Based on the data, the {dimension} shows a positive trend. (API Key required for real analysis)"
