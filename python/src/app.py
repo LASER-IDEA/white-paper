@@ -434,8 +434,7 @@ with tab2:
                     st.session_state.data,
                     api_key=api_key,
                     base_url=base_url if base_url else None,
-                    model=model,
-                    knowledge_base=st.session_state.kb
+                    model=model
                 )
 
                 st.markdown(explanation)
