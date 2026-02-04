@@ -152,7 +152,7 @@ def get_llm_response(
 ) -> Tuple[str, Optional[str]]:
     """
     Interact with the LLM to generate a visualization based on the query and data context.
-    Uses RAG to include knowledge from the Blue Book.
+    Uses RAG with either the provided knowledge_base or the global Blue Book KB.
     
     Args:
         query: The user's question or request
@@ -174,8 +174,8 @@ def get_llm_response(
     kb_context = ""
     if kb:
         # Search for relevant documents
-        # We increase top_k to get enough context
-        docs = kb.search(query, top_k=5)
+        # We increase k to get enough context
+        docs = kb.search(query, k=5)
         if docs:
             kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
             for d in docs:
@@ -338,7 +338,7 @@ def generate_dimension_insights(data: DataType, dimension: str, api_key: Optiona
     kb_context = ""
     if kb:
         # Search for the dimension name specifically
-        docs = kb.search(dimension, top_k=5)
+        docs = kb.search(dimension, k=5)
         for d in docs:
             kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
 
