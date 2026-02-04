@@ -88,7 +88,8 @@ async function generatePDFs() {
     });
 
     const dimensions = [
-      { name: 'All', param: '', filename: 'Low-Altitude Economy White Paper.pdf' },
+      // Removed 'All' dimension to avoid redundancy - the 5 dimensional PDFs will be merged
+      // { name: 'All', param: '', filename: 'Low-Altitude Economy White Paper.pdf' },
       { name: '规模与增长', param: '规模与增长', filename: 'scale_growth_report.pdf' },
       { name: '结构与主体', param: '结构与主体', filename: 'structure_entity_report.pdf' },
       { name: '时空特征', param: '时空特征', filename: 'time_space_report.pdf' },
