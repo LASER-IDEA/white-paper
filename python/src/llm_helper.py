@@ -342,7 +342,7 @@ def generate_dimension_insights(data: DataType, dimension: str, api_key: Optiona
     kb_context = ""
     if kb:
         # Search for the dimension name specifically
-        docs = kb.search(dimension, top_k=5)
+        docs = kb.search(dimension, 5)
         for d in docs:
             kb_context += f"--- Section: {d.section} ---\n{d.content}\n"
 
