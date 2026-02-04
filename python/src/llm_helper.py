@@ -167,7 +167,7 @@ def get_llm_response(
     if kb:
         # Search for relevant documents
         # We increase top_k to get enough context
-        docs = kb.search(query, top_k=5)
+        docs = kb.search(query, 5)
         if docs:
             kb_context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
             for d in docs:
