@@ -30,6 +30,9 @@ except ImportError:
 # Type alias for data that can be summarized
 DataType = Union[Dict, pd.DataFrame]
 
+# Constants
+BLUE_BOOK_NAME = "Low Altitude Economy Blue Book"
+
 # Global KB instance
 _kb = None
 
@@ -154,7 +157,7 @@ def _format_kb_context(docs: List[Dict[str, Any]]) -> str:
     if not docs:
         return ""
     
-    context = "\n\nRelevant Content from 'Low Altitude Economy Blue Book' (Reference):\n"
+    context = f"\n\nRelevant Content from '{BLUE_BOOK_NAME}' (Reference):\n"
     for d in docs:
         if not isinstance(d, dict) or 'content' not in d:
             continue  # Skip malformed results
@@ -233,13 +236,13 @@ chart = c
 
     # Construct the system prompt
     # We describe the environment and available libraries (pyecharts)
-    system_prompt = """
+    system_prompt = f"""
 You are a data analysis assistant for a Low Altitude Economy dashboard.
 Your goal is to help the user understand the data and visualize new indices or insights.
 You have access to the data in the variable `data`.
 The `data` is a dictionary or dataframe containing metrics about flights, fleet, etc.
 
-You also have access to the "Low Altitude Economy Blue Book" content below.
+You also have access to the "{BLUE_BOOK_NAME}" content below.
 Use this content to understand how indices are defined, calculated, and what they mean.
 When the user asks about specific indices (e.g., Innovation, Efficiency), refer to the Blue Book definitions.
 
