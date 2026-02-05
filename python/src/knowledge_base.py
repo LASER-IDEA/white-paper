@@ -10,9 +10,16 @@ This module handles:
 """
 
 import os
+import time
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import streamlit as st
+
+# Import logger
+from utils.logger import setup_logger
+
+# Setup logger for knowledge base
+logger = setup_logger("knowledge_base")
 
 # Handle optional dependencies
 try:
@@ -79,7 +86,7 @@ class KnowledgeBase:
         
         for pdf_path in pdf_paths:
             if not os.path.exists(pdf_path):
-                print(f"Warning: PDF file not found: {pdf_path}")
+                logger.warning(f"PDF file not found: {pdf_path}")
                 continue
                 
             try:
@@ -91,9 +98,9 @@ class KnowledgeBase:
                     doc.metadata['source_file'] = os.path.basename(pdf_path)
                 
                 documents.extend(docs)
-                print(f"Loaded {len(docs)} pages from {os.path.basename(pdf_path)}")
+                logger.info(f"Loaded {len(docs)} pages from {os.path.basename(pdf_path)}")
             except Exception as e:
-                print(f"Error loading {pdf_path}: {e}")
+                logger.error(f"Error loading {pdf_path}: {e}")
         
         self.documents = documents
         return documents
@@ -129,7 +136,7 @@ class KnowledgeBase:
         )
         
         chunks = text_splitter.split_documents(documents)
-        print(f"Split {len(documents)} documents into {len(chunks)} chunks")
+        logger.info(f"Split {len(documents)} documents into {len(chunks)} chunks")
         
         return chunks
     
@@ -154,10 +161,10 @@ class KnowledgeBase:
                     persist_directory=self.persist_directory,
                     embedding_function=self.embeddings
                 )
-                print(f"Loaded existing vector database from {self.persist_directory}")
+                logger.info(f"Loaded existing vector database from {self.persist_directory}")
                 return
             except Exception as e:
-                print(f"Error loading existing database: {e}. Rebuilding...")
+                logger.warning(f"Error loading existing database: {e}. Rebuilding...")
         
         # Build new database
         if documents is None:
@@ -175,7 +182,7 @@ class KnowledgeBase:
             persist_directory=self.persist_directory
         )
         
-        print(f"Built vector database with {len(documents)} chunks")
+        logger.info(f"Built vector database with {len(documents)} chunks")
     
     def search(
         self,
@@ -274,7 +281,7 @@ def initialize_knowledge_base(
         Initialized KnowledgeBase instance or None if initialization fails
     """
     if not LANGCHAIN_AVAILABLE:
-        print("LangChain not available. RAG features disabled.")
+        logger.warning("LangChain not available. RAG features disabled.")
         return None
     
     try:
@@ -283,17 +290,17 @@ def initialize_knowledge_base(
         pdf_dir = project_root / pdf_directory
         
         if not pdf_dir.exists():
-            print(f"PDF directory not found: {pdf_dir}")
+            logger.warning(f"PDF directory not found: {pdf_dir}")
             return None
         
         # Find all PDF files
         pdf_files = list(pdf_dir.glob("*.pdf"))
         
         if not pdf_files:
-            print(f"No PDF files found in {pdf_dir}")
+            logger.warning(f"No PDF files found in {pdf_dir}")
             return None
         
-        print(f"Found {len(pdf_files)} PDF files")
+        logger.info(f"Found {len(pdf_files)} PDF files")
         
         # Initialize knowledge base
         kb = KnowledgeBase(
@@ -306,11 +313,11 @@ def initialize_knowledge_base(
         # Build vector store
         kb.build_vectorstore(force_rebuild=force_rebuild)
         
-        print("Knowledge base initialized successfully")
+        logger.info("Knowledge base initialized successfully")
         return kb
         
     except Exception as e:
-        print(f"Error initializing knowledge base: {e}")
+        logger.error(f"Error initializing knowledge base: {e}")
         import traceback
         traceback.print_exc()
         return None
@@ -318,12 +325,12 @@ def initialize_knowledge_base(
 
 def test_knowledge_base():
     """Test function for the knowledge base."""
-    print("Testing Knowledge Base...")
+    logger.info("Testing Knowledge Base...")
     
     kb = initialize_knowledge_base()
     
     if kb is None:
-        print("Failed to initialize knowledge base")
+        logger.error("Failed to initialize knowledge base")
         return
     
     # Test search
@@ -334,9 +341,9 @@ def test_knowledge_base():
     ]
     
     for query in test_queries:
-        print(f"\nQuery: {query}")
+        logger.info(f"Query: {query}")
         context = kb.get_context_for_query(query, k=2)
-        print(f"Context preview: {context[:200]}...")
+        logger.debug(f"Context preview: {context[:200]}...")
 
 
 if __name__ == "__main__":
