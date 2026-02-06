@@ -45,3 +45,6 @@ debug-*.png
 
 # Vector database cache
 chroma_db/
+data/
+output/
+web/src/utils/computedData.ts
