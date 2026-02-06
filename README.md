@@ -372,6 +372,13 @@ For questions or support, please open an issue on GitHub or contact the developm
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/ywang290">
+                    <img src="https://avatars.githubusercontent.com/u/39563290?v=4" width="100;" alt="ywang290"/>
+                    <br />
+                    <sub><b>ywang290</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sallychenhk">
                     <img src="https://avatars.githubusercontent.com/u/199864563?v=4" width="100;" alt="sallychenhk"/>
                     <br />
@@ -399,6 +406,8 @@ For questions or support, please open an issue on GitHub or contact the developm
                     <sub><b>estimation</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/hux062303">
                     <img src="https://avatars.githubusercontent.com/u/7478889?v=4" width="100;" alt="hux062303"/>
