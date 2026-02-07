@@ -22,6 +22,13 @@ A comprehensive, dual-platform dashboard for analyzing and visualizing China's L
 
 The GitHub Pages deployment automatically updates whenever code is pushed to the `main` branch, ensuring the live demo always reflects the latest features and improvements.
 
+## 📖 Documentation
+
+- **[Usage Guide](USAGE_GUIDE.md)** - 🆕 **Start here!** Complete guide on how to use the LLM RAG application
+- **[RAG Implementation](RAG_IMPLEMENTATION.md)** - Technical details of the RAG system architecture
+- **[Index Definitions](INDEX_DEFINITIONS.md)** - Detailed explanation of all metrics and dimensions
+- **[Security](SECURITY.md)** - Security best practices and guidelines
+
 ## 🌟 Key Features
 
 ### 📊 Comprehensive Analytics Framework
@@ -112,6 +119,14 @@ white-paper/
 ### 🎯 Try the Live Demo First
 
 Want to explore the dashboard without setup? Visit our **[live demo](https://LASER-IDEA.github.io/white-paper/)** hosted on GitHub Pages!
+
+### 📚 Need Help Using the Application?
+
+**See the [Usage Guide](USAGE_GUIDE.md)** for comprehensive instructions on:
+- How to access and use the deployed LLM RAG application
+- Using the AI Assistant with RAG-enhanced responses
+- Example queries and use cases
+- Troubleshooting common issues
 
 ### Python Streamlit Version
 
