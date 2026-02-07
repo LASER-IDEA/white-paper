@@ -288,7 +288,7 @@ Upload your own CSV files:
 1. Install RAG dependencies: `pip install -r config/requirements-rag.txt`
 2. Check if PDF files exist in `docs/pdf/` directory
 3. Delete `chroma_db/` folder and restart to rebuild
-4. Check disk space (needs ~500MB for models and database)
+4. Check disk space (requirements vary based on document count; typically 200MB-1GB for models and database)
 
 ### AI Assistant Not Responding
 
@@ -306,7 +306,7 @@ Upload your own CSV files:
 **Issue**: Application takes long time on first startup
 
 **Explanation**: This is normal! The first run needs to:
-- Download embedding model (~90MB)
+- Download embedding model (size varies by model; typically 80MB-400MB)
 - Process all PDF documents
 - Build vector database
 
