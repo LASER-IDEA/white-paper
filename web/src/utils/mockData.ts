@@ -41,11 +41,17 @@ export const getScaleGrowthData = (): MetricData[] => [
     insight: '里程增长快于时长，表明新型无人机机型的飞行速度和效率更高。',
     suggestion: '鼓励长距离物流航线，进一步提升该指数。',
     chartType: 'DualLine',
-    chartData: months.map(m => ({
-      name: m,
-      duration: randomInt(4000, 6000) + (months.indexOf(m) * 200),
-      distance: randomInt(12000, 18000) + (months.indexOf(m) * 800),
-    })),
+    chartData: months.map(m => {
+      const duration = randomInt(4000, 6000) + (months.indexOf(m) * 200);
+      const distance = randomInt(12000, 18000) + (months.indexOf(m) * 800);
+      const speed = Math.round((distance / duration) * 10) / 10;
+      return {
+        name: m,
+        duration,
+        distance,
+        speed,
+      };
+    }),
     keyMetrics: [
       { label: '总时长', value: '5.8万小时' },
       { label: '总里程', value: '240万公里' },

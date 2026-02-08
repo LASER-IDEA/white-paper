@@ -142,6 +142,15 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
               style: {fontSize: 10, fill: '#64748b'}
             }}
           />
+          <YAxis
+            yAxisId="speed"
+            orientation="right"
+            tick={{fontSize: 10}}
+            axisLine={false}
+            tickLine={false}
+            offset={40}
+            hide
+          />
           <Tooltip
             contentStyle={{
               borderRadius: '8px',
@@ -168,6 +177,17 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
             dataKey="distance"
             name="里程"
             stroke="#10b981"
+            strokeWidth={3}
+            dot={{r: 4}}
+            animationDuration={800}
+            animationEasing="ease-in-out"
+          />
+          <Line
+            yAxisId="speed"
+            type="monotone"
+            dataKey="speed"
+            name="综合"
+            stroke="#f59e0b"
             strokeWidth={3}
             dot={{r: 4}}
             animationDuration={800}
