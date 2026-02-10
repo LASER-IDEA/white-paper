@@ -17,17 +17,12 @@ RUN apt-get update && \
 COPY requirements.txt /app/requirements.txt
 
 # Install dependencies in batches to reduce peak disk usage
-# First batch: Core dependencies
-RUN pip install --no-cache-dir --user streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv
-
-# Second batch: AI/ML dependencies
-RUN pip install --no-cache-dir --user openai langchain langchain-community langchain-openai
-
-# Third batch: Vector DB and document processing
-RUN pip install --no-cache-dir --user chromadb pypdf sentence-transformers
-
-# Clean up to reduce image size
-RUN find /root/.local -type d -name '__pycache__' -prune -exec rm -rf {} + && \
+# This approach installs lighter packages first, then heavier ML packages
+# Note: All dependencies are still defined in requirements.txt for easy maintenance
+RUN pip install --no-cache-dir --user streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv && \
+    pip install --no-cache-dir --user openai langchain langchain-community langchain-openai && \
+    pip install --no-cache-dir --user chromadb pypdf sentence-transformers && \
+    find /root/.local -type d -name '__pycache__' -prune -exec rm -rf {} + && \
     find /root/.local -type d -name 'tests' -prune -exec rm -rf {} + && \
     find /root/.local -name '*.pyc' -delete
 
