@@ -27,15 +27,16 @@ For local development, you can generate the split files manually:
 ```bash
 # From the repository root
 # Core dependencies (lines 1-7)
-sed -n '1,7p' config/requirements.txt > python/requirements-core.txt
+sed -n '1,7p' config/requirements.txt | grep -v '^$' > python/requirements-core.txt
 
 # ML dependencies (line 8 and lines 10-12, skipping comment on line 9)
-sed -n '8p' config/requirements.txt > python/requirements-ml.txt
-sed -n '10,12p' config/requirements.txt >> python/requirements-ml.txt
+{ sed -n '8p' config/requirements.txt; sed -n '10,12p' config/requirements.txt; } | grep -v '^$' > python/requirements-ml.txt
 
 # Vector DB dependencies (lines 13-15)
-sed -n '13,15p' config/requirements.txt > python/requirements-vectordb.txt
+sed -n '13,15p' config/requirements.txt | grep -v '^$' > python/requirements-vectordb.txt
 ```
+
+Note: The `grep -v '^$'` filters out any blank lines to ensure consistency.
 
 ## Docker Build
 
