@@ -49,14 +49,15 @@ jobs:
           # Copy split requirements files from config to python directory
           # Split requirements into batches to reduce peak disk usage during Docker build
           
-          # Core dependencies
-          head -7 config/requirements.txt > python/requirements-core.txt
+          # Core dependencies (lines 1-7)
+          sed -n '1,7p' config/requirements.txt > python/requirements-core.txt
           
-          # ML dependencies (lines 9-12 after skipping comment on line 9)
-          sed -n '10,12p' config/requirements.txt > python/requirements-ml.txt
+          # ML dependencies (line 8 and lines 10-12, skipping comment on line 9)
+          sed -n '8p' config/requirements.txt > python/requirements-ml.txt
+          sed -n '10,12p' config/requirements.txt >> python/requirements-ml.txt
           
           # Vector DB dependencies (lines 13-15)
-          tail -3 config/requirements.txt > python/requirements-vectordb.txt
+          sed -n '13,15p' config/requirements.txt > python/requirements-vectordb.txt
           
           # Keep full requirements.txt for reference
           cp config/requirements.txt python/requirements.txt

@@ -26,9 +26,15 @@ If you need to update dependencies:
 For local development, you can generate the split files manually:
 ```bash
 # From the repository root
-head -7 config/requirements.txt > python/requirements-core.txt
-sed -n '10,12p' config/requirements.txt > python/requirements-ml.txt  
-tail -3 config/requirements.txt > python/requirements-vectordb.txt
+# Core dependencies (lines 1-7)
+sed -n '1,7p' config/requirements.txt > python/requirements-core.txt
+
+# ML dependencies (line 8 and lines 10-12, skipping comment on line 9)
+sed -n '8p' config/requirements.txt > python/requirements-ml.txt
+sed -n '10,12p' config/requirements.txt >> python/requirements-ml.txt
+
+# Vector DB dependencies (lines 13-15)
+sed -n '13,15p' config/requirements.txt > python/requirements-vectordb.txt
 ```
 
 ## Docker Build
