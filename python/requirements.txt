@@ -6,3 +6,10 @@ numpy
 scipy
 python-dotenv
 openai
+# RAG and Vector Database dependencies
+langchain
+langchain-community
+langchain-openai
+chromadb
+pypdf
+sentence-transformers
