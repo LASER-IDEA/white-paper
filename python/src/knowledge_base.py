@@ -26,8 +26,14 @@ try:
     from langchain_community.document_loaders import PyPDFLoader
     from langchain_community.vectorstores import Chroma
     from langchain_community.embeddings import HuggingFaceEmbeddings
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
-    from langchain.schema import Document
+    try:
+        from langchain.text_splitter import RecursiveCharacterTextSplitter
+    except ImportError:
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+    try:
+        from langchain.schema import Document
+    except ImportError:
+        from langchain_core.documents import Document
     LANGCHAIN_AVAILABLE = True
 except ImportError:
     LANGCHAIN_AVAILABLE = False

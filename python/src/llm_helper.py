@@ -5,6 +5,11 @@ import streamlit as st
 import pandas as pd
 from typing import Tuple, Optional, Union, Dict, List
 from utils.logger import setup_logger
+from llm_providers import (
+    LLMProviderRegistry, 
+    get_default_provider, 
+    get_default_model
+)
 
 # Initialize logger
 logger = setup_logger("llm_helper")
@@ -109,6 +114,7 @@ def get_llm_response(
     api_key: Optional[str] = None, 
     base_url: Optional[str] = None, 
     model: Optional[str] = None,
+    provider: Optional[str] = None,
     knowledge_base: Optional[object] = None
 ) -> Tuple[str, Optional[str]]:
     """
@@ -118,9 +124,10 @@ def get_llm_response(
     Args:
         query: The user's question or request
         data_context: The available data to work with (dict or DataFrame)
-        api_key: OpenAI compatible API key. If None, uses DEEPSEEK_API_KEY from .env
-        base_url: OpenAI compatible base URL. If None, uses DEEPSEEK_BASE_URL from .env
+        api_key: API key. If None, uses provider's default env var
+        base_url: API base URL. If None, uses provider's default
         model: Model name to use. If None, auto-selects based on task complexity
+        provider: Provider name ('deepseek', 'openai', 'anthropic', 'local'). If None, uses default
         knowledge_base: Optional KnowledgeBase instance for RAG
 
     Returns:
@@ -128,25 +135,40 @@ def get_llm_response(
             explanation: The text response from the LLM
             code: The generated Python code to create the chart (or None)
     """
-
-    # Load configuration from .env if not provided
+    
+    # Determine provider
+    if not provider:
+        provider = get_default_provider()
+    
+    provider_config = LLMProviderRegistry.get_provider(provider)
+    if not provider_config:
+        return f"Unknown provider: {provider}", None
+    
+    # Get API key
     if not api_key:
-        api_key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        api_key = LLMProviderRegistry.get_api_key(provider)
 
+    # Get base URL
     if not base_url:
-        base_url = os.environ.get("DEEPSEEK_BASE_URL")
+        base_url = provider_config.base_url
+        # Allow override via environment variable
+        base_url_env = f"{provider.upper()}_BASE_URL"
+        base_url = os.environ.get(base_url_env, base_url)
 
     # Auto-select model based on task complexity if not specified
     if not model:
         is_complex = determine_task_complexity(query)
-        if is_complex:
-            model = os.environ.get("DEEPSEEK_REASONER_MODEL", "deepseek-reasoner")
-        else:
-            model = os.environ.get("DEEPSEEK_CHAT_MODEL", "deepseek-chat")
+        model = get_default_model(provider, is_complex)
+        logger.info(f"Auto-selected model: {model} (complex={is_complex})")
+    
+    # Verify model exists for provider
+    model_config = LLMProviderRegistry.get_model(provider, model)
+    if model_config:
+        logger.info(f"Using {provider_config.name} - {model_config.description}")
 
-    if not api_key:
+    if not api_key and provider_config.requires_api_key:
         # Fallback for testing without key - returns a mock bar chart
-        explanation = "I need an API key to process your request using a real LLM. However, I can demonstrate how this would work with a mock example. Here is a sample chart generated based on a hypothetical interpretation of your request."
+        explanation = f"I need an API key for {provider_config.name} to process your request. However, I can demonstrate how this would work with a mock example. Here is a sample chart generated based on a hypothetical interpretation of your request."
 
         code = """
 from pyecharts.charts import Bar
@@ -255,4 +277,6 @@ chart = c
         return explanation, code
 
     except Exception as e:
-        return f"Error communicating with LLM: {str(e)}", None
+        error_msg = f"Error communicating with {provider_config.name}: {str(e)}"
+        logger.error(error_msg)
+        return error_msg, None
