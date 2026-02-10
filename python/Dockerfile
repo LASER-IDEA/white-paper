@@ -17,8 +17,18 @@ RUN apt-get update && \
 COPY requirements.txt /app/requirements.txt
 
 # Install dependencies in batches to reduce peak disk usage
-# This approach installs lighter packages first, then heavier ML packages
-# Note: All dependencies are still defined in requirements.txt for easy maintenance
+# NOTE: Dependencies are explicitly listed here instead of using -r requirements.txt
+# because installing all dependencies at once causes "No space left on device" errors
+# in constrained CI/CD environments (GitHub Actions runners have limited disk space).
+# 
+# IMPORTANT: When updating requirements.txt, also update these three pip install commands
+# to keep them in sync. The dependencies are organized as:
+# - Batch 1: Core dependencies (streamlit, pandas, numpy, scipy, etc.)
+# - Batch 2: AI/ML dependencies (openai, langchain, etc.)  
+# - Batch 3: Vector DB and document processing (chromadb, pypdf, sentence-transformers)
+#
+# This batched approach significantly reduces peak disk usage during the build process
+# by installing lighter packages first, then progressively installing heavier ML packages.
 RUN pip install --no-cache-dir --user streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv && \
     pip install --no-cache-dir --user openai langchain langchain-community langchain-openai && \
     pip install --no-cache-dir --user chromadb pypdf sentence-transformers && \
