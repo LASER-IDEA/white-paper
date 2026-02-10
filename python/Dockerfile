@@ -16,11 +16,20 @@ RUN apt-get update && \
 # Copy requirements file
 COPY requirements.txt /app/requirements.txt
 
-# Install dependencies to a separate directory and clean up in same layer
-RUN pip install --no-cache-dir --user -r requirements.txt && \
-    find /root/.local -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true && \
-    find /root/.local -type d -name 'tests' -exec rm -rf {} + 2>/dev/null || true && \
-    find /root/.local -type d -name '*.dist-info' -exec rm -rf {}/RECORD {} + 2>/dev/null || true
+# Install dependencies in batches to reduce peak disk usage
+# First batch: Core dependencies
+RUN pip install --no-cache-dir --user streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv
+
+# Second batch: AI/ML dependencies
+RUN pip install --no-cache-dir --user openai langchain langchain-community langchain-openai
+
+# Third batch: Vector DB and document processing
+RUN pip install --no-cache-dir --user chromadb pypdf sentence-transformers
+
+# Clean up to reduce image size
+RUN find /root/.local -type d -name '__pycache__' -prune -exec rm -rf {} + && \
+    find /root/.local -type d -name 'tests' -prune -exec rm -rf {} + && \
+    find /root/.local -name '*.pyc' -delete
 
 # Runtime stage - minimal final image
 FROM python:3.10-slim
@@ -31,7 +40,7 @@ WORKDIR /app
 # Install only runtime dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/*
 
 # Copy installed packages from builder
 COPY --from=builder /root/.local /root/.local
