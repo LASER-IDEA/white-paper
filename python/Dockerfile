@@ -13,25 +13,22 @@ RUN apt-get update && \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file
-COPY requirements.txt /app/requirements.txt
+# Copy requirements files
+COPY requirements*.txt /app/
 
 # Install dependencies in batches to reduce peak disk usage
-# NOTE: Dependencies are explicitly listed here instead of using -r requirements.txt
-# because installing all dependencies at once causes "No space left on device" errors
-# in constrained CI/CD environments (GitHub Actions runners have limited disk space).
-# 
-# IMPORTANT: When updating requirements.txt, also update these three pip install commands
-# to keep them in sync. The dependencies are organized as:
-# - Batch 1: Core dependencies (streamlit, pandas, numpy, scipy, etc.)
-# - Batch 2: AI/ML dependencies (openai, langchain, etc.)  
-# - Batch 3: Vector DB and document processing (chromadb, pypdf, sentence-transformers)
+# Dependencies are split into multiple files to reduce peak disk usage during build:
+# - requirements-core.txt: Core dependencies (streamlit, pandas, numpy, scipy, etc.)
+# - requirements-ml.txt: AI/ML dependencies (openai, langchain, etc.)  
+# - requirements-vectordb.txt: Vector DB and document processing (chromadb, pypdf, sentence-transformers)
 #
 # This batched approach significantly reduces peak disk usage during the build process
 # by installing lighter packages first, then progressively installing heavier ML packages.
-RUN pip install --no-cache-dir --user streamlit streamlit-echarts pyecharts pandas numpy scipy python-dotenv && \
-    pip install --no-cache-dir --user openai langchain langchain-community langchain-openai && \
-    pip install --no-cache-dir --user chromadb pypdf sentence-transformers && \
+# This is necessary because GitHub Actions runners have limited disk space and installing
+# all dependencies at once causes "No space left on device" errors.
+RUN pip install --no-cache-dir --user -r requirements-core.txt && \
+    pip install --no-cache-dir --user -r requirements-ml.txt && \
+    pip install --no-cache-dir --user -r requirements-vectordb.txt && \
     find /root/.local -type d -name '__pycache__' -prune -exec rm -rf {} + && \
     find /root/.local -type d -name 'tests' -prune -exec rm -rf {} + && \
     find /root/.local -name '*.pyc' -delete
