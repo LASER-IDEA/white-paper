@@ -744,7 +744,8 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
           // Group by user type
           const userTypeData = districtData.values.reduce((acc, item) => {
             const userType = item.uas_user_type || '未知类型';
-            acc[userType] = (acc[userType] || 0) + (item.value || 0);
+            const value = Number(item.value) || 0;
+            acc[userType] = (acc[userType] || 0) + value;
             return acc;
           }, {} as Record<string, number>);
           
