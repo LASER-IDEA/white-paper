@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReportPage from './components/ReportPage';
 import BackToTop from './components/BackToTop';
-import { getAllData } from './utils/mockData';
+import { getAllData as getAllComputedData } from './utils/mockData';
 import { Dimension } from './types';
 
 const getDimensionIcon = (dimension: string) => {
@@ -12,7 +12,8 @@ const getDimensionIcon = (dimension: string) => {
     [Dimension.StructureEntity]: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
     [Dimension.TimeSpace]: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
     [Dimension.EfficiencyQuality]: "M13 10V3L4 14h7v7l9-11h-7z",
-    [Dimension.InnovationIntegration]: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+    [Dimension.InnovationIntegration]: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+    [Dimension.CompositeIndex]: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
   };
 
   if (!paths[dimension]) return null;
@@ -23,8 +24,53 @@ const getDimensionIcon = (dimension: string) => {
   );
 };
 
+const REPORT_PDF_TITLE = '深圳市低空经济发展指数报告';
+const EXPORT_WAIT_MS = 5500;
+
+/** 导出按钮：状态仅在本组件内，避免 App 因 isPrinting 重渲染导致图表恢复初始状态 */
+const ExportPdfButton: React.FC = () => {
+  const [isPrinting, setIsPrinting] = useState(false);
+  const handlePrint = () => {
+    setIsPrinting(true);
+    const prevTitle = document.title;
+    document.title = REPORT_PDF_TITLE;
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        document.title = prevTitle;
+        setIsPrinting(false);
+      }, 500);
+    }, EXPORT_WAIT_MS);
+  };
+  return (
+    <button
+      type="button"
+      onClick={handlePrint}
+      disabled={isPrinting}
+      className={`w-full flex items-center justify-center space-x-2 bg-[#002FA7] hover:bg-[#001F7A] text-white py-2.5 rounded-lg shadow-sm transition-all font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${isPrinting ? 'opacity-75 cursor-not-allowed' : ''}`}
+      aria-live="polite"
+    >
+      {isPrinting ? (
+        <>
+          <svg className="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>正在准备...</span>
+        </>
+      ) : (
+        <>
+          <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+          <span>导出 PDF</span>
+        </>
+      )}
+    </button>
+  );
+};
+
 const App: React.FC = () => {
-  const allData = getAllData();
+  //const allData = getAllData();
+  const allData = getAllComputedData();
 
   // Get dimension from URL parameter, default to 'All'
   const getDimensionFromUrl = () => {
@@ -34,7 +80,6 @@ const App: React.FC = () => {
 
   const [selectedDimension, setSelectedDimension] = useState<string>(getDimensionFromUrl());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isPrinting, setIsPrinting] = useState(false);
   const mainContentRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
 
@@ -68,16 +113,6 @@ const App: React.FC = () => {
   // Group Dimensions for Sidebar
   const dimensions = Object.values(Dimension);
 
-  const handlePrint = () => {
-    setIsPrinting(true);
-    // Give UI a chance to update and show loading state
-    setTimeout(() => {
-      window.print();
-      // Reset state after a delay (browser print dialog blocks execution)
-      setTimeout(() => setIsPrinting(false), 500);
-    }, 800);
-  };
-
   const updateDimension = (dimension: string) => {
     setSelectedDimension(dimension);
     setIsMobileMenuOpen(false);
@@ -101,7 +136,7 @@ const App: React.FC = () => {
 
       {/* Mobile Header */}
       <div className="md:hidden sticky top-0 bg-white border-b border-slate-200 z-30 px-4 py-3 flex items-center justify-between shadow-sm no-print print:hidden">
-        <h1 className="font-bold text-[#002FA7]">低空经济白皮书</h1>
+        <h1 className="font-bold text-[#002FA7]">深圳市低空经济发展指数报告</h1>
         <button
           onClick={() => setIsMobileMenuOpen(true)}
           aria-label="打开导航"
@@ -135,7 +170,7 @@ const App: React.FC = () => {
         <div className="flex-1 overflow-y-auto">
           <div className="p-6">
             <h1 className="text-xl font-bold text-[#002FA7] leading-tight">
-              低空经济 <span className="text-[#002FA7] block">白皮书</span>
+            深圳市低空经济 <span className="text-[#002FA7] block">发展指数报告</span>
             </h1>
             <p className="text-xs text-slate-500 mt-2">发展指数仪表盘</p>
           </div>
@@ -173,27 +208,7 @@ const App: React.FC = () => {
 
         {/* Fixed Export Button at Bottom */}
         <div className="flex-shrink-0 w-full p-4 border-t border-slate-200 bg-white">
-          <button
-            onClick={handlePrint}
-            disabled={isPrinting}
-            className={`w-full flex items-center justify-center space-x-2 bg-[#002FA7] hover:bg-[#001F7A] text-white py-2.5 rounded-lg shadow-sm transition-all font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002FA7] focus-visible:ring-offset-2 ${isPrinting ? 'opacity-75 cursor-not-allowed' : ''}`}
-            aria-live="polite"
-          >
-            {isPrinting ? (
-              <>
-                <svg className="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>正在准备...</span>
-              </>
-            ) : (
-              <>
-                <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-                <span>导出 PDF</span>
-              </>
-            )}
-          </button>
+          <ExportPdfButton />
         </div>
       </aside>
 
@@ -212,11 +227,11 @@ const App: React.FC = () => {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 print:opacity-40"></div>
 
                 <div className="relative z-10">
-                   <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">本页面展示的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。不代表任何真实的市场情况、统计数据或商业信息。</div>
-                   <h1 className="text-6xl font-extrabold leading-tight tracking-tight text-white print:text-white">
-                    低空经济 <br/>
+                   {/* <div className="inline-block px-3 py-1 bg-white/20 border border-white/30 rounded-full text-white/90 text-xs font-mono mb-6 print:border-white print:text-white">本页面展示的所有数据均为模拟数据（Mock Data），仅用于演示和开发测试目的。不代表任何真实的市场情况、统计数据或商业信息。</div> */}
+                   <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-white print:text-white">
+                    深圳市低空经济发展指数报告（2025） <br/>
                     <br/>
-                    <span className="text-white print:text-white">发展指数白皮书</span>
+                    <span className="text-2xl font-normal text-white print:text-white">基于“领航（PILOT）”模型的动态评估与综合洞察</span>
                    </h1>
                    <div className="w-24 h-2 bg-white mt-8"></div>
                 </div>
@@ -225,15 +240,15 @@ const App: React.FC = () => {
                   <div className="grid grid-cols-2 gap-12 mb-12">
                      <div>
                        <span className="block text-white/70 text-sm uppercase mb-1">统计周期</span>
-                       <span className="text-2xl font-bold text-white">2023年第三季度</span>
+                       <span className="text-2xl font-bold text-white">2025年度</span>
                      </div>
                      <div>
                        <span className="block text-white/70 text-sm uppercase mb-1">区域</span>
                        <span className="text-2xl font-bold text-white">深圳先行示范区</span>
                      </div>
                   </div>
-                  <p className="text-white/70 text-sm max-w-md leading-relaxed">
-                    本白皮书基于规模、结构、时空、效率、创新5D框架，提供低空经济的综合分析。
+                  <p className="text-white/70 text-sm leading-relaxed whitespace-nowrap">
+                  本报告依托“领航（PILOT）”模型，通过五维指标全景呈现低空经济发展态势，为政策与战略提供数据决策支撑。
                   </p>
                 </div>
              </div>

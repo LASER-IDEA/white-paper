@@ -23,7 +23,8 @@ def generate_typescript(metrics: List[Dict[str, Any]], output_file: str):
         "结构与主体": "Dimension.StructureEntity",
         "时空特征": "Dimension.TimeSpace",
         "效率与质量": "Dimension.EfficiencyQuality",
-        "创新与融合": "Dimension.InnovationIntegration"
+        "创新与融合": "Dimension.InnovationIntegration",
+        "综合指数": "Dimension.CompositeIndex"
     }
     
     # Group metrics by dimension
@@ -32,6 +33,7 @@ def generate_typescript(metrics: List[Dict[str, Any]], output_file: str):
     time_space = [m for m in metrics if m['dimension'] == '时空特征']
     efficiency_quality = [m for m in metrics if m['dimension'] == '效率与质量']
     innovation = [m for m in metrics if m['dimension'] == '创新与融合']
+    composite_index = [m for m in metrics if m['dimension'] == '综合指数']
     
     def format_value(v):
         """Format a value for TypeScript."""
@@ -56,9 +58,10 @@ def generate_typescript(metrics: List[Dict[str, Any]], output_file: str):
             items = []
             for item in data:
                 if isinstance(item, dict):
-                    # Format as single line: { key: value, key: value }
+                    # Format as single line: { 'key': value, '中文企业': value }
+                    # 使用字符串字面量作为属性名，确保中文等非标识符键在 TS 中合法
                     item_str = '{ ' + ', '.join(
-                        f"{k}: {format_value(v)}" for k, v in item.items()
+                        f"{format_value(str(k))}: {format_value(v)}" for k, v in item.items()
                     ) + ' }'
                     items.append(item_str)
                 else:
@@ -69,11 +72,11 @@ def generate_typescript(metrics: List[Dict[str, Any]], output_file: str):
             items = []
             for k, v in data.items():
                 if isinstance(v, list):
-                    items.append(f"{k}: {format_chart_data(v, indent + 2)}")
+                    items.append(f"{format_value(str(k))}: {format_chart_data(v, indent + 2)}")
                 elif isinstance(v, dict):
-                    items.append(f"{k}: {format_chart_data(v, indent + 2)}")
+                    items.append(f"{format_value(str(k))}: {format_chart_data(v, indent + 2)}")
                 else:
-                    items.append(f"{k}: {format_value(v)}")
+                    items.append(f"{format_value(str(k))}: {format_value(v)}")
             return '{\n' + ',\n'.join(' ' * indent + item for item in items) + '\n' + ' ' * (indent - 2) + '}'
         else:
             return format_value(data)
@@ -160,12 +163,16 @@ import {{ Dimension, MetricData }} from '../types';
 // 5. Innovation & Integration
 {format_group(innovation, 'Innovation')}
 
+// 6. Composite Index (与「创新与融合」同级的独立栏目)
+{format_group(composite_index, 'CompositeIndex')}
+
 export const getAllComputedData = (): MetricData[] => [
   ...getScaleGrowthData(),
   ...getStructureEntityData(),
   ...getTimeSpaceData(),
   ...getEfficiencyQualityData(),
   ...getInnovationData(),
+  ...getCompositeIndexData(),
 ];
 """
     
@@ -174,8 +181,9 @@ export const getAllComputedData = (): MetricData[] => [
     
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(ts_content)
-    
+
     print(f"TypeScript file generated: {output_file}")
+    print(f"TypeScript file generated: {output_path.resolve()}")
 
 
 def main():
@@ -189,8 +197,8 @@ def main():
     )
     parser.add_argument(
         '--output', '-o',
-        default='../web/src/utils/computedData.ts',
-        help='Output TypeScript file (default: ../web/src/utils/computedData.ts)'
+        default='../../web/src/utils/computedData.ts',
+        help='Output TypeScript file (default: ../../web/src/utils/computedData.ts)'
     )
     
     args = parser.parse_args()

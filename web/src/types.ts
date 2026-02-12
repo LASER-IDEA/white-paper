@@ -4,6 +4,7 @@ export enum Dimension {
   TimeSpace = "时空特征",
   EfficiencyQuality = "效率与质量",
   InnovationIntegration = "创新与融合",
+  CompositeIndex = "综合评分",
 }
 
 export interface MetricData {
