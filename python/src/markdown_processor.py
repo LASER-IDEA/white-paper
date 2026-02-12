@@ -1736,7 +1736,6 @@ class IndexComputer:
         """12 - 单机作业效能指数: Flights per unique SN."""
         efficiency_index = 0.0
         top50_efficiency = 0.0
-        efficiency_score = 0.0
 
         total_flights = 0
         total_sn = 0
