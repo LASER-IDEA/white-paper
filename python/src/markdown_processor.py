@@ -1734,7 +1734,6 @@ class IndexComputer:
 
     def _compute_efficiency_index(self):
         """12 - 单机作业效能指数: Flights per unique SN."""
-        efficiency_index = 0.0
 
         total_flights = 0
         total_sn = 0
