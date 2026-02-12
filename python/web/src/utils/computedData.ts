@@ -223,9 +223,9 @@ export const getTimeSpaceData = (): MetricData[] => [
     suggestion: '请分析数据趋势。',
     chartType: 'Map',
     chartData: [
-    { name: '南山区', value: 85 },
-    { name: '宝安区', value: 95 },
-    { name: '福田区', value: 60 }
+    { district: '南山区', uas_user_type: 'total', district_total: 85 },
+    { district: '宝安区', uas_user_type: 'total', district_total: 95 },
+    { district: '福田区', uas_user_type: 'total', district_total: 60 }
   ],
     keyMetrics: [
     { label: '基尼系数', value: '0.32' }
