@@ -21,7 +21,7 @@ import {
   LineChart, Line, BarChart, Bar, ComposedChart,
   PieChart, Pie, Cell, Treemap, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
   ScatterChart, Scatter, ZAxis, Legend, RadialBarChart, RadialBar, FunnelChart, Funnel, LabelList,
-  Sector
+  Sector, Label
 } from 'recharts';
 import * as echarts from 'echarts';
 
@@ -70,7 +70,12 @@ export const TrafficAreaChart = ({ data, ariaLabel = "Daily flight sorties area 
       </defs>
       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
       <XAxis dataKey="date" tick={{fontSize: 10}} tickLine={false} axisLine={false} />
-      <YAxis tick={{fontSize: 10}} tickLine={false} axisLine={false} />
+      <YAxis
+        tick={{fontSize: 10}}
+        tickLine={false}
+        axisLine={false}
+        label={{ value: '指数', angle: -90, position: 'insideLeft', offset: 10, fill: '#64748b', fontSize: 11 }}
+      />
           <Tooltip
             contentStyle={{
               borderRadius: '8px',
@@ -123,22 +128,9 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
             axisLine={false}
             tickLine={false}
             label={{
-              value: '时长 (小时)',
+              value: '指数',
               angle: -90,
               position: 'insideLeft',
-              style: {fontSize: 10, fill: '#64748b'}
-            }}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            tick={{fontSize: 10}}
-            axisLine={false}
-            tickLine={false}
-            label={{
-              value: '里程 (公里)',
-              angle: 90,
-              position: 'insideRight',
               style: {fontSize: 10, fill: '#64748b'}
             }}
           />
@@ -155,7 +147,7 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
             yAxisId="left"
             type="monotone"
             dataKey="duration"
-            name="时长"
+            name="时长指数"
             stroke="#0ea5e9"
             strokeWidth={3}
             dot={{r: 4}}
@@ -166,8 +158,19 @@ export const DualLineChart = ({ data, ariaLabel = "Operation intensity dual line
             yAxisId="right"
             type="monotone"
             dataKey="distance"
-            name="里程"
+            name="里程指数"
             stroke="#10b981"
+            strokeWidth={3}
+            dot={{r: 4}}
+            animationDuration={800}
+            animationEasing="ease-in-out"
+          />
+          <Line
+            yAxisId="right"
+            type="monotone"
+            dataKey="composite"
+            name="综合指数"
+            stroke="#8b5cf6"
             strokeWidth={3}
             dot={{r: 4}}
             animationDuration={800}
@@ -218,6 +221,7 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
           axisLine={false}
           tickLine={false}
           aria-label="Value axis"
+          label={{ value: '活跃SN数', angle: -90, position: 'insideLeft', offset: 10, fill: '#64748b', fontSize: 11 }}
         />
         <Tooltip
           cursor={{fill: '#f3f4f6'}}
@@ -242,7 +246,7 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
           dataKey="FixedWing"
           name="固定翼"
           stackId="a"
-          fill="#10b981"
+          fill="#fbbf24"
           radius={[0,0,0,0]}
           animationDuration={800}
           animationEasing="ease-in-out"
@@ -251,7 +255,25 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
           dataKey="Helicopter"
           name="直升机"
           stackId="a"
-          fill="#f59e0b"
+          fill="#8B4513"
+          radius={[4,4,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Bar
+          dataKey="Undefined"
+          name="未知"
+          stackId="a"
+          fill="#10b981"
+          radius={[4,4,0,0]}
+          animationDuration={800}
+          animationEasing="ease-in-out"
+        />
+        <Bar
+          dataKey="CompoundWing"
+          name="复合翼"
+          stackId="a"
+          fill="#8b5cf6"
           radius={[4,4,0,0]}
           animationDuration={800}
           animationEasing="ease-in-out"
@@ -262,20 +284,18 @@ export const StackedBarChart = ({ data, ariaLabel = "Fleet composition stacked b
   );
 };
 
-// 4. Pareto (Concentration) - Enhanced with accessibility
+// 5. Pareto (Concentration) - Enhanced with accessibility
 export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentration analysis" }: ChartProps) => {
   const processedData = useMemo(() => {
     if (!data || data.length === 0) {
       return [];
     }
-    const total = data.reduce((acc, cur) => acc + (cur.volume ?? 0), 0);
-    if (total === 0) {
-      return data;
-    }
+    // 累计占比使用 chart_data 的 percentage 字段（运行求和），不按 volume 推算
     let cumulative = 0;
     return data.map(d => {
-      cumulative += (d.volume ?? 0);
-      return { ...d, cumulative: Math.round((cumulative / total) * 100) };
+      const pct = d.percentage != null ? Number(d.percentage) : 0;
+      cumulative += pct;
+      return { ...d, cumulative: Math.round(cumulative * 10) / 10 };
     });
   }, [data]);
 
@@ -296,17 +316,18 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
       <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
         <ComposedChart
         data={processedData}
-        margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+        margin={{ top: 20, right: 20, left: 0, bottom: 80 }}
         aria-label={ariaLabel}
         role="img"
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
         <XAxis
           dataKey="name"
-          tick={{fontSize: 10}}
+          tick={{ fontSize: 10, angle: -80, textAnchor: 'end' }}
           axisLine={false}
           tickLine={false}
           aria-label="Category axis"
+          interval={0}
         />
         <YAxis
           yAxisId="left"
@@ -314,6 +335,7 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
           axisLine={false}
           tickLine={false}
           aria-label="Volume axis"
+          label={<Label value="架次" position="insideLeft" angle={-90} offset={5} style={{ fill: '#64748b', fontSize: 10 }} />}
         />
         <YAxis
           yAxisId="right"
@@ -323,6 +345,7 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
           tickLine={false}
           unit="%"
           aria-label="Cumulative percentage axis"
+          label={<Label value="累计占比" position="insideRight" angle={90} style={{ fill: '#64748b', fontSize: 10 }} />}
         />
         <Tooltip
           contentStyle={{
@@ -330,6 +353,11 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
             border: 'none',
             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
             fontSize: '12px'
+          }}
+          formatter={(value: number, name: string) => {
+            if (name === '飞行量') return [value != null ? `${value}架次` : '—', name];
+            if (name === '累计占比') return [value != null ? `${value}%` : '—', name];
+            return [value, name];
           }}
         />
         <Bar
@@ -359,7 +387,7 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
   );
 };
 
-// 5. Nightingale Rose Chart (Commercial Maturity)
+// 6. Nightingale Rose Chart (Commercial Maturity)
 const RoseShape = (props: any) => {
   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, maxVal } = props;
   const val = payload.realValue;
@@ -449,7 +477,7 @@ export const NightingaleRoseChart = ({ data, ariaLabel = "Nightingale rose chart
           ))}
         </Pie>
         <Tooltip
-            formatter={(value: any, name: any, props: any) => [props.payload.realValue, name]}
+            formatter={(value: any, name: any, props: any) => [`${props.payload.realValue}架次`, name]}
             contentStyle={{
               borderRadius: '8px',
               border: 'none',
@@ -457,16 +485,35 @@ export const NightingaleRoseChart = ({ data, ariaLabel = "Nightingale rose chart
               fontSize: '12px'
             }}
         />
-        <Legend verticalAlign="bottom" height={36} wrapperStyle={{color: '#64748b', fontSize: '12px'}}/>
+        <Legend
+            verticalAlign="bottom"
+            height={36}
+            wrapperStyle={{ color: '#64748b', fontSize: '12px' }}
+            formatter={(_value, entry: any) => {
+              const num = entry?.payload?.realValue ?? entry?.payload?.value ?? 0;
+              const formatted = Number(num).toLocaleString('zh-CN');
+              return `${entry?.payload?.name ?? ''} ${formatted}架次`;
+            }}
+          />
       </PieChart>
     </ResponsiveContainer>
     </div>
   );
 };
 
-// 6. Treemap (Diversity) - Enhanced with accessibility
+// 7. Treemap (Diversity) - Enhanced with accessibility
 const CustomTreemapContent = (props: any) => {
   const { root, depth, x, y, width, height, index, name, value } = props;
+  
+  // Calculate font size based on block size (adaptive)
+  const minSize = Math.min(width, height);
+  const fontSize = Math.max(8, Math.min(16, minSize * 0.15)); // 8-16px based on block size
+  const smallFontSize = Math.max(6, Math.min(12, minSize * 0.12)); // 6-12px for value
+  
+  // Show text if block is large enough (lower threshold)
+  const showText = width > 20 && height > 15;
+  const showValue = width > 30 && height > 25 && value;
+  
   return (
     <g>
       <rect
@@ -481,14 +528,37 @@ const CustomTreemapContent = (props: any) => {
           strokeOpacity: 1 / (depth + 1e-10),
         }}
       />
-      {width > 50 && height > 30 && (
-        <text x={x + width / 2} y={y + height / 2 + 7} textAnchor="middle" fill="#fff" fontSize={12} fontWeight="bold">
-           {name}
+      {showText && (
+        <text 
+          x={x + width / 2} 
+          y={y + height / 2 + fontSize / 3} 
+          textAnchor="middle" 
+          fill="#fff" 
+          fontSize={fontSize} 
+          fontWeight={100}
+          style={{
+            textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+            pointerEvents: 'none',
+          }}
+        >
+          {name}
         </text>
       )}
-      {width > 50 && height > 50 && value && (
-        <text x={x + width / 2} y={y + height / 2 + 23} textAnchor="middle" fill="#fff" fontSize={10} opacity={0.8}>
-           {value}
+      {showValue && (
+        <text 
+          x={x + width / 2} 
+          y={y + height / 2 + fontSize + smallFontSize / 2} 
+          textAnchor="middle" 
+          fill="#fff" 
+          fontSize={smallFontSize} 
+          fontWeight={100}
+          opacity={0.9}
+          style={{
+            textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+            pointerEvents: 'none',
+          }}
+        >
+          {value}
         </text>
       )}
     </g>
@@ -528,7 +598,7 @@ export const FleetTreemap = ({ data, ariaLabel = "Fleet diversity treemap chart"
 );
 };
 
-// 7. Choropleth Map (Regional Balance) - Advanced ECharts Implementation
+// 8. Choropleth Map (Regional Balance) - Advanced ECharts Implementation
 export const ChoroplethMap = ({ data }: { data: any[] }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -555,12 +625,70 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
         // Register the map
         echarts.registerMap('Shenzhen', geoJson);
 
-      // Calculate density statistics
-      const values = data.map(d => d.value);
-      const maxValue = Math.max(...values);
-      const minValue = Math.min(...values);
+      // Process real data: group by district
+      const districtMap = new Map<string, { values: any[], total: number }>();
+      
+      data.forEach(item => {
+        const district = item.district;
+        if (!districtMap.has(district)) {
+          districtMap.set(district, { values: [], total: 0 });
+        }
+        districtMap.get(district)!.values.push(item);
+        
+        // Get total from district_total if available
+        const rawTotal = item.district_total;
+        const numericTotal = typeof rawTotal === 'number' ? rawTotal : Number(rawTotal);
+        if (!Number.isNaN(numericTotal) && numericTotal > 0) {
+          districtMap.get(district)!.total = numericTotal;
+        }
+      });
+      
+      // Calculate totals for districts without district_total
+      districtMap.forEach((districtData, district) => {
+        if (!districtData.total || districtData.total <= 0) {
+          // Sum all values for this district as fallback
+          districtData.total = districtData.values.reduce((sum, item) => {
+            const v = typeof item.value === 'number' ? item.value : Number(item.value);
+            return sum + (Number.isNaN(v) ? 0 : v);
+          }, 0);
+        }
+      });
+      
+      // Prepare map data (district name -> total value)
+      const mapData = Array.from(districtMap.entries()).map(([district, districtData]) => ({
+        name: district,
+        value: typeof districtData.total === 'number' ? districtData.total : Number(districtData.total) || 0
+      }));
+      
+      // Calculate density statistics (filter out invalid values)
+      const numericValues = mapData
+        .map(d => (typeof d.value === 'number' ? d.value : Number(d.value)))
+        .filter(v => !Number.isNaN(v));
+      const maxValue = numericValues.length ? Math.max(...numericValues) : 1;
+      const minValue = numericValues.length ? Math.min(...numericValues) : 0;
 
-      // Create pie series for major airports/hubs
+      // District coordinates mapping (approximate center of each district)
+      const districtCoordinates: Record<string, [number, number]> = {
+        '南山区': [113.95, 22.53],
+        '宝安区': [113.88, 22.58],
+        '福田区': [114.05, 22.54],
+        '罗湖区': [114.12, 22.55],
+        '龙岗区': [114.25, 22.72],
+        '盐田区': [114.25, 22.56],
+        '龙华区': [114.03, 22.65],
+        '坪山区': [114.35, 22.70],
+        '光明区': [113.92, 22.75],
+        '大鹏新区': [114.47, 22.58],
+      };
+      
+      // User type color mapping
+      const userTypeColors: Record<string, string> = {
+        '企业用户': '#3b82f6',
+        '个人用户': '#f59e0b',
+        '未知类型': '#64748b'
+      };
+
+      // Create pie series for each district
       const createPieSeries = (center: [number, number], radius: number, title: string, hubData: any[]) => {
         return {
           name: title,
@@ -579,28 +707,65 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
           animationEasing: 'elasticOut',
           radius,
           center,
-            data: hubData,
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: 12,
-                fontWeight: 'bold',
-                formatter: '{b}\n{c}架次'
-              },
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
+          data: hubData,
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 12,
+              fontWeight: 'bold',
+              formatter: '{b}\n{c}架次'
+            },
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
-          };
+          }
         };
+      };
+      
+      // Generate pie series for each district
+      const pieSeries = Array.from(districtMap.entries())
+        .filter(([district]) => districtCoordinates[district]) // Only districts with coordinates
+        .map(([district, districtData]) => {
+          // Group by user type
+          const userTypeData = districtData.values.reduce((acc, item) => {
+            const userType = item.uas_user_type || '未知类型';
+            acc[userType] = (acc[userType] || 0) + (item.value || 0);
+            return acc;
+          }, {} as Record<string, number>);
+          
+          // Convert to pie chart data format
+          const pieData = [
+            { 
+              value: userTypeData['企业用户'] || 0, 
+              name: '企业用户', 
+              itemStyle: { color: userTypeColors['企业用户'] } 
+            },
+            { 
+              value: userTypeData['个人用户'] || 0, 
+              name: '个人用户', 
+              itemStyle: { color: userTypeColors['个人用户'] } 
+            },
+            { 
+              value: userTypeData['未知类型'] || 0, 
+              name: '未知类型', 
+              itemStyle: { color: userTypeColors['未知类型'] } 
+            }
+          ].filter(item => item.value > 0); // Only show non-zero values
+          
+          const center = districtCoordinates[district];
+          // Smaller radius for district pies (about half of previous size)
+          const radius = Math.max(8, Math.min(15, Math.sqrt(districtData.total) * 0.25));
+          
+          return createPieSeries(center, radius, district, pieData);
+        });
 
         const option = {
           backgroundColor: 'transparent',
           title: {
             text: '深圳无人机飞行密度分布图',
-            subtext: '基于区域飞行频率与枢纽分布数据 | 拖拽缩放查看详情\n深圳坐标系：WGS84 | 数据更新：2024年',
+            subtext: '基于区域飞行频率与枢纽分布数据 | 拖拽缩放查看详情\n深圳地图 | 数据更新：2025年',
             left: 'center',
             top: 20,
             textStyle: {
@@ -743,8 +908,9 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
               fontWeight: 'bold'
             },
             orient: 'horizontal',
-            left: 'center',
-            bottom: 65,
+            left: '50%',
+            // 靠下显示，与左下「地图数据来源」块大致水平
+            top: '58%',
             itemWidth: 25,
             itemHeight: 140,
             precision: 0,
@@ -757,10 +923,10 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
             shadowColor: 'rgba(0, 0, 0, 0.1)'
           },
           legend: {
-            data: ['物流配送', '应急救援', '城市巡航', '其他'],
+            data: ['企业用户', '个人用户', '未知类型'],
             orient: 'vertical',
             left: 20,
-            top: 'center',
+            top: '35%',
             textStyle: {
               color: '#64748b',
               fontSize: 12,
@@ -829,41 +995,11 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
                 shadowBlur: 5,
                 shadowColor: 'rgba(0, 0, 0, 0.1)'
               },
-              data: data.map(item => ({
-                name: item.name,
-                value: item.value
-              }))
+              data: mapData
             },
 
-            // Pie charts for major hubs with realistic data
-            // Shenzhen Bao'an International Airport area
-            createPieSeries([113.82, 22.64], 25, '宝安机场枢纽', [
-              { value: 45, name: '物流配送', itemStyle: { color: '#f59e0b' } },
-              { value: 25, name: '应急救援', itemStyle: { color: '#ea580c' } },
-              { value: 20, name: '城市巡航', itemStyle: { color: '#dc2626' } },
-              { value: 10, name: '其他', itemStyle: { color: '#b91c1c' } }
-            ]),
-            // Shenzhen Futian CBD area
-            createPieSeries([114.05, 22.54], 20, '福田中心区', [
-              { value: 35, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
-              { value: 20, name: '物流配送', itemStyle: { color: '#f59e0b' } },
-              { value: 15, name: '应急救援', itemStyle: { color: '#ea580c' } },
-              { value: 5, name: '其他', itemStyle: { color: '#64748b' } }
-            ]),
-            // Shenzhen Nanshan Tech Park
-            createPieSeries([113.95, 22.53], 18, '南山科技园', [
-              { value: 40, name: '物流配送', itemStyle: { color: '#f59e0b' } },
-              { value: 18, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
-              { value: 12, name: '应急救援', itemStyle: { color: '#ea580c' } },
-              { value: 8, name: '其他', itemStyle: { color: '#64748b' } }
-            ]),
-            // Shenzhen Logistics Hub
-            createPieSeries([113.88, 22.58], 22, '深圳物流枢纽', [
-              { value: 50, name: '物流配送', itemStyle: { color: '#f59e0b' } },
-              { value: 15, name: '应急救援', itemStyle: { color: '#ea580c' } },
-              { value: 10, name: '城市巡航', itemStyle: { color: '#3b82f6' } },
-              { value: 5, name: '其他', itemStyle: { color: '#64748b' } }
-            ])
+            // Pie charts for each district with real user type data
+            ...pieSeries
           ]
         };
 
@@ -914,12 +1050,12 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
 
       {/* Additional Info */}
       <div className="absolute bottom-3 left-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
-        <div className="font-medium text-slate-700 mb-1">📊 数据来源</div>
-        <div>深圳民航数据 | 2024年更新</div>
-        <div className="text-[10px] text-slate-400 mt-1">包含6个主要行政区</div>
+        <div className="font-medium text-slate-700 mb-1">📊 地图数据来源</div>
+        <div>阿里云DataV数据可视化平台 | 2021.5更新</div>
+        <div className="text-[10px] text-slate-400 mt-1">包含10个行政区</div>
       </div>
 
-      {/* Navigation hint */}
+      {/* Navigation hint - 图表最右上 */}
       <div className="absolute top-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-2 py-1 rounded border border-slate-200">
         🖱️ 拖拽查看 | 🔍 滚轮缩放
       </div>
@@ -927,7 +1063,7 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
   );
 };
 
-// 8. Polar Clock (All Weather)
+// 9. Polar Clock (All time)
 export const PolarClockChart = ({ data, ariaLabel = "Polar clock chart showing hourly activity" }: ChartProps) => (
   <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
@@ -942,56 +1078,170 @@ export const PolarClockChart = ({ data, ariaLabel = "Polar clock chart showing h
   </div>
 );
 
-// 9. Box Plot (Seasonal)
+// 10. Box Plot (Seasonal)
 export const SeasonalBoxChart = ({ data, ariaLabel = "Seasonal box plot chart" }: ChartProps) => (
-  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
-    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
-    <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-      <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10}} axisLine={false} tickLine={false} />
-      <Tooltip />
-      <Bar dataKey="max" fill="#cbd5e1" barSize={10} stackId="a" />
-       <Line type="monotone" dataKey="avg" stroke="#0ea5e9" strokeWidth={3} dot={{r:4}} />
-       <Line type="monotone" dataKey="min" stroke="#10b981" strokeDasharray="3 3" dot={false} />
-    </ComposedChart>
-  </ResponsiveContainer>
+  <div
+    role="img"
+    aria-label={ariaLabel}
+    style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}
+    className="flex flex-col"
+  >
+    <div className="flex-1">
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 30, left: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+          <XAxis dataKey="name" tick={{fontSize: 10}} axisLine={false} tickLine={false} />
+          <YAxis
+            tick={{fontSize: 10}}
+            axisLine={false}
+            tickLine={false}
+            label={{ value: '架次', angle: -90, position: 'insideLeft', offset: 10, fill: '#64748b', fontSize: 11 }}
+          />
+          <Tooltip />
+          <Bar dataKey="max" name="最大值" fill="#cbd5e1" barSize={10} stackId="a" />
+          <Line type="monotone" dataKey="std" name="标准差" stroke="#facc15" strokeWidth={2} dot={{r:3}} />
+          <Line type="monotone" dataKey="avg" name="均值" stroke="#0ea5e9" strokeWidth={3} dot={{r:4}} />
+          <Line type="monotone" dataKey="median" name="中位数" stroke="#6366f1" strokeWidth={2} dot={false} />
+          <Line type="monotone" dataKey="q3" name="上四分位" stroke="#f97316" strokeDasharray="4 2" strokeWidth={2} dot={false} />
+          <Line type="monotone" dataKey="q1" name="下四分位" stroke="#22c55e" strokeDasharray="4 2" strokeWidth={2} dot={false} />
+          <Line type="monotone" dataKey="min" name="最小值" stroke="#10b981" strokeDasharray="3 3" dot={false} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+
+    {/* 自定义图例：解释各颜色/线型含义 */}
+    <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-slate-500 justify-center">
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-4 h-[3px] rounded-full" style={{ backgroundColor: '#0ea5e9' }} />
+        <span>均值</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-4 h-[3px] rounded-full" style={{ backgroundColor: '#facc15' }} />
+        <span>标准差</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-4 h-[3px] rounded-full" style={{ backgroundColor: '#6366f1' }} />
+        <span>中位数</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span
+          className="inline-block w-4 h-[3px] rounded-full border-t border-dashed"
+          style={{ borderColor: '#f97316' }}
+        />
+        <span>上四分位 (Q3)</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span
+          className="inline-block w-4 h-[3px] rounded-full border-t border-dashed"
+          style={{ borderColor: '#22c55e' }}
+        />
+        <span>下四分位 (Q1)</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span
+          className="inline-block w-4 h-[3px] rounded-full border-t border-dashed"
+          style={{ borderColor: '#10b981' }}
+        />
+        <span>最小值</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: '#cbd5e1' }} />
+        <span>最大值柱形</span>
+      </div>
+    </div>
   </div>
 );
 
-// 10. Gauge (Efficiency)
+// 12. Gauge (Efficiency)
 export const GaugeChart = ({ data, ariaLabel = "Efficiency gauge chart" }: ChartProps) => {
-  const val = data[0].value;
-  const pieData = [
-    { name: '效率', value: val },
-    { name: '剩余', value: 100 - val }
-  ];
+  // 仪表盘范围从 0-10，data 形如
+  // [{ name: '平均效益', value: '2.84' }, { name: 'TOP50效益', value: '6.01' }]
+  const avgItem = data.find(d => d.name === '平均效益') ?? data[0];
+  const top50Item = data.find(d => d.name === 'TOP50效益');
+
+  const rawAvgVal = typeof avgItem.value === 'string' ? parseFloat(avgItem.value) : avgItem.value;
+  const avgVal = Math.max(0, Math.min(10, Number.isFinite(rawAvgVal) ? rawAvgVal : 0));
+
+  const rawTop50Val = top50Item
+    ? (typeof top50Item.value === 'string' ? parseFloat(top50Item.value) : top50Item.value)
+    : avgVal;
+  const top50Val = Math.max(0, Math.min(10, Number.isFinite(rawTop50Val) ? rawTop50Val : 0));
+
   return (
-    <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
-      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
-      <PieChart>
-        <Pie
-          data={pieData}
-          cx="50%"
-          cy="70%"
-          startAngle={180}
-          endAngle={0}
-          innerRadius={80}
-          outerRadius={120}
-          paddingAngle={0}
-          dataKey="value"
-        >
-          <Cell key="val" fill="#f59e0b" />
-          <Cell key="rest" fill="#fef3c7" />
-        </Pie>
-        <text x="50%" y="65%" textAnchor="middle" dominantBaseline="middle" className="text-3xl font-bold fill-[#7f1d1d]">
-          {val}
-        </text>
-         <text x="50%" y="50%" textAnchor="middle" className="text-sm fill-slate-500">
-          效率
-        </text>
-      </PieChart>
-    </ResponsiveContainer>
+    <div role="img" aria-label={ariaLabel} className="flex flex-col" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+      <div className="flex-1 min-h-0">
+        <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+          <PieChart>
+            {/* 背景：浅蓝色半圆 */}
+            <Pie
+              data={[{ name: '背景', value: 10 }]}
+              cx="50%"
+              cy="70%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={80}
+              outerRadius={120}
+              paddingAngle={0}
+              dataKey="value"
+            >
+              <Cell key="bg" fill="#dbeafe" />
+            </Pie>
+
+            {/* 平均效益：绿色弧线（按 value/10 占用半圈比例，剩余为透明以露出背景） */}
+            <Pie
+              data={[
+                { name: '平均效益', value: avgVal },
+                { name: 'avg_rest', value: Math.max(0, 10 - avgVal) }
+              ]}
+              cx="50%"
+              cy="70%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={88}
+              outerRadius={116}
+              paddingAngle={0}
+              dataKey="value"
+            >
+              <Cell key="avg_val" fill="#22c55e" />
+              <Cell key="avg_rest" fill="transparent" stroke="none" />
+            </Pie>
+
+            {/* TOP50 效益：蓝色弧线（按 value/10 占用半圈比例，剩余为透明以露出背景） */}
+            <Pie
+              data={[
+                { name: 'TOP50效益', value: top50Val },
+                { name: 'top50_rest', value: Math.max(0, 10 - top50Val) }
+              ]}
+              cx="50%"
+              cy="70%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={104}
+              outerRadius={132}
+              paddingAngle={0}
+              dataKey="value"
+            >
+              <Cell key="top50_val" fill="#3b82f6" />
+              <Cell key="top50_rest" fill="transparent" stroke="none" />
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* 图例：色块与说明水平对齐、紧贴文字；图例与副标题整体居中 */}
+      <div className="flex flex-col items-center gap-1 mt-3 mb-4 shrink-0">
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <span className="shrink-0 w-3 h-3 rounded-sm bg-[#22c55e]" />
+            <span className="text-sm font-medium text-slate-800">平均效益: {avgVal.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="shrink-0 w-3 h-3 rounded-sm bg-[#3b82f6]" />
+            <span className="text-sm font-medium text-slate-800">TOP50效益: {top50Val.toFixed(2)}</span>
+          </div>
+        </div>
+        <div className="text-xs text-slate-500">单机效益仪表盘（0-10）</div>
+      </div>
     </div>
   );
 };
@@ -1001,7 +1251,20 @@ export const MissionFunnelChart = ({ data, ariaLabel = "Mission endurance funnel
   <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
     <FunnelChart>
-      <Tooltip />
+      <Tooltip
+        content={({ active, payload }) => {
+          if (!active || !payload?.length) return null;
+          const item = payload[0].payload as { name?: string; value?: string | number; desc?: string };
+          const val = item.value ?? '';
+          const desc = item.desc ? ` ${item.desc}` : '';
+          return (
+            <div className="bg-white border border-slate-200 rounded shadow px-2 py-1.5 text-sm">
+              <span className="font-medium text-slate-800">{item.name}</span>
+              <span className="text-slate-600">: {val}{desc}</span>
+            </div>
+          );
+        }}
+      />
       <Funnel
         dataKey="value"
         data={data}
@@ -1016,16 +1279,29 @@ export const MissionFunnelChart = ({ data, ariaLabel = "Mission endurance funnel
 
 // 12. Histogram (Wide Area)
 export const CoverageHistogram = ({ data, ariaLabel = "Coverage area histogram" }: ChartProps) => (
-  <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
-    <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
-    <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-        <XAxis dataKey="name" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-        <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-        <Tooltip cursor={{fill: '#f8fafc'}} />
-        <Bar dataKey="value" fill="#f59e0b" barSize={40} radius={[4,4,0,0]} />
-    </BarChart>
-  </ResponsiveContainer>
+  <div role="img" aria-label={ariaLabel} className="flex flex-col" style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
+    <div className="flex-1 min-h-0">
+      <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
+        <BarChart data={data} margin={{ top: 20, right: 30, left: 30, bottom: 25 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+          <XAxis
+            dataKey="name"
+            tick={{ fontSize: 10, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+            label={{ value: '里程区间(km)', position: 'right', offset: -40, dy: 15, fill: '#64748b', fontSize: 11 }}
+          />
+          <YAxis
+            tick={{ fontSize: 10, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+            label={{ value: '架次', position: 'left', offset: 5, fill: '#64748b', fontSize: 11 }}
+          />
+          <Tooltip cursor={{fill: '#f8fafc'}} />
+          <Bar dataKey="value" fill="#f59e0b" barSize={40} radius={[4,4,0,0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   </div>
 );
 
@@ -1066,7 +1342,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
                   strokeLinecap="round"
                 />
                 <text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fontSize="11" fontWeight="bold" fill="#64748b">
-                  {`区域 ${node.replace('区', '')}`}
+                  {`${node}`}
                 </text>
               </g>
             );
@@ -1108,7 +1384,7 @@ export const ChordDiagram = ({ data }: { data: any[] }) => {
   );
 };
 
-// 13b. Graph (Network Hub - Les Miserables style)
+// 11. Graph (Network Hub - Les Miserables style)
 export const NetworkGraph = ({ data }: { data: any }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -1317,12 +1593,23 @@ export const NetworkGraph = ({ data }: { data: any }) => {
       />
       <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
         ⓘ 拖拽节点 | 滚轮缩放 | 点击高亮邻接节点
+    </div>
+    {/* 图例：解释绿色 / 蓝色弧线含义 */}
+    <div className="mt-2 flex justify-center gap-4 text-xs text-slate-600">
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+        <span>平均效益</span>
       </div>
+      <div className="flex items-center gap-1">
+        <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: '#3b82f6' }} />
+        <span>TOP50效益</span>
+      </div>
+    </div>
     </div>
   );
 };
 
-// 14. Quality Control Chart (TQI + Control Chart + Time Series)
+// 15. Quality Control Chart (TQI + Control Chart + Time Series)
 export const QualityControlChart = ({ data }: { data: any }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -1333,32 +1620,23 @@ export const QualityControlChart = ({ data }: { data: any }) => {
 
     const { latestTqi = 0, trajData = [], tqiHistory = [], planActual = [] } = data || {};
 
+    // 过滤明显异常的 TQI 数据点（例如 >100% 的值），避免拉高纵轴
+    const safeTqiHistory = Array.isArray(tqiHistory) ? tqiHistory : [];
+    const filteredTqiHistory = safeTqiHistory.filter((d: any) => {
+      const v = typeof d.tqi === 'number' ? d.tqi : parseFloat(String(d.tqi));
+      return !Number.isNaN(v) && v <= 100;
+    });
+    const timeDomain = new Set(filteredTqiHistory.map((d: any) => d.time));
+
+    const safePlanActual = Array.isArray(planActual) ? planActual : [];
+    const filteredPlanActual = safePlanActual.filter((d: any) => timeDomain.has(d.time));
+
     const option: echarts.EChartsOption = {
       backgroundColor: 'transparent',
-      title: [
-        {
-          text: '航迹偏离度控制图',
-          left: '6%',
-          top: '2%',
-          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
-        },
-        {
-          text: '任务完成质量指数',
-          left: '60%',
-          top: '2%',
-          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
-        },
-        {
-          text: 'TQI 历史趋势与计划对比',
-          left: '6%',
-          top: '58%',
-          textStyle: { fontSize: 14, fontWeight: 'bold', color: '#002FA7' }
-        }
-      ],
       grid: [
-        { id: 'g1', left: '6%', top: '10%', width: '42%', height: '34%' },   // 控制图
-        { id: 'g2', left: '60%', top: '10%', width: '35%', height: '34%' },  // 仪表盘占位（实际不用）
-        { id: 'g3', left: '6%', top: '66%', width: '90%', height: '28%' }    // TQI 历史
+        // 左侧单一网格用于 TQI 历史趋势与计划对比；右侧仪表盘使用极坐标，不依赖 grid
+        // 将趋势+条形图整体上移并在垂直方向压扁一些
+        { id: 'g1', left: '5%', top: '0.3%', width: '60%', height: '45%' }
       ],
       tooltip: {
         trigger: 'axis',
@@ -1388,15 +1666,7 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         {
           gridIndex: 0,
           type: 'category',
-          data: trajData.map((d: any) => d.time),
-          axisLabel: { fontSize: 9, color: '#64748b', rotate: 0 },
-          axisLine: { show: false },
-          axisTick: { show: false }
-        },
-        {
-          gridIndex: 2,
-          type: 'category',
-          data: tqiHistory.map((d: any) => d.time),
+          data: filteredTqiHistory.map((d: any) => d.time),
           axisLabel: { fontSize: 9, color: '#64748b', rotate: 0 },
           axisLine: { show: false },
           axisTick: { show: false }
@@ -1406,28 +1676,30 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         {
           gridIndex: 0,
           type: 'value',
-          name: '偏离度',
-          nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 'bold' },
-          nameGap: 30,
-          axisLabel: { fontSize: 10, color: '#64748b' },
-          axisLine: { show: false },
-          splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
-        },
-        {
-          gridIndex: 2,
-          type: 'value',
           name: 'TQI (%)',
           nameTextStyle: { fontSize: 11, color: '#64748b', fontWeight: 'bold' },
           nameGap: 30,
-          axisLabel: { fontSize: 10, color: '#64748b' },
+          // 仅显示 0、100、200... 等整数百刻度
+          min: 0,
+          max: (val: any) => Math.ceil(val.max / 100) * 100,
+          interval: 100,
+          axisLabel: {
+            fontSize: 10,
+            color: '#64748b',
+          },
+          // 不显示最高一个刻度标签（但保留网格线）
+          showMaxLabel: false,
           axisLine: { show: false },
           splitLine: { lineStyle: { color: '#f1f5f9', type: 'dashed' } }
         }
       ],
+      graphic: [
+        { type: 'text', left: '6%', top: '1.9%', style: { text: '架次', fill: '#64748b', fontSize: 11, fontWeight: 'bold' } }
+      ],
       dataZoom: [
         {
           type: 'inside',
-          xAxisIndex: [1],
+          xAxisIndex: [0],
           start: 0,
           end: 100,
           zoomOnMouseWheel: true,
@@ -1435,7 +1707,7 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         },
         {
           type: 'slider',
-          xAxisIndex: [1],
+          xAxisIndex: [0],
           start: 0,
           end: 100,
           height: 20,
@@ -1454,69 +1726,12 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         }
       ],
       series: [
-        // 1. 航迹偏离度折线
-        {
-          name: '航迹偏离度',
-          type: 'line',
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          data: trajData.map((d: any) => d.deviation),
-          smooth: true,
-          smoothMonotone: 'x',
-          lineStyle: { width: 3, color: '#0ea5e9', shadowBlur: 8, shadowColor: 'rgba(14, 165, 233, 0.3)' },
-          itemStyle: {
-            color: (params: any) => {
-              const val = trajData[params.dataIndex]?.deviation || 0;
-              const ucl = trajData[params.dataIndex]?.ucl || 0.25;
-              const lcl = trajData[params.dataIndex]?.lcl || -0.25;
-              return (val > ucl || val < lcl) ? '#ef4444' : '#0ea5e9';
-            },
-            borderWidth: 2,
-            borderColor: '#fff'
-          },
-          symbolSize: 8,
-          showSymbol: true,
-          markLine: {
-            silent: true,
-            symbol: 'none',
-            lineStyle: { type: 'dashed', width: 2 },
-            data: [
-              {
-                yAxis: trajData[0]?.ucl || 0.25,
-                name: 'UCL',
-                lineStyle: { color: '#ef4444', opacity: 0.8 },
-                label: { formatter: 'UCL', color: '#ef4444', fontSize: 10, distance: 5, fontWeight: 'bold' }
-              },
-              {
-                yAxis: trajData[0]?.mean || 0,
-                name: 'Mean',
-                lineStyle: { color: '#10b981', opacity: 0.8 },
-                label: { formatter: 'Mean', color: '#10b981', fontSize: 10, distance: 5, fontWeight: 'bold' }
-              },
-              {
-                yAxis: trajData[0]?.lcl || -0.25,
-                name: 'LCL',
-                lineStyle: { color: '#ef4444', opacity: 0.8 },
-                label: { formatter: 'LCL', color: '#ef4444', fontSize: 10, distance: 5, fontWeight: 'bold' }
-              }
-            ]
-          },
-          markPoint: {
-            symbol: 'pin',
-            symbolSize: 50,
-            itemStyle: { color: '#ef4444', borderColor: '#fff', borderWidth: 2, shadowBlur: 10, shadowColor: 'rgba(239, 68, 68, 0.5)' },
-            label: { show: true, color: '#fff', fontSize: 12, fontWeight: 'bold' },
-            data: trajData.map((d: any, i: number) => {
-              const isOutOfControl = d.deviation > (d.ucl || 0.25) || d.deviation < (d.lcl || -0.25);
-              return isOutOfControl ? { coord: [i, d.deviation], value: '!' } : null;
-            }).filter((p: any) => p !== null)
-          }
-        },
-        // 2. TQI 仪表盘
+        // 1. TQI 仪表盘（右侧略缩小，给左侧趋势图更多空间）
         {
           type: 'gauge',
-          center: ['77%', '27%'],
-          radius: '42%',
+          // 将 TQI 仪表盘整体向上移动一些
+          center: ['80%', '28%'],
+          radius: '30%',
           min: 0,
           max: 100,
           startAngle: 225,
@@ -1568,10 +1783,11 @@ export const QualityControlChart = ({ data }: { data: any }) => {
             color: '#002FA7',
             fontSize: 20,
             fontWeight: 'bold',
-            offsetCenter: [0, '70%'],
+            // 数值标签放在仪表盘最下方
+            offsetCenter: [0, '100%'],
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             borderRadius: 8,
-            padding: [8, 12],
+            padding: [8, -10],
             shadowBlur: 10,
             shadowColor: 'rgba(0, 0, 0, 0.1)'
           },
@@ -1584,13 +1800,13 @@ export const QualityControlChart = ({ data }: { data: any }) => {
             fontWeight: 'bold'
           }
         },
-        // 3. TQI 历史趋势
+        // 2. TQI 历史趋势
         {
           name: 'TQI',
           type: 'line',
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          data: tqiHistory.map((d: any) => d.tqi),
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          data: filteredTqiHistory.map((d: any) => d.tqi),
           smooth: true,
           lineStyle: { width: 3, color: '#0ea5e9', shadowBlur: 8, shadowColor: 'rgba(14, 165, 233, 0.3)' },
           areaStyle: {
@@ -1618,13 +1834,13 @@ export const QualityControlChart = ({ data }: { data: any }) => {
             lineStyle: { type: 'dashed', width: 2 },
             data: [
               {
-                yAxis: tqiHistory[0]?.mean || 90,
+                yAxis: filteredTqiHistory[0]?.mean || 90,
                 name: 'Mean',
                 lineStyle: { color: '#10b981', opacity: 0.8 },
                 label: { formatter: 'Mean: {c}%', color: '#10b981', fontSize: 10, distance: 5, fontWeight: 'bold' }
               },
               {
-                yAxis: tqiHistory[0]?.ucl || 98,
+                yAxis: filteredTqiHistory[0]?.ucl || 98,
                 name: 'UCL',
                 lineStyle: { color: '#f59e0b', opacity: 0.8 },
                 label: { formatter: 'UCL: {c}%', color: '#f59e0b', fontSize: 10, distance: 5, fontWeight: 'bold' }
@@ -1632,13 +1848,13 @@ export const QualityControlChart = ({ data }: { data: any }) => {
             ]
           }
         },
-        // 4. 计划 vs 实际（柱状图）
+        // 3. 计划 vs 实际（柱状图）
         {
           name: '实际完成',
           type: 'bar',
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          data: planActual.map((d: any) => d.actual),
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          data: filteredPlanActual.map((d: any) => d.actual),
           barWidth: '30%',
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -1662,10 +1878,10 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         {
           name: '计划报备',
           type: 'bar',
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          data: planActual.map((d: any) => d.planned),
-          barWidth: '30%',
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          data: filteredPlanActual.map((d: any) => d.planned),
+          barWidth: '18%',
           itemStyle: {
             color: 'rgba(100, 116, 139, 0.25)',
             borderColor: '#64748b',
@@ -1750,6 +1966,9 @@ export const QualityControlChart = ({ data }: { data: any }) => {
         className="w-full h-full"
         style={{ minHeight: '550px' }}
       />
+      <div className="absolute bottom-3 left-3 text-[11px] leading-snug text-slate-500 bg-white/90 backdrop-blur px-3 py-1.5 rounded-md border border-slate-200 shadow-sm max-w-[60%] text-left">
+        因暂未获取完整真实飞行计划报备数据，本指标相关数据均为模拟生成，仅作功能演示与逻辑理解使用，不代表实际运行情况与真实效益。
+      </div>
       <div className="absolute bottom-3 right-3 text-xs text-slate-500 bg-white/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
         ⓘ 拖拽缩放时间轴 | 悬停查看详情
       </div>
@@ -1790,7 +2009,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           formatter: (params: any) => {
             let result = `${params[0].name}<br/>`;
             params.forEach((item: any) => {
-              result += `${item.seriesName}: ${item.value} 架次<br/>`;
+              result += `${item.seriesName}: ${item.value} 分钟<br/>`;
             });
             return result;
           }
@@ -1804,15 +2023,15 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
           top: 10
         },
         grid: {
-          left: '15%',
+          // 整体条形图（含坐标轴）进一步向左移动；底部留足空间给横轴名称（轴下方）
+          left: '6%',
           right: '4%',
-          bottom: '3%',
-          top: '15%',
+          bottom: '10%',
+          top: '20%',
           containLabel: true
         },
         xAxis: {
           type: 'value',
-          name: '架次',
           axisLabel: {
             color: '#64748b',
             fontSize: 10
@@ -1835,6 +2054,18 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
             lineStyle: { color: '#cbd5e1' }
           }
         },
+        graphic: [
+          {
+            type: 'text',
+            right: 5,
+            bottom: 20,
+            style: {
+              text: '年度累计时长(分钟)',
+              fill: '#64748b',
+              fontSize: 11
+            }
+          }
+        ],
         series: chartData.altitudes.map((alt: string, idx: number) => ({
           name: alt,
           type: 'bar',
@@ -1862,7 +2093,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
         },
         xAxis: {
           type: 'value',
-          name: '架次',
+          name: '分钟',
           axisLabel: {
             color: '#64748b',
             fontSize: 10
@@ -1947,7 +2178,7 @@ export const AirspaceBarChart = ({ data }: { data: any }) => {
   );
 };
 
-// 15. Calendar Heatmap
+// 18. Calendar Heatmap
 export const CalendarHeatmap = ({ data }: { data: any[] }) => {
   const [hoveredDay, setHoveredDay] = useState<any>(null);
   const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
@@ -2055,7 +2286,7 @@ export const CalendarHeatmap = ({ data }: { data: any[] }) => {
   );
 };
 
-// 16. Waveform (Night Economy)
+// 19. Waveform (Night Economy)
 export const NightWaveChart = ({ data, ariaLabel = "Night economy waveform chart" }: ChartProps) => (
   <div role="img" aria-label={ariaLabel} style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
     <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
@@ -2067,8 +2298,27 @@ export const NightWaveChart = ({ data, ariaLabel = "Night economy waveform chart
         </linearGradient>
       </defs>
       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-      <XAxis dataKey="hour" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
-      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+      <XAxis
+        dataKey="hour"
+        tick={{fontSize: 10, fill: '#64748b'}}
+        axisLine={false}
+        tickLine={false}
+        // 横坐标右下方标注“时间”，略向左、向下
+        label={{
+          value: '时间',
+          position: 'insideBottomRight',
+          offset: 2,
+          fill: '#64748b',
+          fontSize: 11
+        }}
+      />
+      <YAxis
+        tick={{fontSize: 10, fill: '#64748b'}}
+        axisLine={false}
+        tickLine={false}
+        // 纵坐标左侧标注“架次”
+        label={{ value: '架次', angle: -90, position: 'insideLeft', offset: 10, fill: '#64748b', fontSize: 11 }}
+      />
       <Tooltip />
        <Area type="monotone" dataKey="value" stroke="#f59e0b" fill="url(#colorNight)" />
     </AreaChart>
@@ -2076,9 +2326,23 @@ export const NightWaveChart = ({ data, ariaLabel = "Night economy waveform chart
   </div>
 );
 
-// 17. Radar (Leading Entity) - Enhanced with accessibility
+// 雷达图实体颜色（按顺序循环使用）
+const RADAR_ENTITY_COLORS = ['#f97316', '#0ea5e9', '#22c55e', '#6366f1', '#eab308', '#ec4899', '#14b8a6', '#f59e0b'];
+
+// 20. Radar (Leading Entity) - 动态解析 data 中除 subject/fullMark 外的键作为实体名，图例与 Tooltip 均显示该名称
 export const EntityRadarChart = ({ data, ariaLabel = "Entity comparison radar chart" }: ChartProps) => {
   const isEmpty = useMemo(() => !data || data.length === 0, [data]);
+
+  // 从第一条数据解析出所有实体键（排除 subject、fullMark），顺序与数据一致
+  const entityKeys = useMemo(() => {
+    if (!data?.length) return [];
+    return Object.keys(data[0]).filter((k) => k !== 'subject' && k !== 'fullMark');
+  }, [data]);
+
+  const [activeSeries, setActiveSeries] = useState<string[]>([]);
+  useEffect(() => {
+    setActiveSeries(entityKeys);
+  }, [entityKeys.join(',')]);
 
   if (isEmpty) {
     return (
@@ -2096,54 +2360,111 @@ export const EntityRadarChart = ({ data, ariaLabel = "Entity comparison radar ch
     <div style={{ width: '100%', height: '100%', minHeight: `${CHART_MIN_HEIGHT}px` }}>
       <ResponsiveContainer width="100%" height="100%" minHeight={CHART_MIN_HEIGHT}>
         <RadarChart
-        cx="50%"
-        cy="50%"
-        outerRadius="70%"
-        data={data}
-        aria-label={ariaLabel}
-      >
-        <PolarGrid stroke="#e5e7eb" />
-        <PolarAngleAxis
-          dataKey="subject"
-          tick={{fontSize: 10, fill: '#64748b'}}
-        />
-        <PolarRadiusAxis
-          angle={30}
-          domain={[0, 150]}
-          tick={{fontSize: 10, fill: '#64748b'}}
-          axisLine={{ stroke: '#e5e7eb' }}
-        />
-        <Radar
-          name="企业 A"
-          dataKey="A"
-          stroke="#f59e0b"
-          fill="#f59e0b"
-          fillOpacity={0.6}
-          animationDuration={800}
-          animationEasing="ease-in-out"
-        />
-        <Radar
-          name="企业 B"
-          dataKey="B"
-          stroke="#ea580c"
-          fill="#ea580c"
-          fillOpacity={0.6}
-          animationDuration={800}
-          animationEasing="ease-in-out"
-        />
-        <Legend wrapperStyle={{ fontSize: '12px' }} />
-        <Tooltip
-          contentStyle={{
-            borderRadius: '8px',
-            border: 'none',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-            fontSize: '12px'
-          }}
-        />
-    </RadarChart>
-  </ResponsiveContainer>
+          cx="50%"
+          cy="50%"
+          outerRadius="70%"
+          data={data}
+          aria-label={ariaLabel}
+        >
+          <PolarGrid stroke="#e5e7eb" />
+          <PolarAngleAxis
+            dataKey="subject"
+            tick={{fontSize: 10, fill: '#64748b'}}
+          />
+          <PolarRadiusAxis
+            angle={30}
+            domain={[0, 100]}
+            tick={{fontSize: 10, fill: '#64748b'}}
+            axisLine={{ stroke: '#e5e7eb' }}
+          />
+          {entityKeys.map((key, idx) => (
+            <Radar
+              key={key}
+              name={key}
+              dataKey={key}
+              stroke={RADAR_ENTITY_COLORS[idx % RADAR_ENTITY_COLORS.length]}
+              fill={RADAR_ENTITY_COLORS[idx % RADAR_ENTITY_COLORS.length]}
+              fillOpacity={0.4}
+              animationDuration={800}
+              animationEasing="ease-in-out"
+              hide={!activeSeries.includes(key)}
+            />
+          ))}
+          <Legend
+            wrapperStyle={{ fontSize: '12px' }}
+            content={(props: any) => {
+              const { payload } = props;
+              if (!payload) return null;
+              return (
+                <div className="flex flex-wrap justify-center gap-3 text-xs text-slate-700">
+                  {payload.map((entry: any) => {
+                    const key = entry.dataKey as string;
+                    const active = activeSeries.includes(key);
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() =>
+                          setActiveSeries((prev) =>
+                            prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+                          )
+                        }
+                        className="flex items-center gap-1 cursor-pointer focus:outline-none"
+                        style={{ opacity: active ? 1 : 0.35 }}
+                      >
+                        <span
+                          className="inline-block w-3 h-3 rounded-sm"
+                          style={{ backgroundColor: entry.color }}
+                        />
+                        <span>{entry.value}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            }}
+          />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (!active || !payload || !payload.length) return null;
+
+              const activeItem = payload.reduce(
+                (best: any, cur: any) =>
+                  !best || (cur && typeof cur.value === 'number' && cur.value > best.value)
+                    ? cur
+                    : best,
+                null
+              );
+
+              if (!activeItem) return null;
+
+              const activeKey = activeItem.dataKey as string;
+              const activeName = activeItem.name as string;
+
+              const rows = (data as any[]).map((d) => ({
+                subject: d.subject,
+                value: d[activeKey] as number | undefined,
+              }));
+
+              return (
+                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-md text-xs">
+                  <div className="font-semibold text-slate-800 mb-1">{activeName}</div>
+                  {rows.map((row) => (
+                    <div key={row.subject} className="flex justify-between gap-4">
+                      <span className="text-slate-500">{row.subject}</span>
+                      <span className="text-slate-800">
+                        {row.value != null ? `${row.value.toFixed(1)} 分` : '--'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              );
+            }}
+          />
+        </RadarChart>
+      </ResponsiveContainer>
     </div>
-);
+  );
 };
 
 // 18. Dashboard (Composite) - Grade Gauge with ECharts

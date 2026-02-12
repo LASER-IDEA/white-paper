@@ -12,15 +12,16 @@ def main():
     # Change to web directory
     web_dir = os.path.join(os.path.dirname(__file__), 'web')
     os.chdir(web_dir)
+    print(f"Current working directory: {os.getcwd()}")
 
     # Check if npm is available
     try:
-        subprocess.run(['npm', '--version'], check=True, capture_output=True)
-        package_manager = 'npm'
+        subprocess.run(['npm.cmd', '--version'], check=True, capture_output=True)
+        package_manager = 'npm.cmd'
     except (subprocess.CalledProcessError, FileNotFoundError):
         try:
-            subprocess.run(['yarn', '--version'], check=True, capture_output=True)
-            package_manager = 'yarn'
+            subprocess.run(['yarn.cmd', '--version'], check=True, capture_output=True)
+            package_manager = 'yarn.cmd'
         except (subprocess.CalledProcessError, FileNotFoundError):
             print("Error: Neither npm nor yarn is installed.")
             return 1
@@ -47,4 +48,5 @@ def main():
     return 0
 
 if __name__ == '__main__':
+    print("PATH:", os.environ.get("PATH"))
     sys.exit(main())
