@@ -293,7 +293,15 @@ export const ParetoChart = ({ data, ariaLabel = "Pareto chart showing concentrat
     // 累计占比使用 chart_data 的 percentage 字段（运行求和），不按 volume 推算
     let cumulative = 0;
     return data.map(d => {
-      const pct = d.percentage != null ? Number(d.percentage) : 0;
+      let pct = 0;
+      if (d.percentage != null) {
+        const raw = d.percentage;
+        const numericValue =
+          typeof raw === 'string'
+            ? Number(raw.replace(/%/g, '').trim())
+            : Number(raw);
+        pct = Number.isFinite(numericValue) ? numericValue : 0;
+      }
       cumulative += pct;
       return { ...d, cumulative: Math.round(cumulative * 10) / 10 };
     });
