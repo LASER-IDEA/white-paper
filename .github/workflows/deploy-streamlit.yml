@@ -46,6 +46,19 @@ jobs:
 
       - name: Prepare Docker build
         run: |
+          # Copy split requirements files from config to python directory
+          # Split requirements into batches to reduce peak disk usage during Docker build
+          
+          # Core dependencies (lines 1-7)
+          sed -n '1,7p' config/requirements.txt | grep -v '^$' > python/requirements-core.txt
+          
+          # ML dependencies (line 8 and lines 10-12, skipping comment on line 9)
+          { sed -n '8p' config/requirements.txt; sed -n '10,12p' config/requirements.txt; } | grep -v '^$' > python/requirements-ml.txt
+          
+          # Vector DB dependencies (lines 13-15)
+          sed -n '13,15p' config/requirements.txt | grep -v '^$' > python/requirements-vectordb.txt
+          
+          # Keep full requirements.txt for reference
           cp config/requirements.txt python/requirements.txt
 
       - name: Build Docker image
