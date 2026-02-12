@@ -2076,7 +2076,6 @@ class IndexComputer:
             aggregated = cross_df.groupby(['source_name', 'target_name'])[count_col].sum().reset_index()
             
             # Filter out very small values and sort
-            total_flow = aggregated[count_col].sum()
 
             # 归一化 value 到 0-100 区间，便于可视化（Chord 图线宽），并同时找出“最热门航线”
 
