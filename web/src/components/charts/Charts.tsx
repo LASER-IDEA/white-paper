@@ -637,14 +637,19 @@ export const ChoroplethMap = ({ data }: { data: any[] }) => {
       const districtMap = new Map<string, { values: any[], total: number }>();
       
       data.forEach(item => {
-        const district = item.district;
+        // Prefer explicit district field; fall back to name when district is not provided
+        const district = (item as any).district ?? (item as any).name;
+        // Skip items that do not have a valid district identifier
+        if (!district) {
+          return;
+        }
         if (!districtMap.has(district)) {
           districtMap.set(district, { values: [], total: 0 });
         }
         districtMap.get(district)!.values.push(item);
         
         // Get total from district_total if available
-        const rawTotal = item.district_total;
+        const rawTotal = (item as any).district_total;
         const numericTotal = typeof rawTotal === 'number' ? rawTotal : Number(rawTotal);
         if (!Number.isNaN(numericTotal) && numericTotal > 0) {
           districtMap.get(district)!.total = numericTotal;
