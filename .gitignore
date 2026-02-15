@@ -48,3 +48,11 @@ chroma_db/
 data/
 output/
 web/src/utils/computedData.ts
+*.json
+*.txt
+
+paper/tex/bib
+paper/tex/sections
+paper/tex/main.tex
+paper/sections/
+experiments/ERRORS.md
