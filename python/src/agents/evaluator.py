@@ -132,6 +132,8 @@ class CodeExecutor:
                 'random': random,
                 'math': math,
                 'json': json_mod,
+                # Color scheme (matches CoderAgent prompt)
+                'COLOR_SCHEME': ['#002FA7', '#f59e0b', '#ea580c', '#dc2626', '#b91c1c'],
                 # PyECharts options
                 'opts': opts,
                 # PyECharts charts - all commonly used types

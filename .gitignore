@@ -56,3 +56,8 @@ paper/tex/sections
 paper/tex/main.tex
 paper/sections/
 experiments/ERRORS.md
+huggingface_cache/
+paper_figures/*.pdf
+paper/figures/*.pdf
+
+docs/kimi/*
