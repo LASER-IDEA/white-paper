@@ -61,3 +61,5 @@ paper_figures/*.pdf
 paper/figures/*.pdf
 
 docs/kimi/*
+paper/figures/*
+paper_figures/*
