@@ -4,8 +4,13 @@ IEEE VIS 2026 - Core contribution: Design Space formalization
 """
 
 import json
+import logging
 from typing import Dict, Any, List, Optional
 from .base import BaseAgent, AgentState
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class PlannerAgent(BaseAgent):
@@ -50,6 +55,12 @@ Output format:
 }"""
     
     def __init__(self, llm_provider: str = "deepseek"):
+        """
+        Initialize the Planner Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+        """
         super().__init__("Planner", llm_provider)
         self.design_space = self._init_design_space()
     
@@ -57,6 +68,9 @@ Output format:
         """
         Initialize formalized design space for Low Altitude Economy.
         This is a key contribution for VIS paper - systematic design knowledge.
+        
+        Returns:
+            Dictionary containing the formalized design space
         """
         return {
             "domain": "Low Altitude Economy",
@@ -120,7 +134,15 @@ Output format:
         }
     
     def execute(self, state: AgentState) -> AgentState:
-        """Analyze query and create visualization plan"""
+        """
+        Analyze query and create visualization plan.
+        
+        Args:
+            state: Current agent state containing user query
+            
+        Returns:
+            Updated state with intent analysis
+        """
         from llm_client import LLMClient
         
         llm = LLMClient(provider=self.llm_provider)
@@ -143,15 +165,28 @@ Output format:
                 "top_chart": intent["visualization_plan"][0]["chart_type"] if intent["visualization_plan"] else "unknown"
             })
             
+        except json.JSONDecodeError as e:
+            logger.warning(f"Failed to parse LLM response as JSON: {e}")
+            state.intent = self._fallback_analysis(state.user_query)
+            self.log_action("Intent Analysis (Fallback)", {"error": str(e)})
         except Exception as e:
             # Fallback for robustness
+            logger.error(f"Error during intent analysis: {e}")
             state.intent = self._fallback_analysis(state.user_query)
             self.log_action("Intent Analysis (Fallback)", {"error": str(e)})
         
         return state
     
     def _build_prompt(self, query: str) -> str:
-        """Build prompt with design space context"""
+        """
+        Build prompt with design space context.
+        
+        Args:
+            query: User query string
+            
+        Returns:
+            Formatted prompt string
+        """
         return f"""User Query: {query}
 
 Design Space Context:
@@ -160,7 +195,15 @@ Design Space Context:
 Analyze the query considering the design space and provide your structured response."""
     
     def _fallback_analysis(self, query: str) -> Dict[str, Any]:
-        """Rule-based fallback when LLM fails"""
+        """
+        Rule-based fallback when LLM fails.
+        
+        Args:
+            query: User query string
+            
+        Returns:
+            Fallback intent analysis dictionary
+        """
         query_lower = query.lower()
         
         # Simple keyword matching
@@ -183,7 +226,15 @@ Analyze the query considering the design space and provide your structured respo
         }
     
     def get_recommended_chart(self, state: AgentState) -> Optional[str]:
-        """Get top chart recommendation"""
+        """
+        Get top chart recommendation.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Recommended chart type or None
+        """
         if state.intent and "visualization_plan" in state.intent:
             plans = state.intent["visualization_plan"]
             if plans:

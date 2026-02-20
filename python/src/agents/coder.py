@@ -4,9 +4,14 @@ IEEE VIS 2026 - Enhanced with multiple generation strategies
 """
 
 import json
+import logging
 import re
 from typing import Dict, Any, List, Optional
 from .base import BaseAgent, AgentState
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class CoderAgent(BaseAgent):
@@ -140,12 +145,27 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
     }
     
     def __init__(self, llm_provider: str = "deepseek", strategy: str = "adaptive"):
+        """
+        Initialize the Coder Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+            strategy: Code generation strategy - "conservative", "creative", or "adaptive"
+        """
         super().__init__("Coder", llm_provider)
-        self.strategy = strategy  # "conservative", "creative", "domain_specific"
+        self.strategy = strategy
         self.colors = ["#002FA7", "#f59e0b", "#ea580c", "#dc2626", "#b91c1c"]
     
     def execute(self, state: AgentState) -> AgentState:
-        """Generate code based on intent and context"""
+        """
+        Generate code based on intent and context.
+        
+        Args:
+            state: Current agent state with intent and context
+            
+        Returns:
+            Updated state with generated code
+        """
         chart_type = self._determine_chart_type(state)
         
         # Try different strategies in order of reliability
@@ -172,6 +192,7 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
                     
             except Exception as e:
                 errors.append(f"{strategy}: {str(e)}")
+                logger.warning(f"Strategy {strategy} failed: {e}")
                 code = None
         
         if code:
@@ -188,7 +209,12 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return state
     
     def _get_strategy_order(self) -> List[str]:
-        """Determine generation strategy order"""
+        """
+        Determine generation strategy order.
+        
+        Returns:
+            List of strategy names in execution order
+        """
         if self.strategy == "conservative":
             return ["template", "llm_with_context", "llm_basic"]
         elif self.strategy == "creative":
@@ -197,7 +223,15 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
             return ["template", "llm_with_context", "llm_basic"]
     
     def _determine_chart_type(self, state: AgentState) -> str:
-        """Determine chart type from intent or use default"""
+        """
+        Determine chart type from intent or use default.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Chart type string
+        """
         if state.intent and "visualization_plan" in state.intent:
             plans = state.intent["visualization_plan"]
             if plans:
@@ -205,7 +239,16 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return "line"
     
     def _template_generation(self, state: AgentState, chart_type: str) -> Optional[str]:
-        """Generate code using predefined templates"""
+        """
+        Generate code using predefined templates.
+        
+        Args:
+            state: Current agent state
+            chart_type: Type of chart to generate
+            
+        Returns:
+            Generated code string or None if template not available
+        """
         template = self.CHART_TEMPLATES.get(chart_type)
         if template:
             # Extract title from query
@@ -214,7 +257,17 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return None
     
     def _llm_generation(self, state: AgentState, chart_type: str, with_context: bool) -> str:
-        """Generate code using LLM"""
+        """
+        Generate code using LLM.
+        
+        Args:
+            state: Current agent state
+            chart_type: Type of chart to generate
+            with_context: Whether to include context in the prompt
+            
+        Returns:
+            Generated code string
+        """
         from llm_client import LLMClient
         
         llm = LLMClient(provider=self.llm_provider)
@@ -235,7 +288,17 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return code
     
     def _build_generation_prompt(self, state: AgentState, chart_type: str, with_context: bool) -> str:
-        """Build prompt for code generation"""
+        """
+        Build prompt for code generation.
+        
+        Args:
+            state: Current agent state
+            chart_type: Type of chart to generate
+            with_context: Whether to include context
+            
+        Returns:
+            Formatted prompt string
+        """
         prompt_parts = [
             f"Generate Python code for a {chart_type} chart.",
             f"User query: {state.user_query}",
@@ -255,7 +318,15 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return "\n".join(prompt_parts)
     
     def _extract_code(self, response: str) -> str:
-        """Extract code from LLM response"""
+        """
+        Extract code from LLM response.
+        
+        Args:
+            response: Raw LLM response string
+            
+        Returns:
+            Extracted code string
+        """
         # Try to extract code block
         code_pattern = r"```python\n(.*?)\n```"
         matches = re.findall(code_pattern, response, re.DOTALL)
@@ -272,7 +343,15 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         return response.strip()
     
     def _validate_code(self, code: str) -> bool:
-        """Basic code validation"""
+        """
+        Basic code validation.
+        
+        Args:
+            code: Code string to validate
+            
+        Returns:
+            True if code passes validation, False otherwise
+        """
         if not code or len(code) < 50:
             return False
         
@@ -286,13 +365,22 @@ chart.set_global_opts(title_opts=opts.TitleOpts(title="{title}"))
         dangerous = ["import os", "import sys", "__import__", "eval(", "exec(", "open(", "file("]
         for pattern in dangerous:
             if pattern in code:
+                logger.warning(f"Dangerous pattern detected: {pattern}")
                 return False
         
         return True
     
     def _fallback_code(self, chart_type: str) -> str:
-        """Minimal fallback code"""
-        return f'''
+        """
+        Minimal fallback code.
+        
+        Args:
+            chart_type: Type of chart (unused, provides simple fallback)
+            
+        Returns:
+            Fallback code string
+        """
+        return '''
 from pyecharts.charts import Line
 from pyecharts import options as opts
 

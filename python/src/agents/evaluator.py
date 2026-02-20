@@ -4,11 +4,16 @@ IEEE VIS 2026 - Key contribution: Visual feedback using multimodal LLM
 """
 
 import json
+import logging
 import base64
 import io
 from typing import Dict, Any, Optional, Tuple
 from PIL import Image
 from .base import BaseAgent, AgentState
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class CodeExecutor:
@@ -29,6 +34,7 @@ class CodeExecutor:
     ]
     
     def __init__(self):
+        """Initialize the code executor with safe builtins."""
         self.execution_globals = {
             '__builtins__': {
                 'len': len, 'range': range, 'enumerate': enumerate,
@@ -43,7 +49,15 @@ class CodeExecutor:
         }
     
     def validate_code(self, code: str) -> Tuple[bool, Optional[str]]:
-        """Validate code for safety"""
+        """
+        Validate code for safety.
+        
+        Args:
+            code: Code string to validate
+            
+        Returns:
+            Tuple of (is_valid, error_message)
+        """
         # Check dangerous patterns
         for pattern in self.DANGEROUS_PATTERNS:
             if pattern in code.lower():
@@ -69,7 +83,18 @@ class CodeExecutor:
         return True, None
     
     def _safe_import(self, name, *args, **kwargs):
-        """Restricted import that only allows safe modules"""
+        """
+        Restricted import that only allows safe modules.
+        
+        Args:
+            name: Module name to import
+            
+        Returns:
+            Imported module
+            
+        Raises:
+            ImportError: If module is not in safe list
+        """
         safe_modules = {
             'datetime', 'random', 'math', 'json', 'os', 'sys',
             'typing', 'collections', 'itertools', 'functools',
@@ -86,7 +111,15 @@ class CodeExecutor:
         raise ImportError(f"Import of '{name}' is not allowed in sandboxed environment")
     
     def execute(self, code: str) -> Dict[str, Any]:
-        """Execute code and return result"""
+        """
+        Execute code and return result.
+        
+        Args:
+            code: Python code string to execute
+            
+        Returns:
+            Dictionary with execution results
+        """
         # Validate first
         is_valid, error = self.validate_code(code)
         if not is_valid:
@@ -199,6 +232,7 @@ class CodeExecutor:
             }
             
         except Exception as e:
+            logger.error(f"Code execution error: {e}")
             return {
                 "success": False,
                 "error": str(e),
@@ -217,12 +251,27 @@ class EvaluatorAgent(BaseAgent):
     """
     
     def __init__(self, llm_provider: str = "deepseek", use_vision: bool = False):
+        """
+        Initialize the Evaluator Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+            use_vision: Whether to use multimodal LLM for visual evaluation
+        """
         super().__init__("Evaluator", llm_provider)
         self.executor = CodeExecutor()
-        self.use_vision = use_vision  # Whether to use multimodal LLM
+        self.use_vision = use_vision
     
     def execute(self, state: AgentState) -> AgentState:
-        """Execute and evaluate generated code"""
+        """
+        Execute and evaluate generated code.
+        
+        Args:
+            state: Current agent state with generated code
+            
+        Returns:
+            Updated state with execution results and evaluation
+        """
         code = state.generated_code
         
         if not code:
@@ -271,7 +320,15 @@ class EvaluatorAgent(BaseAgent):
         return state
     
     def _evaluate_code_quality(self, code: str) -> Dict[str, Any]:
-        """Evaluate code structure and style"""
+        """
+        Evaluate code structure and style.
+        
+        Args:
+            code: Generated code string
+            
+        Returns:
+            Dictionary with quality score and issues
+        """
         score = 1.0
         issues = []
         
@@ -310,7 +367,15 @@ class EvaluatorAgent(BaseAgent):
         }
     
     def _evaluate_intent_alignment(self, state: AgentState) -> Dict[str, Any]:
-        """Evaluate if chart matches user intent"""
+        """
+        Evaluate if chart matches user intent.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Dictionary with alignment score and issues
+        """
         score = 0.8  # Base score
         issues = []
         
@@ -340,7 +405,17 @@ class EvaluatorAgent(BaseAgent):
         }
     
     def _compute_score(self, execution: Dict, code_quality: Dict, intent_alignment: Dict) -> float:
-        """Compute weighted overall score"""
+        """
+        Compute weighted overall score.
+        
+        Args:
+            execution: Execution result dictionary
+            code_quality: Code quality evaluation dictionary
+            intent_alignment: Intent alignment evaluation dictionary
+            
+        Returns:
+            Overall weighted score
+        """
         if not execution["success"]:
             return 0.0
         
@@ -360,7 +435,14 @@ class EvaluatorAgent(BaseAgent):
     
     def _visual_evaluation(self, code: str, query: str) -> Dict[str, Any]:
         """
-        Evaluate visual quality using code analysis + LLM assessment
+        Evaluate visual quality using code analysis + LLM assessment.
+        
+        Args:
+            code: Generated code string
+            query: User query string
+            
+        Returns:
+            Dictionary with visual quality scores
         """
         try:
             from .visual_evaluator import evaluate_visual_quality
@@ -369,19 +451,39 @@ class EvaluatorAgent(BaseAgent):
             # Set use_llm=False for speed, or True for more accurate assessment
             result = evaluate_visual_quality(code, query, use_llm=False)
             return result
+        except ImportError as e:
+            logger.warning(f"Visual evaluator not available: {e}")
+            return self._get_fallback_visual_feedback()
         except Exception as e:
-            # Fallback
-            return {
-                "overall_score": 0.7,
-                "readability": 0.7,
-                "aesthetics": 0.7,
-                "data_encoding": 0.7,
-                "suggestions": ["Visual evaluation unavailable"],
-                "issues": [str(e)]
-            }
+            logger.error(f"Visual evaluation error: {e}")
+            return self._get_fallback_visual_feedback()
+    
+    def _get_fallback_visual_feedback(self) -> Dict[str, Any]:
+        """
+        Get fallback visual feedback when evaluation fails.
+        
+        Returns:
+            Default visual feedback dictionary
+        """
+        return {
+            "overall_score": 0.7,
+            "readability": 0.7,
+            "aesthetics": 0.7,
+            "data_encoding": 0.7,
+            "suggestions": ["Visual evaluation unavailable"],
+            "issues": []
+        }
     
     def should_refine(self, state: AgentState) -> Tuple[bool, Optional[str]]:
-        """Determine if refinement is needed"""
+        """
+        Determine if refinement is needed.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Tuple of (should_refine, reason)
+        """
         if not state.execution_result:
             return True, "No execution result"
         
@@ -401,11 +503,25 @@ class SimpleEvaluatorAgent(BaseAgent):
     """Simplified evaluator with visual quality assessment"""
     
     def __init__(self, llm_provider: str = "deepseek"):
+        """
+        Initialize the Simple Evaluator Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+        """
         super().__init__("SimpleEvaluator", llm_provider)
         self.executor = CodeExecutor()
     
     def execute(self, state: AgentState) -> AgentState:
-        """Evaluate execution and visual quality"""
+        """
+        Evaluate execution and visual quality.
+        
+        Args:
+            state: Current agent state with generated code
+            
+        Returns:
+            Updated state with evaluation results
+        """
         code = state.generated_code
         
         if not code:
@@ -439,7 +555,7 @@ class SimpleEvaluatorAgent(BaseAgent):
                 )
             except Exception as e:
                 # Visual evaluation failed, but execution succeeded
-                pass
+                logger.debug(f"Visual evaluation skipped: {e}")
         
         self.log_action("Simple Evaluation", {
             "success": result["success"],

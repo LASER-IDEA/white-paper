@@ -1,3 +1,148 @@
+# =============================================================================
+# LAEV-Agents Project .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytest-debug.log
+
+# Translations
+*.mo
+*.pot
+
+# Django/Flask stuff
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+experiments/mllm_cache/
+paper/figures/
+paper_figures/
+paper/tex/
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# -----------------------------------------------------------------------------
+# Node.js / Web
+# -----------------------------------------------------------------------------
+node_modules/
+dist
+dist-ssr
+*.local
+
 # Logs
 logs
 *.log
@@ -7,16 +152,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
@@ -24,42 +164,146 @@ dist-ssr
 *.sw?
 index_files
 .quarto
-__pycache__
-test/
-.env
-evidence-debug/
-tmp/
 
-# Python
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.egg-info/
-.pytest_cache/
-.coverage
-htmlcov/
+# -----------------------------------------------------------------------------
+# IDEs and Editors
+# -----------------------------------------------------------------------------
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+#*#
+.#*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# -----------------------------------------------------------------------------
+# Project Specific
+# -----------------------------------------------------------------------------
+
+# Environment variables (except example)
+!.env.example
+
+# Vector database (large files)
+chroma_db/
+chroma_data/
+
+# Hugging Face cache (large model files)
+huggingface_cache/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Data files (large)
+*.csv
+*.xlsx
+*.parquet
+*.h5
+*.hdf5
+
+# Exception: Keep sample data
+!python/data/sample_flight_data.csv
+!python/data/shenzhen.json
+!experiments/data/test_queries.py
+!experiments/data/dataset_loader.py
 
 # Debug files
 debug-*.png
+debug-*.html
+evidencdebug/
 
-# Vector database cache
-chroma_db/
-data/
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Output directories
 output/
-web/src/utils/computedData.ts
-*.json
-*.txt
+results/
+data/  # Generated data (keep sample data above)
 
-paper/tex/bib
-paper/tex/sections
-paper/tex/main.tex
-paper/sections/
-experiments/ERRORS.md
-huggingface_cache/
+# Streamlit
+.streamlit/secrets.toml
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# PDFs in paper (keep source PDFs)
 paper_figures/*.pdf
 paper/figures/*.pdf
+!docs/pdf/*.pdf
 
+# Web build
+web/dist/
+web/build/
+web/src/utils/computedData.ts
+
+# Experiments
+experiments/ERRORS.md
+experiments/results/*.json
+!experiments/results/.gitkeep
+
+# Docs (except main docs)
 docs/kimi/*
-paper/figures/*
-paper_figures/*
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.save
+*~
+
+# -----------------------------------------------------------------------------
+# Large Files (>100MB typically)
+# -----------------------------------------------------------------------------
+# Add specific large files here if needed

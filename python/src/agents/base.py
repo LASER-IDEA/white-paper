@@ -3,11 +3,16 @@ Base Agent Class with Common Functionality
 IEEE VIS 2026 - Multi-Agent Architecture Core
 """
 
+import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 import json
 from datetime import datetime
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 @dataclass
@@ -41,17 +46,38 @@ class BaseAgent(ABC):
     """Base class for all agents in the LAEV system"""
     
     def __init__(self, name: str, llm_provider: str = "deepseek"):
+        """
+        Initialize the base agent.
+        
+        Args:
+            name: Name of the agent
+            llm_provider: LLM provider to use (default: deepseek)
+        """
         self.name = name
         self.llm_provider = llm_provider
         self.action_log: List[Dict] = []
     
     @abstractmethod
     def execute(self, state: AgentState) -> AgentState:
-        """Execute agent's task and return updated state"""
+        """
+        Execute agent's task and return updated state.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Updated agent state
+        """
         pass
     
     def log_action(self, action: str, details: Dict[str, Any]):
-        """Log agent actions for debugging, visualization, and paper"""
+        """
+        Log agent actions for debugging, visualization, and paper.
+        
+        Args:
+            action: Description of the action
+            details: Additional details about the action
+        """
         entry = {
             "timestamp": datetime.now().isoformat(),
             "agent": self.name,
@@ -59,19 +85,34 @@ class BaseAgent(ABC):
             "details": details
         }
         self.action_log.append(entry)
-        print(f"[{self.name}] {action}")
+        logger.info(f"[{self.name}] {action}")
 
 
 class AgentPipeline:
     """Orchestrates the multi-agent pipeline"""
     
     def __init__(self, agents: List[BaseAgent], max_iterations: int = 3):
+        """
+        Initialize the agent pipeline.
+        
+        Args:
+            agents: List of agents to execute in sequence
+            max_iterations: Maximum number of refinement iterations
+        """
         self.agents = agents
         self.max_iterations = max_iterations
         self.pipeline_log: List[Dict] = []
     
     def run(self, user_query: str) -> AgentState:
-        """Execute full pipeline"""
+        """
+        Execute full pipeline.
+        
+        Args:
+            user_query: User's query string
+            
+        Returns:
+            Final agent state after pipeline execution
+        """
         state = AgentState(
             user_query=user_query,
             max_iterations=self.max_iterations
@@ -92,14 +133,28 @@ class AgentPipeline:
         return state
     
     def _log_step(self, agent_name: str, state: AgentState):
-        """Log pipeline step"""
+        """
+        Log pipeline step.
+        
+        Args:
+            agent_name: Name of the agent that executed
+            state: Current agent state
+        """
         self.pipeline_log.append({
             "agent": agent_name,
             "state": state.to_dict()
         })
     
     def _should_stop(self, state: AgentState) -> bool:
-        """Determine if pipeline should stop iterating"""
+        """
+        Determine if pipeline should stop iterating.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            True if pipeline should stop, False otherwise
+        """
         # Stop if execution successful (with or without visual feedback)
         if state.execution_result and state.execution_result.get("success"):
             # If visual feedback available, check score

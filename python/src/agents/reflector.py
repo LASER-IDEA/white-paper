@@ -4,8 +4,13 @@ IEEE VIS 2026 - Self-reflection and improvement loop
 """
 
 import json
+import logging
 from typing import Dict, Any, Optional, List
 from .base import BaseAgent, AgentState
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class ReflectorAgent(BaseAgent):
@@ -45,11 +50,22 @@ Output JSON format:
 }"""
     
     def __init__(self, llm_provider: str = "deepseek"):
+        """
+        Initialize the Reflector Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+        """
         super().__init__("Reflector", llm_provider)
         self.error_patterns = self._load_error_patterns()
     
     def _load_error_patterns(self) -> Dict[str, Dict]:
-        """Load common error patterns and fixes"""
+        """
+        Load common error patterns and fixes.
+        
+        Returns:
+            Dictionary mapping error patterns to classification and suggestions
+        """
         return {
             "AttributeError": {
                 "classification": "LOGIC",
@@ -78,8 +94,15 @@ Output JSON format:
         }
     
     def execute(self, state: AgentState) -> AgentState:
-        """Analyze execution result and prepare for next iteration"""
+        """
+        Analyze execution result and prepare for next iteration.
         
+        Args:
+            state: Current agent state with execution results
+            
+        Returns:
+            Updated state with reflection analysis
+        """
         # Check if we should stop
         if self._should_stop(state):
             self.log_action("Iteration Complete", {"reason": "Success or max iterations"})
@@ -102,7 +125,15 @@ Output JSON format:
         return state
     
     def _should_stop(self, state: AgentState) -> bool:
-        """Determine if iteration should stop"""
+        """
+        Determine if iteration should stop.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            True if iteration should stop, False otherwise
+        """
         # Max iterations reached
         if state.iteration_count >= state.max_iterations:
             return True
@@ -117,7 +148,15 @@ Output JSON format:
         return False
     
     def _analyze_failure(self, state: AgentState) -> Dict[str, Any]:
-        """Analyze why execution failed"""
+        """
+        Analyze why execution failed.
+        
+        Args:
+            state: Current agent state with execution results
+            
+        Returns:
+            Dictionary with error analysis
+        """
         execution = state.execution_result or {}
         
         if execution.get("success"):
@@ -144,7 +183,16 @@ Output JSON format:
         return self._llm_analysis(state, error_msg)
     
     def _llm_analysis(self, state: AgentState, error_msg: str) -> Dict[str, Any]:
-        """Use LLM for error analysis"""
+        """
+        Use LLM for error analysis.
+        
+        Args:
+            state: Current agent state
+            error_msg: Error message string
+            
+        Returns:
+            Dictionary with LLM-based error analysis
+        """
         from llm_client import LLMClient
         
         try:
@@ -173,8 +221,9 @@ Provide your analysis."""
             # Try to parse JSON
             try:
                 return json.loads(response)
-            except:
-                # Fallback
+            except json.JSONDecodeError:
+                # Fallback for JSON parsing failure
+                logger.warning(f"Failed to parse LLM response as JSON: {response[:100]}...")
                 return {
                     "error_classification": "UNKNOWN",
                     "root_cause": error_msg,
@@ -183,6 +232,7 @@ Provide your analysis."""
                 }
                 
         except Exception as e:
+            logger.error(f"LLM analysis failed: {e}")
             return {
                 "error_classification": "UNKNOWN",
                 "root_cause": str(e),
@@ -191,7 +241,15 @@ Provide your analysis."""
             }
     
     def get_improvement_prompt(self, state: AgentState) -> str:
-        """Generate prompt for improvement iteration"""
+        """
+        Generate prompt for improvement iteration.
+        
+        Args:
+            state: Current agent state with execution history
+            
+        Returns:
+            Formatted improvement prompt string
+        """
         if not state.execution_history:
             return ""
         
@@ -227,16 +285,33 @@ class SimpleReflectorAgent(BaseAgent):
     """Simplified reflector for initial implementation"""
     
     def __init__(self, llm_provider: str = "deepseek"):
+        """
+        Initialize the Simple Reflector Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+        """
         super().__init__("SimpleReflector", llm_provider)
     
     def execute(self, state: AgentState) -> AgentState:
-        """Simple reflection - just increment counter"""
+        """
+        Simple reflection - just increment counter.
+        
+        Args:
+            state: Current agent state
+            
+        Returns:
+            Updated state
+        """
         if state.execution_result and state.execution_result.get("success"):
             self.log_action("Success", {"iteration": state.iteration_count})
         else:
+            error_msg = "Unknown"
+            if state.execution_result and state.execution_result.get("error"):
+                error_msg = state.execution_result.get("error")
             self.log_action("Needs Retry", {
                 "iteration": state.iteration_count,
-                "error": state.execution_result.get("error", "Unknown") if state.execution_result else "None"
+                "error": error_msg
             })
         
         return state

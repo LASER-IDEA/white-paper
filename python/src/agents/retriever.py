@@ -4,10 +4,15 @@ IEEE VIS 2026 - Supports both Neo4j and NetworkX backends
 """
 
 import json
+import logging
 import os
 from typing import Dict, Any, List, Optional
 from .base import BaseAgent, AgentState
 from .graph_store import create_graph_store, BaseGraphStore
+
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class RetrieverAgent(BaseAgent):
@@ -20,19 +25,34 @@ class RetrieverAgent(BaseAgent):
     """
     
     def __init__(self, llm_provider: str = "deepseek", knowledge_base=None):
+        """
+        Initialize the Retriever Agent.
+        
+        Args:
+            llm_provider: LLM provider to use (default: deepseek)
+            knowledge_base: Optional knowledge base for vector search
+        """
         super().__init__("Retriever", llm_provider)
         self.knowledge_base = knowledge_base
         
         # Create graph store (auto-selects best available)
         try:
             self.graph_store = create_graph_store(prefer_neo4j=True)
-            print(f"Retriever using graph store: {type(self.graph_store).__name__}")
+            logger.info(f"Retriever using graph store: {type(self.graph_store).__name__}")
         except Exception as e:
-            print(f"Failed to create graph store: {e}")
+            logger.error(f"Failed to create graph store: {e}")
             self.graph_store = None
     
     def execute(self, state: AgentState) -> AgentState:
-        """Execute retrieval with GraphRAG + Vector RAG"""
+        """
+        Execute retrieval with GraphRAG + Vector RAG.
+        
+        Args:
+            state: Current agent state containing user query and intent
+            
+        Returns:
+            Updated state with retrieved context
+        """
         query = state.user_query
         intent = state.intent or {}
         
@@ -60,14 +80,14 @@ class RetrieverAgent(BaseAgent):
                         })
                         graph_entities = expanded
             except Exception as e:
-                print(f"GraphRAG error: {e}")
+                logger.warning(f"GraphRAG error: {e}")
         
         # Stage 3: Data schema context (real)
         try:
             schema_context = self._get_data_schema()
             contexts.append({"source": "data_schema", "content": schema_context})
         except Exception as e:
-            print(f"Schema context error: {e}")
+            logger.warning(f"Schema context error: {e}")
         
         # Stage 4: Intent-based context
         if intent:
@@ -86,7 +106,16 @@ class RetrieverAgent(BaseAgent):
         return state
     
     def _vector_search(self, query: str, k: int = 3) -> List[Dict]:
-        """Real vector similarity search from knowledge base"""
+        """
+        Real vector similarity search from knowledge base.
+        
+        Args:
+            query: Search query string
+            k: Number of results to return (default: 3)
+            
+        Returns:
+            List of relevant context dictionaries
+        """
         if not self.knowledge_base:
             return []
         
@@ -94,11 +123,19 @@ class RetrieverAgent(BaseAgent):
             results = self.knowledge_base.get_context_for_query(query, k=k)
             return results if results else []
         except Exception as e:
-            print(f"Vector search error: {e}")
+            logger.warning(f"Vector search error: {e}")
             return []
     
     def _extract_entities(self, query: str) -> List[str]:
-        """Extract entities from query using keyword matching"""
+        """
+        Extract entities from query using keyword matching.
+        
+        Args:
+            query: User query string
+            
+        Returns:
+            List of extracted entity strings
+        """
         # Comprehensive entity dictionary
         entity_keywords = {
             # Aircraft types
@@ -130,7 +167,12 @@ class RetrieverAgent(BaseAgent):
         return list(set(found))
     
     def _get_data_schema(self) -> str:
-        """Get real data schema from dataset"""
+        """
+        Get real data schema from dataset.
+        
+        Returns:
+            String describing the available data schema
+        """
         try:
             import sys
             sys.path.insert(0, '/data1/xh/workspace/white-paper/experiments')
@@ -149,9 +191,21 @@ class RetrieverAgent(BaseAgent):
             
             return "\n".join(schema_lines)
             
+        except ImportError as e:
+            logger.warning(f"Could not import dataset loader: {e}")
+            return self._get_fallback_schema()
         except Exception as e:
-            # Fallback schema
-            return """Available Data Schema:
+            logger.warning(f"Error getting data schema: {e}")
+            return self._get_fallback_schema()
+    
+    def _get_fallback_schema(self) -> str:
+        """
+        Get fallback schema when real schema is unavailable.
+        
+        Returns:
+            Fallback schema string
+        """
+        return """Available Data Schema:
   - date (temporal): Flight operation date
   - time (temporal): Flight operation time  
   - region (spatial): Operation district (Baoan, Longgang, Futian, etc.)
@@ -163,7 +217,15 @@ class RetrieverAgent(BaseAgent):
   - altitude (numerical): Maximum flight altitude in meters"""
     
     def _format_graph_context(self, graph_data: Dict) -> str:
-        """Format graph context for LLM consumption"""
+        """
+        Format graph context for LLM consumption.
+        
+        Args:
+            graph_data: Dictionary containing graph entities and relationships
+            
+        Returns:
+            Formatted context string
+        """
         lines = ["Domain Knowledge Graph Context:"]
         
         if graph_data.get("entities"):
@@ -193,7 +255,15 @@ class RetrieverAgent(BaseAgent):
         return "\n".join(lines)
     
     def _format_intent_context(self, intent: Dict) -> str:
-        """Format intent analysis as context"""
+        """
+        Format intent analysis as context.
+        
+        Args:
+            intent: Intent analysis dictionary
+            
+        Returns:
+            Formatted intent context string
+        """
         lines = ["Intent Analysis:"]
         
         if "intent" in intent:
@@ -218,7 +288,7 @@ class RetrieverAgent(BaseAgent):
 
 if __name__ == "__main__":
     # Test the retriever
-    print("Testing Retriever Agent...")
+    logger.info("Testing Retriever Agent...")
     
     retriever = RetrieverAgent()
     
@@ -232,18 +302,18 @@ if __name__ == "__main__":
     ]
     
     for query in test_queries:
-        print(f"\n{'='*60}")
-        print(f"Query: {query}")
-        print('='*60)
+        logger.info("=" * 60)
+        logger.info(f"Query: {query}")
+        logger.info("=" * 60)
         
         state = AgentState(user_query=query)
         result_state = retriever.execute(state)
         
-        print(f"\nRetrieved {len(result_state.retrieved_context)} context sources:")
+        logger.info(f"\nRetrieved {len(result_state.retrieved_context)} context sources:")
         for i, ctx in enumerate(result_state.retrieved_context, 1):
-            print(f"\n{i}. Source: {ctx['source']}")
+            logger.info(f"\n{i}. Source: {ctx['source']}")
             if isinstance(ctx['content'], str):
                 preview = ctx['content'][:300].replace('\n', ' ')
-                print(f"   Content: {preview}...")
+                logger.info(f"   Content: {preview}...")
             else:
-                print(f"   Content: {len(str(ctx['content']))} chars")
+                logger.info(f"   Content: {len(str(ctx['content']))} chars")

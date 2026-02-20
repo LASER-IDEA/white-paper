@@ -110,6 +110,11 @@ white-paper/
 │   ├── requirements.txt      # Python dependencies (with RAG support)
 │   └── .env.example          # Environment template
 ├── chroma_db/                # Vector database cache (auto-generated)
+├── demo/                     # 🆕 Interactive Demo (LAEV-Agents)
+│   ├── app.py               # Streamlit demo interface
+│   ├── app_gradio.py        # Gradio demo interface
+│   ├── run_demo.py          # Demo launcher
+│   └── README.md            # Demo documentation
 ├── run_python_app.py         # Convenience script to run Python app
 ├── run_web_app.py            # Convenience script to run web app
 ├── .gitignore
@@ -129,6 +134,27 @@ Want to explore the dashboard without setup? Visit our **[live demo](https://LAS
 - Using the AI Assistant with RAG-enhanced responses
 - Example queries and use cases
 - Troubleshooting common issues
+
+### 🤖 LAEV-Agents Demo (New!)
+
+Try our **interactive multi-agent visualization system** with a professional web interface:
+
+```bash
+cd demo
+python run_demo.py
+```
+
+Choose between **Streamlit** (feature-rich) or **Gradio** (lightweight) interfaces.
+
+**Features:**
+- Natural language to visualization
+- Real-time multi-agent pipeline visualization
+- Quality metrics and execution trace
+- Example queries for quick start
+
+See [demo/README.md](demo/README.md) for details.
+
+---
 
 ### Python Streamlit Version
 
