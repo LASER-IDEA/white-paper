@@ -1,83 +1,65 @@
-# System Usability Scale (SUS) 问卷
+# SUS Questionnaire
 
-## 说明
-
-请根据您使用 **{system_name}** 的体验，对以下陈述进行评分。
-
-**评分标准**:
-- 1 = 强烈反对
-- 2 = 反对
-- 3 = 中立
-- 4 = 同意
-- 5 = 强烈同意
+**System:** LAEV-Agents (Low Altitude Economy Visualization Agents)
+**Date:** March 12-18, 2026
 
 ---
 
-## 问题
+## Instructions
 
-| # | 陈述 | 1 | 2 | 3 | 4 | 5 |
-|---|------|---|---|---|---|---|
-| 1 | 我想我会经常使用这个系统 | ○ | ○ | ○ | ○ | ○ |
-| 2 | 我发现这个系统 unnecessarily complex | ○ | ○ | ○ | ○ | ○ |
-| 3 | 我认为这个系统容易使用 | ○ | ○ | ○ | ○ | ○ |
-| 4 | 我认为我需要技术人员的帮助才能使用这个系统 | ○ | ○ | ○ | ○ | ○ |
-| 5 | 我发现这个系统的各个功能很好地整合在一起 | ○ | ○ | ○ | ○ | ○ |
-| 6 | 我认为这个系统有太多不一致的地方 | ○ | ○ | ○ | ○ | ○ |
-| 7 | 我会想象大多数人会很快学会使用这个系统 | ○ | ○ | ○ | ○ | ○ |
-| 8 | 我发现这个系统非常 cumbersome to use | ○ | ○ | ○ | ○ | ○ |
-| 9 | 我对使用这个系统感到自信 | ○ | ○ | ○ | ○ | ○ |
-| 10 | 我需要学习很多东西才能开始使用这个系统 | ○ | ○ | ○ | ○ | ○ |
+Please read each statement and select one response that best reflects your opinion.
 
----
-
-## 有用性评估
-
-请评价您对以下陈述的同意程度:
-
-| 陈述 | 1 | 2 | 3 | 4 | 5 |
-|------|---|---|---|---|---|
-| 系统生成的可视化符合我的预期 | ○ | ○ | ○ | ○ | ○ |
-| 系统能理解我的查询意图 | ○ | ○ | ○ | ○ | ○ |
-| 系统提供的可视化对我的分析工作有帮助 | ○ | ○ | ○ | ○ | ○ |
-| 与手动创建图表相比，这个系统节省了我的时间 | ○ | ○ | ○ | ○ | ○ |
-| 我愿意向同事推荐这个系统 | ○ | ○ | ○ | ○ | ○ |
+| # | Statement | Strongly Disagree | Agree | Neutral | Disagree | Strongly Disagree |
+|---|-----------|-----------------|--------|---------|------------------|
+| 1 | I think that I would like to use this system frequently | 1 | 2 | 3 | 4 | 5 |
+| 2 | I found the system unnecessarily complex | 1 | 2 | 3 | 4 | 5 |
+| 3 | I thought the system was easy to use | 1 | 2 | 3 | 4 | 5 |
+| 4 | I think that I would need the support of a technical person to be able to use this system | 1 | 2 | 3 | 4 | 5 |
+| 5 | I found the various functions in this system were well integrated | 1 | 2 | 3 | 4 | 5 |
+| 6 | I thought there was too much inconsistency in this system | 1 | 2 | 3 | 4 | 5 |
+| 7 | I would imagine that most people would learn to use this system very quickly | 1 | 2 | 3 | 4 | 5 |
+| 8 | I found the system very cumbersome to use | 1 | 2 | 3 | 4 | 5 |
+| 9 | I felt very confident using the system | 1 | 2 | 3 | 4 | 5 |
+| 10 | I needed to learn a lot of things before I could get going with this system | 1 | 2 | 3 | 4 | 5 |
 
 ---
 
-## 系统对比 (完成两个系统后填写)
+## Scoring
 
-1. **总体而言，您更喜欢哪个系统？**
-   - [ ] 系统A (NL4DV)
-   - [ ] 系统B (LAEV-Agents)
-   - [ ] 没有明显偏好
+For each item, your score is indicated by the number of your response.
 
-2. **请简要说明您的理由**:
-   
-   ___________________________________
-   
-   ___________________________________
+**Scoring Guidelines:**
+- Items 1, 3, 5, 7, 9 are positively worded (higher score = better)
+- Items 2, 4, 6, 8, 10 are negatively worded (higher score = better for these items)
 
-3. **如果要在实际工作中使用，您会选择哪个系统？**
-   - [ ] 系统A (NL4DV)
-   - [ ] 系统B (LAEV-Agents)
-   - [ ] 都不选择
+**Total Score Range:** 10 to 50
+
+**Interpretation:**
+- **Excellent (≥40):** System has high usability
+- **Good (30-39):** Good but can be improved
+- **OK (20-29):** Marginal usability
+- **Poor (<20):** Low usability, needs significant improvement
 
 ---
 
-## 开放反馈
+## Additional Comments
 
-1. **您最喜欢这个系统的什么特点？**
-   
-   ___________________________________
+Please share any additional feedback about your experience with the system:
 
-2. **您最不喜欢这个系统的什么特点？**
-   
-   ___________________________________
+_________________________________________________________________
 
-3. **您有什么改进建议？**
-   
-   ___________________________________
+_________________________________________________________________
+
+_________________________________________________________________
 
 ---
 
-**感谢您的参与！**
+## References
+
+Brooke, J. (1986). SUS: A quick and dirty usability scale. Usability Evaluation in Industry.
+
+---
+
+**Participant ID:** _____________
+**Date:** _____________
+**SUS Score:** ______ / 50

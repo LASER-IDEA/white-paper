@@ -1,72 +1,110 @@
-# 知情同意书
+# Informed Consent Form
 
-## LAEV-Agents: 自然语言数据可视化系统用户研究
+**Study Title:** User Study for LAEV-Agents Visualization System
 
-**研究单位**: [您的单位名称]
-**研究负责人**: [您的姓名]
-**联系方式**: [您的邮箱]
-
----
-
-### 研究目的
-
-本研究旨在评估 LAEV-Agents 自然语言数据可视化系统的可用性和有效性。该系统允许用户通过自然语言描述来生成数据可视化图表。
-
-### 实验流程
-
-1. 完成一份背景问卷（约3分钟）
-2. 使用两个数据可视化系统完成指定任务（约35-40分钟）
-3. 完成系统可用性问卷（约5分钟）
-4. 参与简短访谈（约5-10分钟）
-
-**总时长**: 约45-60分钟
-
-### 潜在风险与收益
-
-**风险**:
-- 本研究无明显风险
-- 部分用户可能感到轻微疲劳，可在任何时间要求休息
-
-**收益**:
-- 获得¥100-150的参与激励
-- 体验前沿的自然语言可视化技术
-- 为学术科研做出贡献
-
-### 隐私与保密
-
-- 您的所有回答将被匿名化处理
-- 实验数据仅用于学术研究
-- 不会收集任何可识别个人身份的信息
-- 数据保存期限为研究结束后2年
-
-### 自愿参与
-
-- 参与本研究完全自愿
-- 您可以在任何时间无理由退出
-- 退出不会影响您应得的激励
-
-### 录音/录像
-
-□ 我同意对实验过程进行录音/录像（仅用于研究分析）
-
-□ 我不同意录音/录像
+**Date:** March 12-18, 2026
+**Researcher:** [Your Name/Institution]
+**Email:** [your.email@institution.edu]
 
 ---
 
-## 参与者声明
+## Study Purpose
 
-我已阅读并理解上述信息，我的问题已得到解答。我自愿参与本研究。
-
-**参与者签名**: _________________________
-
-**日期**: _________________________
+This study evaluates the usability and effectiveness of LAEV-Agents, a system designed to help users create data visualizations through natural language in the low-altitude economy domain.
 
 ---
 
-## 研究者声明
+## What You Will Do
 
-我已向参与者解释研究内容，回答其问题，并确认其自愿参与。
+1. **Participate in a 30-40 minute session** via video conference
+2. **Complete 8 visualization tasks** using the LAEV-Agents system
+3. **Fill out a questionnaire** about your experience
+4. **Provide feedback** through verbal discussion
 
-**研究者签名**: _________________________
+---
 
-**日期**: _________________________
+## Your Rights
+
+- **Voluntary Participation:** Participation is entirely voluntary. You may withdraw at any time without penalty.
+- **Anonymity:** Your data will be anonymized. Only aggregate results will be reported in research publications.
+- **Confidentiality:** All data collected will be kept confidential and used only for research purposes.
+- **Questions:** You may ask questions at any time during the session.
+
+---
+
+## Data Collection
+
+We will collect the following data:
+
+1. **Task completion success/failure** for each of the 8 tasks
+2. **Time to complete each task**
+3. **SUS questionnaire responses** (10 items, 5-point scale)
+4. **Qualitative feedback** from our discussion
+5. **Basic demographic information:**
+   - Participant role (domain expert or general user)
+   - Years of experience in data analysis
+
+All data will be recorded using a participant ID rather than your name to ensure anonymity.
+
+---
+
+## Time Commitment
+
+- **Session duration:** 30-40 minutes
+- **No preparation required** on your part
+- **Session will be recorded** via video conference for research purposes only
+
+---
+
+## Risks
+
+This study involves minimal risk:
+- No physical activity beyond normal computer use
+- No psychological stress beyond normal computer interaction
+- Video recording may be used for research purposes only
+
+---
+
+## Benefits
+
+Your participation will contribute to:
+- Improved visualization systems for domain experts
+- Better understanding of natural language interfaces for data analysis
+- Advancement of research in human-computer interaction
+
+---
+
+## Contact Information
+
+**Questions Before Study:**
+[Your Name]
+[Your Email]
+
+**Questions During Study:**
+[Your Name]
+[Your Email]
+
+---
+
+## Consent
+
+I have read and understood the information above. I voluntarily agree to participate in this user study. I understand that:
+
+- [ ] My participation is voluntary and I may withdraw at any time
+- [ ] My responses will be anonymized and reported only in aggregate
+- [ ] My data will be kept confidential and used for research purposes only
+- [ ] I may ask questions at any time
+- [ ] I will complete the tasks and questionnaire to the best of my ability
+
+**Participant Signature:** _________________________
+**Date:** ________________
+
+---
+
+**Researcher Signature:** _________________________
+**Date:** ________________
+
+---
+
+**Version:** 1.0
+**Last Updated:** March 5, 2026
