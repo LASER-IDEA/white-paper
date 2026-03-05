@@ -24,12 +24,12 @@ The GitHub Pages deployment automatically updates whenever code is pushed to the
 
 ## 📖 Documentation
 
-- **[Usage Guide](USAGE_GUIDE.md)** - 🆕 **Start here!** Complete guide on how to use the LLM RAG application
-- **[Test Report](TEST_REPORT.md)** - 🆕 **Comprehensive testing results** for LLM + RAG features
-- **[Improvements](IMPROVEMENTS.md)** - 🆕 **Latest enhancements** including multi-provider support
-- **[RAG Implementation](RAG_IMPLEMENTATION.md)** - Technical details of the RAG system architecture
-- **[Index Definitions](INDEX_DEFINITIONS.md)** - Detailed explanation of all metrics and dimensions
-- **[Security](SECURITY.md)** - Security best practices and guidelines
+- **[Usage Guide](docs/guides/USAGE_GUIDE.md)** - 🆕 **Start here!** Complete guide on how to use the LLM RAG application
+- **[Test Report](docs/kimi/TEST_REPORT.md)** - 🆕 **Comprehensive testing results** for LLM + RAG features
+- **[Improvements](docs/kimi/IMPROVEMENTS.md)** - 🆕 **Latest enhancements** including multi-provider support
+- **[RAG Implementation](docs/kimi/RAG_IMPLEMENTATION.md)** - Technical details of the RAG system architecture
+- **[Index Definitions](docs/technical/INDEX_DEFINITIONS.md)** - Detailed explanation of all metrics and dimensions
+- **[Security](docs/kimi/SECURITY.md)** - Security best practices and guidelines
 
 ## 🌟 Key Features
 
@@ -129,7 +129,7 @@ Want to explore the dashboard without setup? Visit our **[live demo](https://LAS
 
 ### 📚 Need Help Using the Application?
 
-**See the [Usage Guide](USAGE_GUIDE.md)** for comprehensive instructions on:
+**See the [Usage Guide](docs/guides/USAGE_GUIDE.md)** for comprehensive instructions on:
 - How to access and use the deployed LLM RAG application
 - Using the AI Assistant with RAG-enhanced responses
 - Example queries and use cases

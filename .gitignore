@@ -307,3 +307,12 @@ docs/kimi/*
 # Large Files (>100MB typically)
 # -----------------------------------------------------------------------------
 # Add specific large files here if needed
+
+# Monitor logs
+auto_update_monitor.log
+
+# Debug HTML files
+debug-*.html
+
+# Scripts node modules
+scripts/node_modules/
